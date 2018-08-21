@@ -33,8 +33,8 @@ We recommend the following config:
 - JRE 1.8
 - ElasticSearch 6.3.0
 
-##How to use the user interface
+## How to use the user interface
 
 ## What's going on under the hood
 
-##How can I extend/modify the code in this repo
+## How can I extend/modify the code in this repo
