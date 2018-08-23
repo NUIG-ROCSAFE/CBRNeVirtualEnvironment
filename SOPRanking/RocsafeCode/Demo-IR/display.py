@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import make_response
-import configparser,sys,os
+import ConfigParser,sys,os
 import sqlite3
 app = Flask(__name__)
 
@@ -35,7 +35,7 @@ def setGlobalVariables():
     global sopPDFlocation
     
     inilocation = "main.ini"
-    Config = configparser.ConfigParser()
+    Config = ConfigParser.ConfigParser()
     Config.read(inilocation)
    
     section = "sqlite"
