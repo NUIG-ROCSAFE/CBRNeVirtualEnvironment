@@ -102,7 +102,7 @@ def insertRank(res, searchTerms):
     global location
     conn = sqlite3.connect(location)
     print('entering to database location: ', location)
-    n = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    n = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cur = conn.cursor()
 
     for i, score in res.items():
