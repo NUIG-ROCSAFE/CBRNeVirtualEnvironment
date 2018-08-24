@@ -53,39 +53,3 @@ def compute_ranking(es, index_name, field, search_name):
 
     return res
 
-
-def add_synoyms():
-    synonym_dict = json.loads(open("../Synonyms/synonyms.json", 'r').read())
-    synonym_list = format_synonyms(synonym_dict)
-    s = ",\n"
-    synoyms = s.join(synonym_list)
-
-    doc = "PUT /index/sops"
-    doc += "{ "
-    doc += "  \"settings\": {\n"
-    doc += "      \"analysis\": {\n"
-    doc += "          \"filter\": {\n"
-    doc += "              \"CBRNE_filter\": {\n"
-    doc += "                  \"type\": \"synonym\",\n"
-    doc += "                  \"synonyms\": [ \n"
-
-    doc += synoyms
-    doc += "         }\n"
-    doc += "      },\n"
-    doc += "      \"analyzer\":{\n"
-    doc += "          \"tokenizer\": \"standard\",\n"
-    doc += "          \"CBRNE\":{\n"
-    doc += "          \"filter\": [\n"
-    doc += "              \"lowercase\",\n"
-    doc += "              \"CBRNE_filter\"\n"
-    doc += "          ]\n"
-    doc += "      }\n"
-    doc += "  }\n"
-    doc += "}\n}\n}"
-
-
-def return_sops(soplocation):
-    for f in os.listdir(soplocation):
-        yield "%s%s" % (soplocation, f), f
-
-

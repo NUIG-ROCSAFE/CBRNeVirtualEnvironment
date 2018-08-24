@@ -18,7 +18,6 @@ def main():
     print("searching for terms: ", search_terms)
     search_terms = [search_term.strip() for search_term in search_terms]
 
-    elastic_utils.add_synoyms()
     sop_rankings_dict = elastic_utils.compute_ranking(es, index_name, "text", search_terms)
     elastic_utils.insert_rank(sop_rankings_dict, search_terms, db_conn)
     print(sop_rankings_dict)
