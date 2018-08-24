@@ -29,7 +29,7 @@ def format_synonyms(synonym_dict):
 
 
 def return_query(es, index_name, field, search_name):
-    res = es.search(index=index_name, body={"query": {"match": {field: search_name}}})
+    res = es.search(index=index_name, body={"query": {"match": {field: str(search_name)}}})
     sop_dict = res['hits']['hits']
     for sop in sop_dict:
         yield sop['_id'], sop['_score']
@@ -41,7 +41,6 @@ def return_all(es, index_name):
     sop_dict = res['hits']['hits']
     for sop in sop_dict:
         yield sop['_id'], 0.0
-    print("Finish return_all")
 
 
 def compute_ranking(es, index_name, field, search_name):
@@ -51,7 +50,6 @@ def compute_ranking(es, index_name, field, search_name):
 
     for i, score in return_query(es, index_name, field, search_name):
         res[i] = score
-    print('compute ranking res: ', res)
 
     return res
 

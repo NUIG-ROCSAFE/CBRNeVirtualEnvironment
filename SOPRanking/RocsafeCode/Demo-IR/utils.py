@@ -51,18 +51,18 @@ def get_config(ini_loc):
         exit(-1)
 
     if not os.path.isdir(sop_location):
-        sop_error = "SOP text file location: %s does not exist" % sop_location
-        print(sop_error)
+        sop_err = "SOP text file location: %s does not exist" % sop_location
+        print(sop_err)
         exit(-1)
 
     if not os.path.isdir(pdf_loc):
-        strError = "Directory %s does not exist" % (pdf_loc)
-        print (strError)
-        exit()
+        pdf_err = "Directory %s does not exist" % pdf_loc
+        print (pdf_err)
+        exit(-1)
 
     if not index_name:
-        strError = "Index name is not set in %s" % ini_loc
-        print(strError)
-        exit()
+        index_err = "Index name is not set in %s" % ini_loc
+        print(index_name)
+        exit(-1)
 
     return db_conn, sop_location, pdf_loc, index_name

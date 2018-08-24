@@ -1,6 +1,7 @@
 import utils
 import elastic_utils
 import sys
+import insert_records
 from elasticsearch import Elasticsearch
 
 
@@ -12,12 +13,16 @@ def main():
     # get the search terms to rank
     # TODO maybe move arg parsing to its own fn
     search_terms = sys.argv[1:]
+    if len(search_terms) == 0:
+        print "Error: Include search terms in script parameters e.g. headache, pulmonary..."
+        exit(-1)
+
+    insert_records.insert(es, index_name)
     print("searching for terms: ", search_terms)
     search_terms = [search_term.strip() for search_term in search_terms]
-    # first add synonyms to elasticsearch
+
     elastic_utils.add_synoyms()
-    sop_rankings_dict = elastic_utils.compute_ranking(es, index_name, "text", search_terms[0])
-    print('res: ', sop_rankings_dict)
+    sop_rankings_dict = elastic_utils.compute_ranking(es, index_name, "text", search_terms)
     elastic_utils.insert_rank(sop_rankings_dict, search_terms, db_conn)
     print(sop_rankings_dict)
 
