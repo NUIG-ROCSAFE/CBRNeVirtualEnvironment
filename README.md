@@ -42,4 +42,4 @@ In Rstudio, once you have run Dependencies.R, open server.R. In the top right co
 
 ## What's going on under the hood
 
-## How can I extend/modify the code in this repo test
+## How can I extend/modify the code in this repo 
