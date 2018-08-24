@@ -7,11 +7,8 @@ from elasticsearch import Elasticsearch
 
 def main():
     es = Elasticsearch()
-
     db_conn, _, _, index_name = utils.get_config('./main.ini')
 
-    # get the search terms to rank
-    # TODO maybe move arg parsing to its own fn
     search_terms = sys.argv[1:]
     if len(search_terms) == 0:
         print "Error: Include search terms in script parameters e.g. headache, pulmonary..."

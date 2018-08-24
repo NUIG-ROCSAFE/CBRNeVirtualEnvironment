@@ -97,8 +97,3 @@ def print_text(path):
 def main():
     # runs in port 5000 by default
     app.run()
-
-
-if __name__ == "__main__":
-    # runs in port 5000 by default
-    main()
