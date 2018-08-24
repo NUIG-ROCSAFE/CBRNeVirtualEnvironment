@@ -1,4 +1,4 @@
-import ConfigParser
+import configparser
 import os
 
 
@@ -12,7 +12,7 @@ def config_selection_map(section, config):
                 print("skip: %s" % option)
         except Exception as e:
             print("exception on %s!" % option)
-            print e
+            print(e)
             config_dict[option] = None
     return config_dict
 
@@ -28,7 +28,7 @@ def get_config(ini_loc):
         indexname: sops
     """
 
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.read(ini_loc)
 
     section = "sqlite"
@@ -36,7 +36,7 @@ def get_config(ini_loc):
 
     try:
         config_dict = config_selection_map(section, config)
-    except ConfigParser.NoSectionError as e:
+    except configparser.NoSectionError:
         print("Can't find section \'%s\' file: %s" % (section, ini_loc))
         exit(-1)
 
@@ -62,7 +62,7 @@ def get_config(ini_loc):
 
     if not index_name:
         index_err = "Index name is not set in %s" % ini_loc
-        print(index_name)
+        print(index_err)
         exit(-1)
 
     return db_conn, sop_location, pdf_loc, index_name

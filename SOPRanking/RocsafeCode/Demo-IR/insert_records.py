@@ -17,12 +17,11 @@ def insert(es, index_name):
     try:
         es.indices.create(index=index_name)
     except RequestError:
-        print "Index %s exists, continuing" % index_name
+        print("Index %s exists, continuing" % index_name)
 
     for counter, title in enumerate(os.listdir(location)):
         file_loc = "%s%s" % (location, title)
-        print ("Reading file: " + file_loc)
-        text = open(file_loc).read()
-        print ("Inserting SOP: " + title)
+        print("Reading file: " + file_loc)
+        text = open(file_loc, encoding='utf-8').read()
+        print("Inserting SOP: " + title)
         insert_sop(es, index_name, title, text, counter)
-

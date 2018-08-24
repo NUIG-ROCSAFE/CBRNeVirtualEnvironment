@@ -11,7 +11,7 @@ def main():
 
     search_terms = sys.argv[1:]
     if len(search_terms) == 0:
-        print "Error: Include search terms in script parameters e.g. headache, pulmonary..."
+        print("Error: Include search terms in script parameters e.g. headache, pulmonary...")
         exit(-1)
 
     insert_records.insert(es, index_name)
