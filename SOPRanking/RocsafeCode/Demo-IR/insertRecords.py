@@ -25,3 +25,7 @@ def insert():
         text = open(fileLocation).read()
         print ("Inserting SOP: " + title)
         insertSOP(title, text, counter)
+
+
+if __name__ == '__main__':
+    insert()
