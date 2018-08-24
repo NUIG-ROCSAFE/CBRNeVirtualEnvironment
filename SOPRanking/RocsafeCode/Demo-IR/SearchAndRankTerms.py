@@ -5,10 +5,9 @@ from elasticsearch import Elasticsearch
 
 
 def main():
-
     es = Elasticsearch()
 
-    db_conn, _, index_name = utils.get_config('./main.ini')
+    db_conn, _, _, index_name = utils.get_config('./main.ini')
 
     # get the search terms to rank
     # TODO maybe move arg parsing to its own fn

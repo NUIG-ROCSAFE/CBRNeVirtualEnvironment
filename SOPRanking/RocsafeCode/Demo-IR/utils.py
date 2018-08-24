@@ -42,6 +42,7 @@ def get_config(ini_loc):
 
     db_conn = config_dict["dblocation"]
     sop_location = config_dict["soplocation"]
+    pdf_loc = config_dict["soppdflocation"]
     index_name = config_dict["indexname"]
 
     if not os.path.isfile(db_conn):
@@ -54,10 +55,14 @@ def get_config(ini_loc):
         print(sop_error)
         exit(-1)
 
+    if not os.path.isdir(pdf_loc):
+        strError = "Directory %s does not exist" % (pdf_loc)
+        print (strError)
+        exit()
+
     if not index_name:
         strError = "Index name is not set in %s" % ini_loc
         print(strError)
         exit()
 
-    return db_conn, sop_location, index_name
-
+    return db_conn, sop_location, pdf_loc, index_name
