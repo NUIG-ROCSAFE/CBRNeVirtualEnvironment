@@ -1,4 +1,5 @@
 import sqlite3
+
 from datetime import datetime
 
 
@@ -34,7 +35,7 @@ def return_query(es, index_name, field, search_name):
 
 
 def return_all(es, index_name):
-    print("return_all: index_name = " + index_name)
+    # print("return_all: index_name = " + index_name)
     res = es.search(index=index_name, body={"query": {"match_all": {}}})
     sop_dict = res['hits']['hits']
     for sop in sop_dict:

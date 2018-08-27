@@ -1,5 +1,5 @@
-import configparser
 import os
+import configparser
 
 
 def config_selection_map(section, config):
@@ -57,7 +57,7 @@ def get_config(ini_loc):
 
     if not os.path.isdir(pdf_loc):
         pdf_err = "Directory %s does not exist" % pdf_loc
-        print (pdf_err)
+        print(pdf_err)
         exit(-1)
 
     if not index_name:

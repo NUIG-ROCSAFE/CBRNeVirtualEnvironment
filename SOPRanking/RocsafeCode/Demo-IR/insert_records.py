@@ -1,5 +1,6 @@
-from elasticsearch import RequestError
 import os
+
+from elasticsearch import RequestError
 
 
 def insert_sop(es, index_name, title, text, idno):
