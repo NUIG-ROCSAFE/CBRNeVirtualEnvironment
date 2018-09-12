@@ -132,6 +132,7 @@ body <- dashboardBody(
                 selectInput("no_ravs", label="Choose number of RAVs to be used", choices = c("1", "2", "3")),
                 selectInput("lat_spacing", label = "Choose the latitude spacing", choices = c(20,25,30,40,50,100)),
                 selectInput("lng_spacing", label = "Choose the longitude spacing", choices = c(20,25,30,40,50,100)),
+                selectizeInput("num_cameras", label = "Choose the number of cameras to use", choices = c(1,2,3,4)),
                 actionButton("show_analysis", label="Show analysis"),
                 actionButton("launch_agents", label = "Execute agent routes"),
               offset = 0),

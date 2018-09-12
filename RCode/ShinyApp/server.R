@@ -329,8 +329,12 @@ shinyServer(function(input, output) {
     print("autoInvalidating")
     print(Sys.time())
     f_snapshot_new <<- fileSnapshot(paste(working_dir,"/RCode/ShinyApp/Data/Images/", sep='', collapse=''), md5sum = TRUE)
-    if(TRUE %in% changedFiles(f_snapshot_old, f_snapshot_new)$changes){
-      update_images(update_images() + 1)
+    #need to check that f_snapshots are not null so changes can be compared
+    if(!is.null(dim(f_snapshot_new)) && !is.null(dim(f_snapshot_old))){
+      if(TRUE %in% changedFiles(f_snapshot_old, f_snapshot_new)$changes){
+        #set flag to update images
+        update_images(update_images() + 1)
+      }
     }
     f_snapshot_old <<- f_snapshot_new
   })
