@@ -91,7 +91,7 @@ body <- dashboardBody(
                                        "Gas"="dispersion_gas",
                                        "Vapours"="dispersion_vapours",
                                        "Aerosol"="dispersion_aerosol")),
-                  actionButton('do_analysis','Show results of analysis')
+                  actionButton('do_blog_analysis','Show results of analysis')
                 ),
       mainPanel(
         setBackgroundImage(src = "www/ROCSAFE-logo-final.png"),
@@ -129,10 +129,14 @@ body <- dashboardBody(
               br(),
               fluidRow(
               column(width = 2,
+                #switchInput(inputId="DataColletionMode", onLabel = "Demo", offStatus = TRUE, offLabel = "Collect Data", value = TRUE, width = "200px",labelWidth = 200, handleWidth = 200, size = 'large'),
+                switchInput(inputId="DataColletionMode", label = "Demo", value = TRUE, width = "200px"),
                 selectInput("no_ravs", label="Choose number of RAVs to be used", choices = c("1", "2", "3")),
-                selectInput("lat_spacing", label = "Choose the latitude spacing", choices = c(20,25,30,40,50,100)),
-                selectInput("lng_spacing", label = "Choose the longitude spacing", choices = c(20,25,30,40,50,100)),
-                selectizeInput("num_cameras", label = "Choose the number of cameras to use", choices = c(1,2,3,4)),
+                selectInput("lat_spacing", label = "Choose the latitude spacing (m)", choices = c(20,25,30,40,50,100)),
+                selectInput("lng_spacing", label = "Choose the longitude spacing (m)", choices = c(20,25,30,40,50,100)),
+                selectInput("num_cameras", label = "Choose the number of cameras to use", choices = c(0,1,2,3,4)),
+                selectInput("rav_altitude", label = "Choose the altitude at which RAVs will fly (m)", choices = c(25, 30, 35, 40)),
+                selectInput("rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:8)),
                 actionButton("show_analysis", label="Show analysis"),
                 actionButton("launch_agents", label = "Execute agent routes"),
               offset = 0),
