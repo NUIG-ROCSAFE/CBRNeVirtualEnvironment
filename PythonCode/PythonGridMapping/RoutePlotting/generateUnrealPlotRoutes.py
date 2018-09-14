@@ -2,6 +2,8 @@ import os
 import sys
 
 def generate_route(drone_number, gps_coords, RAV_velocity = 5, RAV_altitude = 35, sleep_time = 0.5, images: bool = True, gps_locations: bool=True):
+	if not os.path.exists(os.getcwd() + '\\PythonClientGPSMapping\\GPSMappings\\Images\\Images%d\\' % drone_number):
+		os.makedirs(os.getcwd() + '\\PythonClientGPSMapping\\GPSMappings\\Images\\Images%d\\' % drone_number)
 	return_txt = '''import io
 	import time
 	import os
@@ -62,11 +64,20 @@ responses = client.simGetImages([
 #	ImageRequest(2, AirSimImageType.Scene),
 #	ImageRequest(3, AirSimImageType.Scene),
 #	ImageRequest(4, AirSimImageType.Scene)])'''
-			return_txt += '''
+			if line_index == 0:
+				return_txt += '''
+print('Writing files to ', os.getcwd() + "\\PythonClientGPSMapping\\GPSMappings\\Images\\Images{drone_number}\\Camera{{}}\\image_{line_index}.png".format('example'))
+for image_index, image in enumerate(responses):
+	if not os.path.exists(os.getcwd() + "\\PythonClientGPSMapping\\GPSMappings\\Images\\Images{drone_number}\\Camera{{}}".format(image_index+1)):
+		os.makedirs(os.getcwd() + "\\PythonClientGPSMapping\\GPSMappings\\Images\\Images{drone_number}\\Camera{{}}".format(image_index+1))
+	AirSimClientBase.write_file(os.getcwd() + "\\PythonClientGPSMapping\\GPSMappings\\Images\\Images{drone_number}\\Camera{{}}\\image_{line_index}.png".format(image_index+1) , image.image_data_uint8)
+'''.format(drone_number=drone_number,line_index=line_index)
+			else:
+				return_txt += '''
 print('Writing files to ', os.getcwd() + "\\PythonClientGPSMapping\\GPSMappings\\Images\\Images{drone_number}\\Camera{{}}\\image_{line_index}.png".format('example'))
 for image_index, image in enumerate(responses):
 	AirSimClientBase.write_file(os.getcwd() + "\\PythonClientGPSMapping\\GPSMappings\\Images\\Images{drone_number}\\Camera{{}}\\image_{line_index}.png".format(image_index+1) , image.image_data_uint8)
-'''.format(drone_number=drone_number,line_index=line_index)
+'''.format(drone_number=drone_number, line_index=line_index)
 				
 				
 			#return_txt += "png_image = client.simGetImage(4, AirSimImageType.Scene)\n"
