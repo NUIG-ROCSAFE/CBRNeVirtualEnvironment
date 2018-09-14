@@ -112,7 +112,7 @@ body <- dashboardBody(
       
       tabItem(tabName = "RAVMissionPlanner",
               
-              leafletOutput("map") %>% withSpinner(color="#0dc5c1", size=3),
+              leafletOutput("map", height = 600) %>% withSpinner(color="#0dc5c1", size=3),
               
               fluidRow(
               column(width = 2,
@@ -130,13 +130,13 @@ body <- dashboardBody(
               fluidRow(
               column(width = 2,
                 #switchInput(inputId="DataColletionMode", onLabel = "Demo", offStatus = TRUE, offLabel = "Collect Data", value = TRUE, width = "200px",labelWidth = 200, handleWidth = 200, size = 'large'),
-                switchInput(inputId="DataColletionMode", label = "Demo", value = TRUE, width = "200px"),
+                switchInput(inputId="DataColletionMode", label = "Demo", value = FALSE, width = "200px"),
                 selectInput("no_ravs", label="Choose number of RAVs to be used", choices = c("1", "2", "3")),
-                selectInput("lat_spacing", label = "Choose the latitude spacing (m)", choices = c(20,25,30,40,50,100)),
-                selectInput("lng_spacing", label = "Choose the longitude spacing (m)", choices = c(20,25,30,40,50,100)),
-                selectInput("num_cameras", label = "Choose the number of cameras to use", choices = c(0,1,2,3,4)),
-                selectInput("rav_altitude", label = "Choose the altitude at which RAVs will fly (m)", choices = c(25, 30, 35, 40)),
-                selectInput("rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:8)),
+                selectInput("lat_spacing", label = "Choose the latitude spacing (m)", choices = c(20,25,30,40,50,100), selected = 30),
+                selectInput("lng_spacing", label = "Choose the longitude spacing (m)", choices = c(20,25,30,40,50,100), selected = 25),
+                selectInput("num_cameras", label = "Choose the number of cameras to use", choices = c(0,1,2,3,4), selected = 1),
+                selectInput("rav_altitude", label = "Choose the altitude at which RAVs will fly (m)", choices = c(25, 30, 35, 40), selected = 30),
+                selectInput("rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:8), selected = 3),
                 actionButton("show_analysis", label="Show analysis"),
                 actionButton("launch_agents", label = "Execute agent routes"),
               offset = 0),

@@ -75,6 +75,8 @@ rav_positions <- data.frame("lat" = c(53.28, 53.286, 53.2798),
 bounding_rect <- data.frame("lat" =c(53.27959959,53.2805257315, 53.2801009832, 53.2791748417),
                             "long" = c(-9.0617270785, -9.0621271428, -9.0648776011, -9.0644775368))
 
+
+
 agent_route_analysis <<- ""
 
 RAVIcon <- makeIcon(
@@ -150,7 +152,7 @@ run_java <- function(no_ravs, locs, lat_spacing, lng_spacing){
   print("argsString: ")
   print(argsString)
   print("calling")
-  agent_route_analysis <<- system2("java.exe", args = c(argsString), stdout = TRUE, wait = TRUE)
+  agent_route_analysis <<- system2("java", args = c(argsString), stdout = TRUE, wait = TRUE)
   setwd(working_dir)
   print(agent_route_analysis)
   return(agent_route_analysis)
@@ -217,6 +219,13 @@ shinyServer(function(input, output, session) {
   })
   
   observeEvent(input$plot_grid_points,{
+    #hard code in data collection region
+    if(input$DataColletionMode){
+      showNotification(paste("Using pre-defined rectangle to gather images: ", clickedLocs))
+      clickedLocs <<- data.frame("lat" = c(53.2780931659, 53.2804041456, 53.281325917, 53.2790149872),
+                                 "long" = c( -9.0648465368, -9.0661543305, -9.0615979824, -9.0602901886)) 
+    }
+    
     run_java(isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
     print("found analysis")
     agent_route_analysis_flag(agent_route_analysis_flag() + 1) 
@@ -253,6 +262,13 @@ shinyServer(function(input, output, session) {
     #draw the polygon
     leafletProxy('map') %>% addPolygons(lng = clickedLocs$long, lat = clickedLocs$lat) %>%
       addMarkers(lng = rav_positions$long, lat = rav_positions$lat, icon = RAVIcon)
+    
+    #hard code in data collection region
+    if(input$DataColletionMode){
+      showNotification(paste("Using pre-defined rectangle to gather images: ", clickedLocs))
+      clickedLocs <<- data.frame("lat" = c(53.2780931659, 53.2804041456, 53.281325917, 53.2790149872),
+                                                                 "long" = c( -9.0648465368, -9.0661543305, -9.0615979824, -9.0602901886)) 
+    }
     
     #get the java script to generate the routes for each rav
     agent_routes <- run_java(isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
@@ -361,22 +377,22 @@ shinyServer(function(input, output, session) {
   
   observe({
     print(input$DataColletionMode)
-    if(!input$DataColletionMode){
-      updateSelectInput(session, "no_ravs", label="Choose number of RAVs to be used", choices = c(1:20))
-      updateSelectInput(session, "lat_spacing", label = "Choose the latitude spacing (m)", choices = c(1:500)/2)
-      updateSelectInput(session, "lng_spacing", label = "Choose the longitude spacing (m)", choices = c(1:500)/2)
+    if(input$DataColletionMode){
+      updateSelectInput(session, "no_ravs", label="Choose number of RAVs to be used", choices = c(1:20), selected = 1)
+      updateSelectInput(session, "lat_spacing", label = "Choose the latitude spacing (m)", choices = c(1:500)/2, selected = 20)
+      updateSelectInput(session, "lng_spacing", label = "Choose the longitude spacing (m)", choices = c(1:500)/2, selected = 20)
       #any more than 10 would definitely cause gpu to crash...
-      updateSelectInput(session, "num_cameras", label = "Choose the number of cameras to use", c(0:10))
-      updateSelectInput(session, "rav_altitude", label = "Choose the altitude at which RAVs will fly (m)", choices = c(1:400)/2)
-      updateSelectInput(session, "rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:50)/5)
+      updateSelectInput(session, "num_cameras", label = "Choose the number of cameras to use", c(0:10), selected = 2)
+      updateSelectInput(session, "rav_altitude", label = "Choose the altitude at which RAVs will fly (m)", choices = c(1:400)/2, selected = 30)
+      updateSelectInput(session, "rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:50)/5, selected = 3)
     }
     else{
-      updateSelectInput(session, "no_ravs", label="Choose number of RAVs to be used", choices = c("1", "2", "3"))
-      updateSelectInput(session, "lat_spacing", label = "Choose the latitude spacing", choices = c(20,25,30,40,50,100))
-      updateSelectInput(session, "lng_spacing", label = "Choose the longitude spacing", choices = c(20,25,30,40,50,100))
-      updateSelectInput(session, "num_cameras", label = "Choose the number of cameras to use", choices = c(0,1,2,3,4))
-      updateSelectInput(session, "rav_altitude", label = "Choose the altitude at which RAVs will fly (m)", choices =  c(25, 30, 35, 40))
-      updateSelectInput(session, "rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:8))
+      updateSelectInput(session, "no_ravs", label="Choose number of RAVs to be used", choices = c("1", "2", "3"), selected = 1)
+      updateSelectInput(session, "lat_spacing", label = "Choose the latitude spacing", choices = c(20,25,30,40,50,100), selected = 20)
+      updateSelectInput(session, "lng_spacing", label = "Choose the longitude spacing", choices = c(20,25,30,40,50,100), selected = 25)
+      updateSelectInput(session, "num_cameras", label = "Choose the number of cameras to use", choices = c(0,1,2,3,4), selected = 1)
+      updateSelectInput(session, "rav_altitude", label = "Choose the altitude at which RAVs will fly (m)", choices =  c(25, 30, 35, 40), selected = 30)
+      updateSelectInput(session, "rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:8), selected = 3)
       
     }
   })

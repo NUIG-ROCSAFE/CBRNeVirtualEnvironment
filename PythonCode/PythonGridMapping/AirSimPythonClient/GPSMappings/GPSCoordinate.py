@@ -1,5 +1,6 @@
 import math
 
+#This is outdated! Update with reference to java
 class GPSCoordinate:
     m1 = 111132.92;
     m2 = -559.82;
