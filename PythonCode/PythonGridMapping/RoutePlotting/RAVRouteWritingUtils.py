@@ -71,7 +71,17 @@ responses = client.simGetImages([{}])'''
 #for image_index, image in enumerate(responses):
 #	AirSimClientBase.write_file(os.getcwd() + "\\PythonClientGPSMapping\\GPSMappings\\Images\\Images{drone_number}\\Camera{{}}\\image_{line_index}.png".format(image_index+1) , #image.image_data_uint8)
 #'''.format(drone_number=drone_number,line_index=line_index)
-			return_txt += '''
+			if line_index == 0:
+				return_txt += '''
+print('Writing files to ', "{saved_images_dir}" + "\\Images{drone_number}\\Camera{{}}\\image_{line_index}.png".format('example'))
+for image_index, image in enumerate(responses):
+	if not os.path.exists("{saved_images_dir}" + "\\Images{drone_number}\\Camera{{}}".format(image_index+1)):
+		os.makedirs("{saved_images_dir}" + "\\Images{drone_number}\\Camera{{}}".format(image_index+1))
+	AirSimClientBase.write_file("{saved_images_dir}"+"\\Images{drone_number}\\Camera{{}}\\image_{line_index}.png".format(image_index+1) , image.image_data_uint8)
+'''.format(saved_images_dir=saved_images_dir, drone_number=drone_number,line_index=line_index)
+
+			else:
+				return_txt += '''
 print('Writing files to ', "{saved_images_dir}"+"\\Images{drone_number}\\Camera{{}}\\image_{line_index}.png".format('example', saved_images_dir = '{saved_images_dir}'))
 for image_index, image in enumerate(responses):
 	AirSimClientBase.write_file("{saved_images_dir}"+"\\Images{drone_number}\\Camera{{}}\\image_{line_index}.png".format(image_index+1) , image.image_data_uint8)
