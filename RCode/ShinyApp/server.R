@@ -29,7 +29,7 @@ blog_code_loc <<- paste(working_dir, "/BlogScripts/", sep ='')
 blog_prog_name <<- "/ChemicalProbablisticReasoning.blog"
 java_code_loc <<- paste(working_dir, "/JavaCode/", sep = '')
 java_prog_name <<- "generateCoordinatesRevised.jar"
-python_code_loc <<- paste(working_dir, "/BrettSOPRanking/RocsafeCode/Demo-IR/", sep = '')
+python_code_loc <<- paste(working_dir, "/SOPRanking/RocsafeCode/Demo-IR/", sep = '')
 python_prog_name <<- "elasticMain.py"
 
 
@@ -74,6 +74,8 @@ rav_positions <- data.frame("lat" = c(53.28, 53.286, 53.2798),
 #bottom right, top right,  top left, bottom left
 bounding_rect <- data.frame("lat" =c(53.27959959,53.2805257315, 53.2801009832, 53.2791748417),
                             "long" = c(-9.0617270785, -9.0621271428, -9.0648776011, -9.0644775368))
+
+
 
 agent_route_analysis <<- ""
 
@@ -150,7 +152,7 @@ run_java <- function(no_ravs, locs, lat_spacing, lng_spacing){
   print("argsString: ")
   print(argsString)
   print("calling")
-  agent_route_analysis <<- system2("java.exe", args = c(argsString), stdout = TRUE, wait = TRUE)
+  agent_route_analysis <<- system2("java", args = c(argsString), stdout = TRUE, wait = TRUE)
   setwd(working_dir)
   print(agent_route_analysis)
   return(agent_route_analysis)
@@ -175,21 +177,19 @@ run_elasticMain <- function(search_terms){
 # dat$lat <- c(53.28323, 53.28215, 53.27884, 53.27887, 53.28164)
 # dat$long <- c(-9.062691,-9.055781,-9.057240,-9.065051,-9.067411)
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
   
   autoInvalidate <- reactiveTimer(10000)
   update_images <- reactiveVal(value = 0)
   update_sops <- reactiveVal(value = 0)
   agent_route_analysis_flag <- reactiveVal(value = 0)
   
-  #Renders the data table for BLOG calculated threat likelihood
-  output$distPlot <- DT::renderDataTable({
-    input$do_analysis
+  blog_chem_likelihood_output <- eventReactive(input$do_blog_analysis,{
     run_blog(isolate(input$odors), isolate(input$nerve_agents), isolate(input$dispersion_methods))
     file = readtext(paste(blog_code_loc,"/output.txt", sep=''))$text
     #relevant_data = strsplit(file, 'Query Results')
     x <- str_split(file, "Query Results", 2, TRUE)
-
+    
     #31 chemicals
     chems <- lapply(str_split(x[2], "Distribution", 32, TRUE), function(x) substr(str_extract(x,"for ([a-z].*)"),5, nchar(str_extract(x,"for ([a-z].*)"))))
     values_false <- lapply(str_split(x[2], "Distribution", 32, TRUE), function(x) substr(str_extract(x,"false\t[0-9].[0-9].*"),7, nchar(str_extract(x,"false\t[0-9].[0-9].*"))))
@@ -202,7 +202,13 @@ shinyServer(function(input, output) {
     clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
     {paste0("rgb(255,", ., ",", ., ")")}
     df <- df[order(df$Probability.not.present, decreasing = FALSE),]
-    return(datatable(df) %>% formatStyle('Probability.present', backgroundColor = styleInterval(brks, clrs)))
+    datatable(df) %>% formatStyle('Probability.present', backgroundColor = styleInterval(brks, clrs))
+  })
+  
+  #Renders the data table for BLOG calculated threat likelihood
+  output$distPlot <- DT::renderDataTable({
+    #input$do_analysis
+    blog_chem_likelihood_output()
   })
   
   #Displays Brett's document retrieval procedure
@@ -213,6 +219,13 @@ shinyServer(function(input, output) {
   })
   
   observeEvent(input$plot_grid_points,{
+    #hard code in data collection region
+    if(input$DataColletionMode){
+      showNotification(paste("Using pre-defined rectangle to gather images: ", clickedLocs))
+      clickedLocs <<- data.frame("lat" = c(53.2780931659, 53.2804041456, 53.281325917, 53.2790149872),
+                                 "long" = c( -9.0648465368, -9.0661543305, -9.0615979824, -9.0602901886)) 
+    }
+    
     run_java(isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
     print("found analysis")
     agent_route_analysis_flag(agent_route_analysis_flag() + 1) 
@@ -250,6 +263,13 @@ shinyServer(function(input, output) {
     leafletProxy('map') %>% addPolygons(lng = clickedLocs$long, lat = clickedLocs$lat) %>%
       addMarkers(lng = rav_positions$long, lat = rav_positions$lat, icon = RAVIcon)
     
+    #hard code in data collection region
+    if(input$DataColletionMode){
+      showNotification(paste("Using pre-defined rectangle to gather images: ", clickedLocs))
+      clickedLocs <<- data.frame("lat" = c(53.2780931659, 53.2804041456, 53.281325917, 53.2790149872),
+                                                                 "long" = c( -9.0648465368, -9.0661543305, -9.0615979824, -9.0602901886)) 
+    }
+    
     #get the java script to generate the routes for each rav
     agent_routes <- run_java(isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
     
@@ -266,11 +286,21 @@ shinyServer(function(input, output) {
       leafletProxy('map') %>% addCircles(lng = points3$long, lat = points3$lat, weight=1, radius=7, color='black', fillColor='red', popup = paste("RAV3",paste(points3$lat, points3$long))) %>% addPolylines(lng = points3$long, lat = points3$lat, weight=1,color='red', fillColor='red')
     }
   })
-  
+
   observeEvent(input$launch_agents,{
+    # input = list()
+    # input$no_ravs = 4
+    # input$num_cameras = 4
+    # input$rav_veloctiy = 20.4
+    # input$rav_altitude = 37
     #run generate_routes.py in order to generate routes for agents
-    setwd(paste(working_dir,"\\PythonCode\\PythonGridMapping\\RoutePlotting", sep='', collapse=''))
-    system2("python", args = c(paste(getwd(), paste("\\generateUnrealPlotRoutes.py", isolate(input$no_ravs)),sep='', collapse='')))
+    setwd(paste(working_dir,"/PythonCode/PythonGridMapping/RoutePlotting", sep='', collapse=''))
+    #generateUnrealPlotRoutes  -   no_ravs, no_cameras, rav_route_write_dir, saved_images_dir, gps_coords_write_dir
+    gen_route_command <- paste(paste0(getwd(),("/generateUnrealPlotRoutes.py")), isolate(input$no_ravs), isolate(input$num_cameras), isolate(input$rav_veloctiy), isolate(input$rav_altitude), collapse='')
+  
+    print(paste("running python command", gen_route_command))
+    system2("python", args = c(gen_route_command))
+    
     showNotification("Agents ready to execute planned routes", duration = 10, type = "message")
     setwd(paste(working_dir, "\\BatchScripts", collapse="", sep=""))
     noDrones = ifelse(isolate(input$no_ravs) == 1, "one", ifelse(isolate(input$no_ravs)==2, "two", "three"))
@@ -343,6 +373,28 @@ shinyServer(function(input, output) {
     print("Ranking user terms")
     value <- run_elasticMain(isolate(input$SOPRetrievalInput))
     update_sops(update_sops() + 1)
+  })
+  
+  observe({
+    print(input$DataColletionMode)
+    if(input$DataColletionMode){
+      updateSelectInput(session, "no_ravs", label="Choose number of RAVs to be used", choices = c(1:20), selected = 1)
+      updateSelectInput(session, "lat_spacing", label = "Choose the latitude spacing (m)", choices = c(1:500)/2, selected = 20)
+      updateSelectInput(session, "lng_spacing", label = "Choose the longitude spacing (m)", choices = c(1:500)/2, selected = 20)
+      #any more than 10 would definitely cause gpu to crash...
+      updateSelectInput(session, "num_cameras", label = "Choose the number of cameras to use", c(0:10), selected = 2)
+      updateSelectInput(session, "rav_altitude", label = "Choose the altitude at which RAVs will fly (m)", choices = c(1:400)/2, selected = 30)
+      updateSelectInput(session, "rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:50)/5, selected = 3)
+    }
+    else{
+      updateSelectInput(session, "no_ravs", label="Choose number of RAVs to be used", choices = c("1", "2", "3"), selected = 1)
+      updateSelectInput(session, "lat_spacing", label = "Choose the latitude spacing", choices = c(20,25,30,40,50,100), selected = 20)
+      updateSelectInput(session, "lng_spacing", label = "Choose the longitude spacing", choices = c(20,25,30,40,50,100), selected = 25)
+      updateSelectInput(session, "num_cameras", label = "Choose the number of cameras to use", choices = c(0,1,2,3,4), selected = 1)
+      updateSelectInput(session, "rav_altitude", label = "Choose the altitude at which RAVs will fly (m)", choices =  c(25, 30, 35, 40), selected = 30)
+      updateSelectInput(session, "rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:8), selected = 3)
+      
+    }
   })
   
 })

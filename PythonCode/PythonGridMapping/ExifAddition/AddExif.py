@@ -44,6 +44,7 @@ drone1Images = base_dir + config['DEFAULT']['drone1Images_location']
 
 
 def copy_png_files_and_convert_to_jpg(drone_index, drone_images, camera_number):
+    print('Copying files from directory {}'.format(drone_images))
     print("Converting {} images taken from RAV {} to jpg".format(len(os.listdir(drone_images)), drone_index))
     for image in sorted(os.listdir(drone_images), key=lambda x: int(re.findall("_[0-9]{1,4}", x)[0][1:])):
         png_im_loc = drone_images + '\\{}'.format(image)
@@ -78,7 +79,7 @@ def write_exif_data(drone_index, camera_number):
 				os.remove(JPGImages + '\Drone{}Camera{}JPG'.format(drone_index, camera_number) + '\\' + image)
             
 			
-copy_png_files_and_convert_to_jpg(1, drone1Images, 3)
+#copy_png_files_and_convert_to_jpg(1, drone1Images, 3)
 #copy_png_files_and_convert_to_jpg(2, drone2Images, 3)
 #copy_png_files_and_convert_to_jpg(3, drone3Images, 3)
 
