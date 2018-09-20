@@ -9,6 +9,8 @@ import os
 import inspect
 import types
 import re
+
+sys.path.append("./GPSMappings")
 from GPSMappings.GPSCoordinate import GPSCoordinate
 from GPSMappings.RAVGPSMapper import RAVGPSMapper
 
@@ -504,8 +506,8 @@ class MultirotorClient(AirSimClientBase, object):
     def takeoff(self, max_wait_seconds = 15):
         # print(self.getGpsLocation())
         print("Configuring GPS mapper using GPS location: {}".format(self.getGpsLocation()))
-        self.gps_mapper = RAVGPSMapper(GPSCoordinate(self.getGpsLocation().latitude, self.getGpsLocation().longitude,
-                                                     self.getGpsLocation().altitude))
+		#use default NUIG location
+        self.gps_mapper = RAVGPSMapper()
         return self.client.call('takeoff', max_wait_seconds)
 
     def land(self, max_wait_seconds = 60):
@@ -575,7 +577,7 @@ class MultirotorClient(AirSimClientBase, object):
         return self.client.call('moveToPosition', *self.gps_mapper.getMoveToPosXYZFromGPSCoord(gpsCoordinate), velocity, max_wait_seconds, drivetrain, yaw_mode, lookahead, adaptive_lookahead)
 
     def getGPSLocationRelative(self):
-        '''Gets the GPS position of the RAV relative to _'''
+        '''Gets the GPS position of the RAV relative to home position'''
         print('Calculated GPS Location Relative as {}'.format(self.gps_mapper.get_GPS_Pos(self.getGpsLocation())))
         return self.gps_mapper.get_GPS_Pos(self.getGpsLocation())
 

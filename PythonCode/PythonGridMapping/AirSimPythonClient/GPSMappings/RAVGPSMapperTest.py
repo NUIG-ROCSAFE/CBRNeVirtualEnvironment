@@ -13,7 +13,8 @@ class TestRAVGPSMapper(unittest.TestCase):
 	def testGetMoveToPosXYZFromGPSCoord(self):
 		mapper1 = RAVGPSMapper(self.NUIGCoordinate)
 		UECoord1 = mapper1.getMoveToPosXYZFromGPSCoord(self.EyreSquareCoordinate)
-		self.assertAlmostEqual(UECoord1[0], -730, delta = 20)
+		#nuig coordinate to eyre square coordinate
+		self.assertAlmostEqual(UECoord1[0], -731.3, delta = 10)
 		self.assertAlmostEqual(UECoord1[1], 1183, delta = 20)
 		
 		#check that signs change
@@ -21,6 +22,16 @@ class TestRAVGPSMapper(unittest.TestCase):
 		UECoord2 = mapper2.getMoveToPosXYZFromGPSCoord(self.NUIGCoordinate)
 		self.assertAlmostEqual(UECoord2[0], 730, delta = 20)
 		self.assertAlmostEqual(UECoord2[1], -1183, delta = 20)
+		
+		nuigRectCoord1 = GPSCoordinate(53.2787637762, -9.0634679794)
+		nuigRectCoord2 = GPSCoordinate(53.2787637762, -9.0601420403)
+		nuigRectCoord3 = GPSCoordinate(53.2810987761, -9.0601420403)
+		nuigRectCoord4 = GPSCoordinate(53.2810987761, -9.0634679794)
+		
+		mapper3 = RAVGPSMapper(GPSCoordinate(53.280, -9.062, 0))
+		rect_coords = [nuigRectCoord1, nuigRectCoord2, nuigRectCoord3, nuigRectCoord4]
+		for coord in rect_coords:
+			print(mapper1.getMoveToPosXYZFromGPSCoord(coord))
 		
 	def testGet_GPS_Pos(self):
 		mapper1 = RAVGPSMapper(self.NUIGCoordinate)

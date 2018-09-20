@@ -1,6 +1,5 @@
 from GPSCoordinate import GPSCoordinate
 
-
 class RAVGPSMapper:
     # this is taken as origin (0,0)
     # EYRE_SQUARE_COORD = GPSCoordinate(53.2745, -9.049, 0)
@@ -15,10 +14,10 @@ class RAVGPSMapper:
 
     # home_position_GPS is the home gps location of the drone in AirSim
     # (close to microsoft headquarters)
-    def __init__(self, home_position_GPS: GPSCoordinate):
+    def __init__(self, home_position_GPS: GPSCoordinate = GPSCoordinate(53.280, -9.062)):
         '''Set the home gps coordinate of the rav'''
         self.home_position_GPS = home_position_GPS
-
+        #self.home_position_GPS = GPSCoordinate(53.280, -9.062, 0)
         #print('calculated GPS Delta transform as: {}'.format(RAVGPSMapper.DELTA_TRANSFORM))
         # set home position reference
         #print('Set home position of the RAV as: {}'.format(self.home_position_GPS))
@@ -65,9 +64,9 @@ class RAVGPSMapper:
         distance = microsoft_relative_GPS_pos.get_metres_to_other(RAVGPSMapper.ORIGIN_GPS)
         destination = GPSCoordinate._vincentyGeodesicDirect(self.home_position_GPS, distance, bearing)
         return destination
-		
-		#47.641468, -122.140165
-		#47.6477308, -122.1321476
+        
+        #47.641468, -122.140165
+        #47.6477308, -122.1321476
         #return RAVGPSMapper.geoPoint_to_GPSCoordinate(microsoft_relative_GPS_pos) + RAVGPSMapper.DELTA_TRANSFORM
 
 
