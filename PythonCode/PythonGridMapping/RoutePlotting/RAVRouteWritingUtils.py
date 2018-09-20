@@ -82,6 +82,11 @@ for image_index, image in enumerate(responses):
 			return_txt += "AirSimgpsRelativeCoordsFile.flush()\n"
 			return_txt += "print('NUIG relative GPS location: ', client.getGPSLocationRelative())\n"
 			
+	#send the rav to its home position and then land it
+	return_txt += moveToGPSPositionString.format("client.moveToGPSPosition(gps_mapper.home_position_GPS())")
+	return_txt += "client.moveToGPSPosition(gps_mapper.home_position_GPS())"
+	return_txt += "client.armDisarm(False)"
+	return_txt += moveToGPSPositionString.format("client.land()")
 	return_txt += "\ngpsCoordsFile.close()\n"
 	return_txt += "AirSimgpsCoordsFile.close()\n"
 	return_txt += "AirSimgpsRelativeCoordsFile.close()\n"
