@@ -16,24 +16,24 @@ library(readtext)
 
 #set the working directory to the top level
 #working_dir = getwd()
-working_dir <<- paste(getwd(), '/../..', sep = '')
+working_dir <<- paste(getwd(), "/../..", sep = "")
 setwd(working_dir)
 
 print(getwd())
 
 #move all of this to a config file
-java_bin_loc <<- paste(working_dir, "/JavaRuntime/jre1.8.0_171/bin", sep='')
-blog_bin_loc <<- paste(working_dir, "/BlogRunTime/bin/", sep='')
+java_bin_loc <<- "/usr/bin/"
+blog_bin_loc <<- "/usr/bin/"
 
-blog_code_loc <<- paste(working_dir, "/BlogScripts/", sep ='')
+blog_code_loc <<- paste(working_dir, "/BlogScripts/", sep ="")
 blog_prog_name <<- "/ChemicalProbablisticReasoning.blog"
-java_code_loc <<- paste(working_dir, "/JavaCode/", sep = '')
+java_code_loc <<- paste(working_dir, "/JavaCode/", sep = "")
 java_prog_name <<- "generateCoordinatesRevised.jar"
-python_code_loc <<- paste(working_dir, "/SOPRanking/RocsafeCode/Demo-IR/", sep = '')
+python_code_loc <<- paste(working_dir, "/SOPRanking/RocsafeCode/Demo-IR/", sep = "")
 python_prog_name <<- "elasticMain.py"
 
 
-end_of_file <- readtext(paste(blog_code_loc, "/ChemProbReasoningSecondHalf.txt", sep = ''))$text 
+end_of_file <- readtext(paste(blog_code_loc, "/ChemProbReasoningSecondHalf.txt", sep = ""))$text 
 
 odors <- c("smell_fruity",
            "smell_odourless",
@@ -80,7 +80,7 @@ bounding_rect <- data.frame("lat" =c(53.27959959,53.2805257315, 53.2801009832, 5
 agent_route_analysis <<- ""
 
 RAVIcon <- makeIcon(
-  iconUrl = paste(getwd(), "./RCode/ShinyApp/www/RAVIcon.png", sep = ''),
+  iconUrl = paste(getwd(), "/RCode/ShinyApp/www/RAVIcon.png", sep = ""),
   iconWidth = 30, iconHeight = 30,
   iconAnchorX = 0, iconAnchorY = 0
   #shadowUrl = "http://leafletjs.com/examples/custom-icons/leaf-shadow.png",
@@ -88,10 +88,10 @@ RAVIcon <- makeIcon(
   #shadowAnchorX = 4, shadowAnchorY = 62
 )
 
-f_snapshot_old <<- fileSnapshot("./RCode/ShinyApp/Data/Images/", md5sum = TRUE)
+f_snapshot_old <<- fileSnapshot("./RCode/ShinyApp/www/", md5sum = TRUE)
 
 run_blog <- function(odors_input, nerve_agents_input, dispersion_methods_input){
-  blog_file <- readtext(paste(blog_code_loc,"/ChemicalProbablisticReasoning.blog", sep=''))
+  blog_file <- readtext(paste(blog_code_loc,"/ChemicalProbablisticReasoning.blog", sep=""))
   if(!is.null(odors_input)){
     odors_selected <- ifelse(!is.na(match(odors, odors_input)), TRUE, FALSE)
   }
@@ -115,30 +115,30 @@ run_blog <- function(odors_input, nerve_agents_input, dispersion_methods_input){
   names(agents_selected) = agents
   names(dispersal_methods_selected) = dispersion_methods
   
-  dispersal_str = paste(paste(paste("obs", names(dispersal_methods_selected)), tolower(as.character(dispersal_methods_selected)), sep = '=', collapse = ';\n'),';', sep = '')
-  agent_str = paste(paste(paste("obs", names(agents_selected)), tolower(as.character(agents_selected)), sep = '=', collapse = ';\n'), ';', sep = '')
-  odor_str = paste(paste(paste("obs", names(odors_selected)), tolower(as.character(odors_selected)), sep = '=', collapse = ';\n'), ';', sep = '')
+  dispersal_str = paste(paste(paste("obs", names(dispersal_methods_selected)), tolower(as.character(dispersal_methods_selected)), sep = "=", collapse = ";\n"),";", sep = "")
+  agent_str = paste(paste(paste("obs", names(agents_selected)), tolower(as.character(agents_selected)), sep = "=", collapse = ";\n"), ";", sep = "")
+  odor_str = paste(paste(paste("obs", names(odors_selected)), tolower(as.character(odors_selected)), sep = "=", collapse = ";\n"), ";", sep = "")
   
   #paste all of the selected observations to create the string to write to the blog file
-  write_string = paste(odor_str, agent_str, dispersal_str, sep = '\n\n')
-  write_string <- paste(write_string, end_of_file, collapse = '\n')
-  writeLines(write_string, file(paste(blog_code_loc,"/ChemicalProbablisticReasoning.blog", sep='')))
+  write_string = paste(odor_str, agent_str, dispersal_str, sep = "\n\n")
+  write_string <- paste(write_string, end_of_file, collapse = "\n")
+  writeLines(write_string, file(paste(blog_code_loc,"/ChemicalProbablisticReasoning.blog", sep="")))
   
 
   setwd(blog_bin_loc)
-  blog_code_output <- system2('blog', args=c (paste(blog_code_loc,'/ChemicalProbablisticReasoning.blog',sep='')), stdout= TRUE, wait= TRUE)
+  blog_code_output <- system2("blog", args=c (paste(blog_code_loc,"/ChemicalProbablisticReasoning.blog",sep="")), stdout= TRUE, wait= TRUE)
   setwd(working_dir)
   #write the result of the blog program
-  writeLines(blog_code_output, paste(blog_code_loc,"/output.txt", sep=''))
+  writeLines(blog_code_output, paste(blog_code_loc,"/output.txt", sep=""))
 }
 
 run_java <- function(no_ravs, locs, lat_spacing, lng_spacing){
   setwd(java_bin_loc)
   
   #add jar and code location
-  argsString <- paste("-jar", str_replace(java_code_loc, '/', '\\\\'))
+  argsString <- paste("-jar", java_code_loc)
   #pass in the working directory to the java code
-  argsString <- paste(argsString, java_prog_name, sep='')
+  argsString <- paste(argsString, java_prog_name, sep="")
   argsString <- paste(argsString, working_dir)
   argsString <- paste(argsString, no_ravs)
   
@@ -148,7 +148,7 @@ run_java <- function(no_ravs, locs, lat_spacing, lng_spacing){
   #dat$lat <- c(53.28323, 53.28215, 53.27884, 53.27887, 53.28164)
   #dat$long <- c(-9.062691,-9.055781,-9.057240,-9.065051,-9.067411)
   
-  argsString = paste(argsString, paste(locs$lat, locs$long, sep = ' ', collapse = ' '))
+  argsString = paste(argsString, paste(locs$lat, locs$long, sep = " ", collapse = " "))
   print("argsString: ")
   print(argsString)
   print("calling")
@@ -162,8 +162,8 @@ run_elasticMain <- function(search_terms){
   print("search terms:")
   print(search_terms)
   #build up args to send to python
-  argString <- paste(search_terms, collapse = ' ')
-  argString <- paste(python_prog_name, argString, collapse = ' ')
+  argString <- paste(search_terms, collapse = " ")
+  argString <- paste(python_prog_name, argString, collapse = " ")
   print(paste("Calling python with arguments: ", argString))
   #run elastic main
   setwd(python_code_loc)
@@ -186,8 +186,8 @@ shinyServer(function(input, output, session) {
   
   blog_chem_likelihood_output <- eventReactive(input$do_blog_analysis,{
     run_blog(isolate(input$odors), isolate(input$nerve_agents), isolate(input$dispersion_methods))
-    file = readtext(paste(blog_code_loc,"/output.txt", sep=''))$text
-    #relevant_data = strsplit(file, 'Query Results')
+    file = readtext(paste(blog_code_loc,"/output.txt", sep=""))$text
+    #relevant_data = strsplit(file, "Query Results")
     x <- str_split(file, "Query Results", 2, TRUE)
     
     #31 chemicals
@@ -195,14 +195,14 @@ shinyServer(function(input, output, session) {
     values_false <- lapply(str_split(x[2], "Distribution", 32, TRUE), function(x) substr(str_extract(x,"false\t[0-9].[0-9].*"),7, nchar(str_extract(x,"false\t[0-9].[0-9].*"))))
     values_true <- lapply(str_split(x[2], "Distribution", 32, TRUE), function(x) substr(str_extract(x,"true\t[0-9].[0-9].*"),6, nchar(str_extract(x,"true\t[0-9].[0-9].*"))))
     
-    df <- data.frame('Chemical Name'=unlist(chems), 'Probability not present' = unlist(as.numeric(values_false)), 'Probability present' = unlist(as.numeric(values_true)))
+    df <- data.frame("Chemical Name"=unlist(chems), "Probability not present" = unlist(as.numeric(values_false)), "Probability present" = unlist(as.numeric(values_true)))
     df <- df[-c(1),]
     rownames(df) <- seq(length = nrow(df))
     brks <- quantile(df$Probability.present, probs = seq(0, 1, .05), na.rm = TRUE)
     clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
     {paste0("rgb(255,", ., ",", ., ")")}
     df <- df[order(df$Probability.not.present, decreasing = FALSE),]
-    datatable(df) %>% formatStyle('Probability.present', backgroundColor = styleInterval(brks, clrs))
+    datatable(df) %>% formatStyle("Probability.present", backgroundColor = styleInterval(brks, clrs))
   })
   
   #Renders the data table for BLOG calculated threat likelihood
@@ -225,18 +225,18 @@ shinyServer(function(input, output, session) {
       clickedLocs <<- data.frame("lat" = c(53.2780931659, 53.2804041456, 53.281325917, 53.2790149872),
                                  "long" = c( -9.0648465368, -9.0661543305, -9.0615979824, -9.0602901886)) 
     }
-    
+    print(clickedLocs)
     run_java(isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
     print("found analysis")
     agent_route_analysis_flag(agent_route_analysis_flag() + 1) 
     print(agent_route_analysis)
     grid_points <- read.csv("./RCode/ShinyApp/Data/gridPoints.csv", header = TRUE)
-    leafletProxy('map') %>% addPolygons(lng = clickedLocs$long, lat = clickedLocs$lat) %>% addCircles(lng = grid_points$long, lat = grid_points$lat, weight=1, radius=7, color='black', fillColor='orange', popup = paste(grid_points$lat, grid_points$long))
+    leafletProxy("map") %>% addPolygons(lng = clickedLocs$long, lat = clickedLocs$lat) %>% addCircles(lng = grid_points$long, lat = grid_points$lat, weight=1, radius=7, color="black", fillColor="orange", popup = paste(grid_points$lat, grid_points$long))
   })
   
   output$mission_report <- renderText({
     input$show_analysis
-    paste(agent_route_analysis, sep = '', collapse = '\n')
+    paste(agent_route_analysis, sep = "", collapse = "\n")
   })
   
   
@@ -245,14 +245,14 @@ shinyServer(function(input, output, session) {
       setView(lng = -9.0615, lat = 53.2770, zoom = 12) %>%
       addTiles(options = providerTileOptions(noWrap = TRUE)) %>%
       addMarkers(lng = rav_positions$long, lat = rav_positions$lat, icon = RAVIcon) %>%
-      addPolygons(lng = bounding_rect$long, lat = bounding_rect$lat, opacity = 0.2, color = '#ff0000')
+      addPolygons(lng = bounding_rect$long, lat = bounding_rect$lat, opacity = 0.2, color = "#ff0000")
   })
   
   observeEvent(input$clear_region, {
     clickedLocs<<-clickedLocs[0,]
-    leafletProxy('map') %>% clearShapes() %>% clearMarkers() %>% 
+    leafletProxy("map") %>% clearShapes() %>% clearMarkers() %>% 
       addMarkers(lng = rav_positions$long, lat = rav_positions$lat, icon = RAVIcon) %>%
-      addPolygons(lng = bounding_rect$long, lat = bounding_rect$lat, opacity = 0.2, color = '#ff0000')
+      addPolygons(lng = bounding_rect$long, lat = bounding_rect$lat, opacity = 0.2, color = "#ff0000")
   })
   
   observeEvent(input$map_region, {
@@ -260,7 +260,7 @@ shinyServer(function(input, output, session) {
     ##add the last row to complete the polygon
     rbind(clickedLocs, clickedLocs[1,])
     #draw the polygon
-    leafletProxy('map') %>% addPolygons(lng = clickedLocs$long, lat = clickedLocs$lat) %>%
+    leafletProxy("map") %>% addPolygons(lng = clickedLocs$long, lat = clickedLocs$lat) %>%
       addMarkers(lng = rav_positions$long, lat = rav_positions$lat, icon = RAVIcon)
     
     #hard code in data collection region
@@ -276,14 +276,14 @@ shinyServer(function(input, output, session) {
     # 
     # #read the csvs that contain the routes for each agent
     points1 <-read.csv("./RCode/ShinyApp/Data/Agent1.csv", header = TRUE)
-    leafletProxy('map') %>% addCircles(lng = points1$long, lat = points1$lat, weight=1, radius=7, color='black', fillColor='blue', popup = paste("RAV1",paste(points1$lat, points1$long))) %>% addPolylines(lng = points1$long, lat = points1$lat, weight=1, color='blue', fillColor='blue')
+    leafletProxy("map") %>% addCircles(lng = points1$long, lat = points1$lat, weight=1, radius=7, color="black", fillColor="blue", popup = paste("RAV1",paste(points1$lat, points1$long))) %>% addPolylines(lng = points1$long, lat = points1$lat, weight=1, color="blue", fillColor="blue")
     if(isolate(input$no_ravs > 1)){
       points2 <- read.csv("./RCode/ShinyApp/Data/Agent2.csv")
-      leafletProxy('map') %>% addCircles(lng = points2$long, lat = points2$lat, weight=1, radius=7, color='black', fillColor='green', popup = paste("RAV2",paste(points2$lat, points2$long))) %>% addPolylines(lng = points2$long, lat = points2$lat, weight=1, color='green', fillColor='green')
+      leafletProxy("map") %>% addCircles(lng = points2$long, lat = points2$lat, weight=1, radius=7, color="black", fillColor="green", popup = paste("RAV2",paste(points2$lat, points2$long))) %>% addPolylines(lng = points2$long, lat = points2$lat, weight=1, color="green", fillColor="green")
     }
     if(isolate(input$no_ravs > 2)){
       points3 <- read.csv("./RCode/ShinyApp/Data/Agent3.csv")
-      leafletProxy('map') %>% addCircles(lng = points3$long, lat = points3$lat, weight=1, radius=7, color='black', fillColor='red', popup = paste("RAV3",paste(points3$lat, points3$long))) %>% addPolylines(lng = points3$long, lat = points3$lat, weight=1,color='red', fillColor='red')
+      leafletProxy("map") %>% addCircles(lng = points3$long, lat = points3$lat, weight=1, radius=7, color="black", fillColor="red", popup = paste("RAV3",paste(points3$lat, points3$long))) %>% addPolylines(lng = points3$long, lat = points3$lat, weight=1,color="red", fillColor="red")
     }
   })
 
@@ -294,15 +294,15 @@ shinyServer(function(input, output, session) {
     # input$rav_veloctiy = 20.4
     # input$rav_altitude = 37
     #run generate_routes.py in order to generate routes for agents
-    setwd(paste(working_dir,"/PythonCode/PythonGridMapping/RoutePlotting", sep='', collapse=''))
+    setwd(paste(working_dir,"/PythonCode/PythonGridMapping/RoutePlotting", sep="", collapse=""))
     #generateUnrealPlotRoutes  -   no_ravs, no_cameras, rav_route_write_dir, saved_images_dir, gps_coords_write_dir
-    gen_route_command <- paste(paste0(getwd(),("/generateUnrealPlotRoutes.py")), isolate(input$no_ravs), isolate(input$num_cameras), isolate(input$rav_veloctiy), isolate(input$rav_altitude), collapse='')
+    gen_route_command <- paste(paste0(getwd(),("/generateUnrealPlotRoutes.py")), isolate(input$no_ravs), isolate(input$num_cameras), isolate(input$rav_veloctiy), isolate(input$rav_altitude), collapse="")
   
     print(paste("running python command", gen_route_command))
     system2("python", args = c(gen_route_command))
     
     showNotification("Agents ready to execute planned routes", duration = 10, type = "message")
-    setwd(paste(working_dir, "\\BatchScripts", collapse="", sep=""))
+    setwd(paste(working_dir, "/BatchScripts", collapse="", sep=""))
     noDrones = ifelse(isolate(input$no_ravs) == 1, "one", ifelse(isolate(input$no_ravs)==2, "two", "three"))
     system2(paste(noDrones,"_drone.bat", sep="", collapse=""))
     setwd(working_dir)
@@ -324,10 +324,10 @@ shinyServer(function(input, output, session) {
     ## Add the circle to the map proxy
     ## so you dont need to re-render the whole thing
     ## I also give the circles a group, "circles", so you can
-    ## then do something like hide all the circles with hideGroup('circles')
-    returnMap <- leafletProxy('map') %>% # use the proxy to save computation
-      addCircles(lng=clng, lat=clat, group='circles',
-                 weight=1, radius=8, color='black', fillColor='orange',
+    ## then do something like hide all the circles with hideGroup("circles")
+    returnMap <- leafletProxy("map") %>% # use the proxy to save computation
+      addCircles(lng=clng, lat=clat, group="circles",
+                 weight=1, radius=8, color="black", fillColor="orange",
                  popup=address, fillOpacity=0.5, opacity=1)
     
     if(nrow(clickedLocs)>0){
@@ -338,8 +338,8 @@ shinyServer(function(input, output, session) {
   
   output$processed_image <- renderImage({
     update_images()
-    list(src = paste(getwd(), "RCode\\ShinyApp\\Data\\Images\\mostRecentImageProcessed.jpg", sep=''),
-         contentType = 'image/png',
+    list(src = paste(getwd(), "/RCode/ShinyApp/www/mostRecentImageProcessed.jpg", sep=""),
+         contentType = "image/png",
          width = 750,
          height = 750,
          alt = "No collected images to show")
@@ -347,8 +347,8 @@ shinyServer(function(input, output, session) {
   
   output$unprocessed_image <- renderImage({
     update_images()
-    list(src = paste(getwd(), "RCode/ShinyApp/Data/Images/mostRecentImageRaw.jpg", sep=''),
-         contentType = 'image/png',
+    list(src = paste(getwd(), "/RCode/ShinyApp/www/mostRecentImageRaw.jpg", sep=""),
+         contentType = "image/png",
          width = 600,
          height = 600,
          alt = "No collected images to show")
@@ -358,7 +358,7 @@ shinyServer(function(input, output, session) {
     autoInvalidate()
     print("autoInvalidating")
     print(Sys.time())
-    f_snapshot_new <<- fileSnapshot(paste(working_dir,"/RCode/ShinyApp/Data/Images/", sep='', collapse=''), md5sum = TRUE)
+    f_snapshot_new <<- fileSnapshot(paste(working_dir,"/RCode/ShinyApp/www/", sep="", collapse=""), md5sum = TRUE)
     #need to check that f_snapshots are not null so changes can be compared
     if(!is.null(dim(f_snapshot_new)) && !is.null(dim(f_snapshot_old))){
       if(TRUE %in% changedFiles(f_snapshot_old, f_snapshot_new)$changes){
