@@ -1,16 +1,59 @@
+################### Put this in config ###################
+
+odors <- c("smell_fruity",
+           "smell_odourless",
+           "smell_camphor",
+           "smell_wood",
+           "smell_chlorine",
+           "smell_mustard_radish_garlic",
+           "smell_unpleasant",
+           "smell_fish",
+           "smell_herring",
+           "smell_soap",
+           "smell_geranium",
+           "smell_bitter_almonds",
+           "smell_sour",
+           "smell_pungent",
+           "smell_apple_blossom",
+           "smell_sweet")
+
+agents <-c("agent_nerve",
+           "agent_choking",
+           "agent_blister",
+           "agent_blood",
+           "agent_vomiting",
+           "agent_tear",
+           "agent_incapacitating_depressant_hallucinogen")
+
+dispersion_methods <- c("dispersion_liquid",
+                        "dispersion_gas",
+                        "dispersion_vapours",
+                        "dispersion_aerosol")
+
+working_dir <<- paste(getwd(), '/../..', sep = '')
+blog_code_loc <<- paste(working_dir, "/BlogScripts/", sep ='')
+end_of_file <- readtext(paste(blog_code_loc, "/ChemProbReasoningSecondHalf.txt", sep = ''))$text 
+
+################### Put this in config ###################
+
+concat_paths <- function(arg1,...){
+  return(paste0(arg1, ..., sep = ''))
+}
+
 RAVIcon <- makeIcon(
-  iconUrl = paste(getwd(), "./RCode/ShinyApp/www/RAVIcon.png", sep = ''),
-  iconWidth = 30, iconHeight = 30,
+  iconUrl = concat_paths(getwd(), "/www/RAVIcon.png"),
+  iconWidth = 35, iconHeight = 35,
   iconAnchorX = 0, iconAnchorY = 0
   #shadowUrl = "http://leafletjs.com/examples/custom-icons/leaf-shadow.png",
   #shadowWidth = 50, shadowHeight = 64,
   #shadowAnchorX = 4, shadowAnchorY = 62
 )
 
-f_snapshot_old <<- fileSnapshot("./RCode/ShinyApp/Data/Images/", md5sum = TRUE)
 
-run_blog <- function(odors_input, nerve_agents_input, dispersion_methods_input){
-  blog_file <- readtext(paste(blog_code_loc,"/ChemicalProbablisticReasoning.blog", sep=''))
+run_blog <- function(blog_code_loc, blog_prog_name, blog_bin_loc, working_dir, odors_input, nerve_agents_input, dispersion_methods_input){
+  print("blog_code_loc")
+  print(concat_paths(blog_code_loc, blog_prog_name))
+  blog_file <- readtext(concat_paths(blog_code_loc, blog_prog_name))
   if(!is.null(odors_input)){
     odors_selected <- ifelse(!is.na(match(odors, odors_input)), TRUE, FALSE)
   }
@@ -43,6 +86,8 @@ run_blog <- function(odors_input, nerve_agents_input, dispersion_methods_input){
   write_string <- paste(write_string, end_of_file, collapse = '\n')
   writeLines(write_string, file(paste(blog_code_loc,"/ChemicalProbablisticReasoning.blog", sep='')))
   
+  print('blog_bin_log')
+  print(blog_bin_loc)
   
   setwd(blog_bin_loc)
   blog_code_output <- system2('blog', args=c (paste(blog_code_loc,'/ChemicalProbablisticReasoning.blog',sep='')), stdout= TRUE, wait= TRUE)
@@ -51,11 +96,16 @@ run_blog <- function(odors_input, nerve_agents_input, dispersion_methods_input){
   writeLines(blog_code_output, paste(blog_code_loc,"/output.txt", sep=''))
 }
 
-run_java <- function(no_ravs, locs, lat_spacing, lng_spacing){
+run_java <- function(java_bin_loc, java_code_loc, java_prog_name, working_dir, no_ravs, locs, lat_spacing, lng_spacing){
+  print("java_bin_loc: ")
+  print(java_bin_loc)
   setwd(java_bin_loc)
   
   #add jar and code location
-  argsString <- paste("-jar", str_replace(java_code_loc, '/', '\\\\'))
+  #argsString <- paste("-jar", str_replace(java_code_loc, '/', '\\\\'))
+  argsString <- paste("-jar", java_code_loc)
+  
+  
   #pass in the working directory to the java code
   argsString <- paste(argsString, java_prog_name, sep='')
   argsString <- paste(argsString, working_dir)

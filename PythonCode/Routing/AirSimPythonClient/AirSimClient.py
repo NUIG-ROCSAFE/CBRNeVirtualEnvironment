@@ -12,7 +12,7 @@ import re
 
 sys.path.append("./GPSMappings")
 from GPSMappings.GPSCoordinate import GPSCoordinate
-from GPSMappings.RAVGPSMapper import RAVGPSMapper
+from GPSMappings.GPS import GPSToUnreal
 
 
 class MsgpackMixin:
@@ -507,7 +507,7 @@ class MultirotorClient(AirSimClientBase, object):
         # print(self.getGpsLocation())
         print("Configuring GPS mapper using GPS location: {}".format(self.getGpsLocation()))
 		#use default NUIG location
-        self.gps_mapper = RAVGPSMapper()
+        self.gps_mapper = GPSToUnreal()
         return self.client.call('takeoff', max_wait_seconds)
 
     def land(self, max_wait_seconds = 60):

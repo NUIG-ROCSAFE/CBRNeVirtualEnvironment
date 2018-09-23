@@ -3,118 +3,118 @@ Using fixed random seed for repeatability.
 ............................................
 Constructing inference engine of class blog.engine.SamplingEngine
 Constructing sampler of class blog.sample.LWSampler
-Evidence: [smell_fruity = false, smell_odourless = false, smell_camphor = false, smell_wood = false, smell_chlorine = false, smell_mustard_radish_garlic = false, smell_unpleasant = false, smell_fish = false, smell_herring = false, smell_soap = false, smell_geranium = false, smell_bitter_almonds = false, smell_sour = false, smell_pungent = false, smell_apple_blossom = false, smell_sweet = false, agent_nerve = false, agent_choking = false, agent_blister = false, agent_blood = false, agent_vomiting = false, agent_tear = false, agent_incapacitating_depressant_hallucinogen = false, dispersion_liquid = false, dispersion_gas = false, dispersion_vapours = false, dispersion_aerosol = false]
+Evidence: [smell_fruity = false, smell_odourless = false, smell_camphor = false, smell_wood = false, smell_chlorine = false, smell_mustard_radish_garlic = false, smell_unpleasant = true, smell_fish = false, smell_herring = false, smell_soap = false, smell_geranium = false, smell_bitter_almonds = false, smell_sour = false, smell_pungent = false, smell_apple_blossom = false, smell_sweet = false, agent_nerve = false, agent_choking = false, agent_blister = false, agent_blood = false, agent_vomiting = false, agent_tear = false, agent_incapacitating_depressant_hallucinogen = false, dispersion_liquid = false, dispersion_gas = false, dispersion_vapours = false, dispersion_aerosol = false]
 Query: [tabun, sarin, soman, vx, phosgene, diphosgene, chlorine, phosgeneoxime, ethyldichloroarsine, distilledmustard, mustardlewistemix, nitrogenmustardone, nitrogenmustardtwo, nitrogenmustardthree, lewisite, methyldichloroarsine, phenyldichloroarsine, hydrogencyanide, cyanogenchloride, arsine, diphenylchloroarsine, diphenylcyanoarsine, adamsitediphenylaminechlorarsine, camitebromobenzeneacetonitrile, chloroacetophenoneCN, chloroacetophenoneCNB, chloroacetophenonechloroformCNC, chloroacetophenonechloroformCNS, teargas, buzzbz, lysergicacid]
 Running for 10000 samples...
 Query Reporting interval is 10000
-Samples done: 1000.  	Time elapsed: 1.0 s.
-Samples done: 2000.  	Time elapsed: 1.483 s.
-Samples done: 3000.  	Time elapsed: 1.937 s.
-Samples done: 4000.  	Time elapsed: 2.419 s.
-Samples done: 5000.  	Time elapsed: 2.923 s.
-Samples done: 6000.  	Time elapsed: 3.381 s.
-Samples done: 7000.  	Time elapsed: 3.836 s.
-Samples done: 8000.  	Time elapsed: 4.297 s.
-Samples done: 9000.  	Time elapsed: 4.777 s.
-Samples done: 10000.  	Time elapsed: 5.23 s.
+Samples done: 1000.  	Time elapsed: 0.962 s.
+Samples done: 2000.  	Time elapsed: 1.515 s.
+Samples done: 3000.  	Time elapsed: 2.095 s.
+Samples done: 4000.  	Time elapsed: 2.783 s.
+Samples done: 5000.  	Time elapsed: 3.356 s.
+Samples done: 6000.  	Time elapsed: 3.893 s.
+Samples done: 7000.  	Time elapsed: 4.48 s.
+Samples done: 8000.  	Time elapsed: 5.02 s.
+Samples done: 9000.  	Time elapsed: 5.6 s.
+Samples done: 10000.  	Time elapsed: 6.144 s.
 ========  LW Trial Stats =========
-Log of average likelihood weight (this trial): -2.4025801356188703
-Average likelihood weight (this trial): 0.0904841903665632
+Log of average likelihood weight (this trial): -9.0569346586176
+Average likelihood weight (this trial): 1.165797862774943E-4
 Fraction of consistent worlds (this trial): 1.0
 Fraction of consistent worlds (running avg, all trials): 1.0
 ======== Query Results =========
 Number of samples: 10000
 Distribution of values for tabun
-	false	0.9999249909405917
-	true	7.50090593904238E-5
+	false	0.9999417229336667
+	true	5.8277066324906624E-5
 Distribution of values for sarin
-	false	0.9999717561214299
-	true	2.8243878548712902E-5
+	false	0.9999780563788262
+	true	2.1943621168326353E-5
 Distribution of values for soman
-	false	0.9999846019818055
-	true	1.5398018194192627E-5
+	false	0.9999880367606845
+	true	1.1963239305593088E-5
 Distribution of values for vx
-	false	0.999984594248048
-	true	1.5405751935661603E-5
+	false	0.9999880307520816
+	true	1.1969247909996185E-5
 Distribution of values for phosgene
-	false	0.9999991009527305
-	true	8.990472498032417E-7
+	false	0.9999993014998866
+	true	6.985001096107276E-7
 Distribution of values for diphosgene
-	false	0.9999839295143318
-	true	1.60704856607186E-5
+	false	0.9999875142980502
+	true	1.2485701944993652E-5
 Distribution of values for chlorine
-	false	0.9999989259596015
-	true	1.0740403752113725E-6
+	false	0.9999991655418234
+	true	8.344581666599568E-7
 Distribution of values for phosgeneoxime
-	false	0.9999694966111641
-	true	3.0503388832609982E-5
+	false	0.7869212942416209
+	true	0.21307870575837642
 Distribution of values for ethyldichloroarsine
-	false	0.9999035597807666
-	true	9.644021921625922E-5
+	false	0.9999250723432956
+	true	7.492765670345141E-5
 Distribution of values for distilledmustard
-	false	0.999980202548036
-	true	1.979745196396196E-5
+	false	0.9982926748476778
+	true	0.0017073251523267792
 Distribution of values for mustardlewistemix
-	false	0.999999472595897
-	true	5.274041203199466E-7
+	false	0.9999545168579389
+	true	4.548314205798545E-5
 Distribution of values for nitrogenmustardone
-	false	0.9998164880399555
-	true	1.8351195999436747E-4
+	false	0.9998574233732377
+	true	1.4257662675571034E-4
 Distribution of values for nitrogenmustardtwo
-	false	0.9999291459613808
-	true	7.085403860786382E-5
+	false	0.9999449511093574
+	true	5.5048890639270355E-5
 Distribution of values for nitrogenmustardthree
-	false	0.999927692347303
-	true	7.230765268968816E-5
+	false	0.9999438217475882
+	true	5.617825241164461E-5
 Distribution of values for lewisite
-	false	0.9999998600413731
-	true	1.3995859478096538E-7
+	false	0.9999998912614523
+	true	1.0873854941090484E-7
 Distribution of values for methyldichloroarsine
-	false	0.9999663932142395
-	true	3.3606785741293356E-5
+	false	0.999973889755481
+	true	2.6110244516175332E-5
 Distribution of values for phenyldichloroarsine
-	false	0.999981099574846
-	true	1.890042513790908E-5
+	false	0.999985315622691
+	true	1.4684377304316373E-5
 Distribution of values for hydrogencyanide
-	false	0.999994849655402
-	true	5.15034460336755E-6
+	false	0.9999959985236834
+	true	4.0014763081390555E-6
 Distribution of values for cyanogenchloride
-	false	0.9999999973576745
-	true	8.807675214753402E-9
+	false	0.9999384747692853
+	true	6.152523071447888E-5
 Distribution of values for arsine
-	false	0.9999957223362134
-	true	4.277663787468706E-6
+	false	0.9999966765388235
+	true	3.3234611696756084E-6
 Distribution of values for diphenylchloroarsine
-	false	0.9999988815423972
-	true	1.118457590529035E-6
+	false	0.9921871141221927
+	true	0.007812885877807136
 Distribution of values for diphenylcyanoarsine
-	false	0.9999987065664475
-	true	1.2934335283121806E-6
+	false	0.999888454756714
+	true	1.1154524328535062E-4
 Distribution of values for adamsitediphenylaminechlorarsine
-	false	0.9999990970076285
-	true	9.029923735708566E-7
+	false	0.9999835069589078
+	true	1.6493041092614106E-5
 Distribution of values for camitebromobenzeneacetonitrile
-	false	0.9999997069976952
-	true	2.930022890666372E-7
+	false	0.999999772356642
+	true	2.2764335364357196E-7
 Distribution of values for chloroacetophenoneCN
-	false	0.9999999873754587
-	true	1.2624497127761777E-8
+	false	0.9999958006047472
+	true	4.199395248766643E-6
 Distribution of values for chloroacetophenoneCNB
-	false	0.9999999737252606
-	true	2.6274734647154162E-8
+	false	0.9999912600086399
+	true	8.739991361495564E-6
 Distribution of values for chloroacetophenonechloroformCNC
-	false	0.9999983441554954
-	true	1.655844501845147E-6
+	false	0.9999825200172797
+	true	1.7479982722991097E-5
 Distribution of values for chloroacetophenonechloroformCNS
-	false	0.9999999624646543
-	true	3.753533521022033E-8
+	false	0.9999875142980471
+	true	1.2485701944993674E-5
 Distribution of values for teargas
-	false	0.9999976437453655
-	true	2.356254607574561E-6
+	false	0.9997495365692644
+	true	2.5046343073061283E-4
 Distribution of values for buzzbz
-	false	0.9999994869884504
-	true	5.130115394575327E-7
+	false	0.9999996014240388
+	true	3.9857595540287407E-7
 Distribution of values for lysergicacid
-	false	0.9999987696966316
-	true	1.2303033495819395E-6
+	false	0.9992888607803638
+	true	7.111392196298068E-4
 ======== Done ========
