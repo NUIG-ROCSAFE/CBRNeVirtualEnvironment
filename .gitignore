@@ -148,3 +148,9 @@ WindowsNoEditor
 RCode/ShinyApp/Data/*.csv
 PythonCode/PythonGridMapping/AirSimPythonClient/rav_*_mapper.py
 **/GPSMappings/Images/
+
+BlogRuntime/*
+JavaRuntime/*
+*csv
+elasticsearch-oss-6.3.0/*
+RAVPlannedRoutes/*
