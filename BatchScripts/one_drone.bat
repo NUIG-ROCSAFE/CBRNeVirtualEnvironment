@@ -1,10 +1,10 @@
 cd ..
 set base_dir=%cd%
 
-cd ./PythonCode/PythonClientGPSMapping/GPSMappings/Images/Images1/Camera1
-del *.png
+cd ./RAVCollectedData/PNGImages/
+del /F /S *.png
 
 cd %base_dir%
 
-cd ./PythonCode/PythonGridMapping/AirSimPythonClient
+cd ./PythonCode/Routing/AirSimPythonClient/RAVExecuteRoutes
 start python rav_zero_mapper.py

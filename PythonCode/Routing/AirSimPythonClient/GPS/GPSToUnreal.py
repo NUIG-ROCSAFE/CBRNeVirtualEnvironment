@@ -1,4 +1,4 @@
-from GPSCoordinate import GPSCoordinate
+from .GPSCoordinate import GPSCoordinate
 
 class GPSToUnreal:
     # this is taken as origin (0,0)
