@@ -297,10 +297,10 @@ shinyServer(function(input, output, session) {
     setwd(paste(working_dir,"/PythonCode/PythonGridMapping/RoutePlotting", sep="", collapse=""))
     #generateUnrealPlotRoutes  -   no_ravs, no_cameras, rav_route_write_dir, saved_images_dir, gps_coords_write_dir
     gen_route_command <- paste(paste0(getwd(),("/generateUnrealPlotRoutes.py")), isolate(input$no_ravs), isolate(input$num_cameras), isolate(input$rav_veloctiy), isolate(input$rav_altitude), collapse="")
-  
+
     print(paste("running python command", gen_route_command))
-    system2("python", args = c(gen_route_command))
-    
+    system2("python3", args = c(gen_route_command))
+
     showNotification("Agents ready to execute planned routes", duration = 10, type = "message")
     setwd(paste(working_dir, "/BatchScripts", collapse="", sep=""))
     noDrones = ifelse(isolate(input$no_ravs) == 1, "one", ifelse(isolate(input$no_ravs)==2, "two", "three"))
