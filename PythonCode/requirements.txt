@@ -1,4 +1,4 @@
-msgpack-rpc-python
-Pillow
-flask
-configparser
+flask = "*"
+pillow = "*"
+configparser = "*"
+msgpack-rpc-python = "*"

@@ -1,0 +1,37 @@
+{
+  "SeeDocsAt": "https://github.com/Microsoft/AirSim/blob/master/docs/settings.md",
+  "SettingsVersion": 1.0,
+  "CaptureSettings": [
+    {
+      "ImageType": 0,
+      "Width": 4000,
+      "Height": 3000,
+      "OrthoWidth": 5.12,
+      "Gimble": {
+        "Stabilization": 0.75,
+        "Pitch": 0,
+        "Roll": 0,
+        "Yaw": 0
+      }
+    }
+  ],
+
+  "SegmentationSettings": {
+    "MeshNamingMethod": "StaticMeshName"
+  },
+  
+  "SimpleFlight_0": {
+    "FirmwareName": "SimpleFlight",
+    "ApiServerPort": 41451
+  },
+
+  "SimpleFlight_0": {
+    "FirmwareName": "SimpleFlight",
+    "ApiServerPort": 41452
+  },
+  "SimpleFlight_2": {
+    "FirmwareName": "SimpleFlight",
+    "ApiServerPort": 41453
+  }
+  
+}
