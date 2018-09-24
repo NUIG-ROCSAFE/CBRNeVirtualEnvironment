@@ -14,6 +14,10 @@ def generate_route_text(drone_number, gps_coords, gps_coords_file_dir, saved_ima
 	return_txt = '''import io
 	import time
 	import os
+	import sys
+	#append folder level up to import AirSimClient
+	sys.path.append('..')
+	sys.path.append('../GPSMappings')
 	from PIL import Image
 	from AirSimClient import *
 	'''

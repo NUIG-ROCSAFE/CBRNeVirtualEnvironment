@@ -11,8 +11,8 @@ import types
 import re
 
 sys.path.append("./GPSMappings")
-from GPSMappings.GPSCoordinate import GPSCoordinate
-from GPSMappings.GPS import GPSToUnreal
+from GPS.GPSCoordinate import GPSCoordinate
+from GPS.GPSToUnreal import GPSToUnreal
 
 
 class MsgpackMixin:
