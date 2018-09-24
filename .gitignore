@@ -151,3 +151,6 @@ PythonCode/PythonGridMapping/AirSimPythonClient/rav_*_mapper.py
 
 BlogRuntime/*
 JavaRuntime/*
+*csv
+elasticsearch-oss-6.3.0/*
+RAVPlannedRoutes/*

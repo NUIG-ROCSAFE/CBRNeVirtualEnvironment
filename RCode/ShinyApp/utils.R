@@ -44,9 +44,6 @@ RAVIcon <- makeIcon(
   iconUrl = concat_paths(getwd(), "/www/RAVIcon.png"),
   iconWidth = 35, iconHeight = 35,
   iconAnchorX = 0, iconAnchorY = 0
-  #shadowUrl = "http://leafletjs.com/examples/custom-icons/leaf-shadow.png",
-  #shadowWidth = 50, shadowHeight = 64,
-  #shadowAnchorX = 4, shadowAnchorY = 62
 )
 
 
@@ -96,7 +93,7 @@ run_blog <- function(blog_code_loc, blog_prog_name, blog_bin_loc, working_dir, o
   writeLines(blog_code_output, paste(blog_code_loc,"/output.txt", sep=''))
 }
 
-run_java <- function(java_bin_loc, java_code_loc, java_prog_name, working_dir, no_ravs, locs, lat_spacing, lng_spacing){
+run_java <- function(java_bin_loc, java_code_loc, java_prog_name, working_dir, write_dir, no_ravs, locs, lat_spacing, lng_spacing){
   print("java_bin_loc: ")
   print(java_bin_loc)
   setwd(java_bin_loc)
@@ -109,6 +106,7 @@ run_java <- function(java_bin_loc, java_code_loc, java_prog_name, working_dir, n
   #pass in the working directory to the java code
   argsString <- paste(argsString, java_prog_name, sep='')
   argsString <- paste(argsString, working_dir)
+  argsString <- paste(argsString, concat_paths(working_dir, write_dir))
   argsString <- paste(argsString, no_ravs)
   
   argsString <- paste(argsString, lat_spacing)

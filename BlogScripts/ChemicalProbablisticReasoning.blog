@@ -1,10 +1,10 @@
-obs smell_fruity=false;
+obs smell_fruity=true;
 obs smell_odourless=false;
 obs smell_camphor=false;
 obs smell_wood=false;
 obs smell_chlorine=false;
 obs smell_mustard_radish_garlic=false;
-obs smell_unpleasant=true;
+obs smell_unpleasant=false;
 obs smell_fish=false;
 obs smell_herring=false;
 obs smell_soap=false;
@@ -23,7 +23,7 @@ obs agent_vomiting=false;
 obs agent_tear=false;
 obs agent_incapacitating_depressant_hallucinogen=false;
 
-obs dispersion_liquid=false;
+obs dispersion_liquid=true;
 obs dispersion_gas=false;
 obs dispersion_vapours=false;
 obs dispersion_aerosol=false; 

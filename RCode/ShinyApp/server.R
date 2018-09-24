@@ -44,7 +44,7 @@ bounding_rect <- data.frame("lat" =c(53.27959959,53.2805257315, 53.2801009832, 5
 
 
 agent_route_analysis <<- ""
-f_snapshot_old <<- fileSnapshot("./RCode/ShinyApp/Data/Images/", md5sum = TRUE)
+f_snapshot_old <<- fileSnapshot(concat_paths(working_dir, config$DATA$UIImagesDir), md5sum = TRUE)
 
 
 
@@ -106,12 +106,12 @@ shinyServer(function(input, output, session) {
                                  "long" = c( -9.0648465368, -9.0661543305, -9.0615979824, -9.0602901886)) 
     }
     
-    run_java(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
+    run_java(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$DATA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
     print("found analysis")
     agent_route_analysis_flag(agent_route_analysis_flag() + 1) 
     print(agent_route_analysis)
     #grid_points <- read.csv("./RCode/ShinyApp/Data/gridPoints.csv", header = TRUE)
-    grid_points <- read.csv(concat_paths(working_dir, config$DATA$JavaCalculatedWaypointsLoc), header = TRUE)
+    grid_points <- read.csv(concat_paths(working_dir, config$DATA$PlannedAgentRoutesDir, config$DATA$RAVPlannedWaypointsFile), header = TRUE)
     leafletProxy('map') %>% addPolygons(lng = clickedLocs$long, lat = clickedLocs$lat) %>% addCircles(lng = grid_points$long, lat = grid_points$lat, weight=1, radius=7, color='black', fillColor='orange', popup = paste(grid_points$lat, grid_points$long))
   })
   
@@ -158,7 +158,7 @@ shinyServer(function(input, output, session) {
     #get the java script to generate the routes for each rav
     #java_bin_loc, java_code_loc, java_prog_name, working_dir, no_ravs, locs, lat_spacing, lng_spacing
     cat(paste0(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing)))
-    agent_routes <- run_java(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
+    agent_routes <- run_java(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$JAVA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
     
     # 
     # #read the csvs that contain the routes for each agent
