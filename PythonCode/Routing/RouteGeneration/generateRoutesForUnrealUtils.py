@@ -3,15 +3,8 @@ import sys
 
 
 
-
-def generate_route_text(drone_number, gps_coords, gps_coords_file_dir, saved_images_dir, rav_images_dir, camera_images_dir, image_files, no_cameras = 1, rav_velocity = 5, rav_altitude = 35, sleep_time = 0.5, images: bool = True, gps_locations: bool=True):
-	'''Given a drone number, list of gps coordinates, writes a file to /PythonGridMapping/AirSimPythonClient/rav_{}_mapper.py which contains 
-	the AirSim api commands which send the RAV to the generated GPS coordinates to gather image data'''
-	#if the user wants one camera, let that be camera 3 (downward facing). 
-	camera_mapping = {1:3, 2:2, 3:1, 4:4}
-	
-	#append on imports
-	return_txt = '''import io
+def get_imports():
+	return '''import io
 	import time
 	import os
 	import sys
@@ -21,6 +14,17 @@ def generate_route_text(drone_number, gps_coords, gps_coords_file_dir, saved_ima
 	from PIL import Image
 	from AirSimClient import *
 	'''
+
+
+
+def generate_route_text(drone_number, gps_coords, gps_coords_file_dir, saved_images_dir, rav_images_dir, camera_images_dir, image_files, no_cameras = 1, rav_velocity = 5, rav_altitude = 35, sleep_time = 0.5, images: bool = True, gps_locations: bool=True):
+	'''Given a drone number, list of gps coordinates, writes a file to /PythonGridMapping/AirSimPythonClient/rav_{}_mapper.py which contains 
+	the AirSim api commands which send the RAV to the generated GPS coordinates to gather image data'''
+	#if the user wants one camera, let that be camera 3 (downward facing). 
+	camera_mapping = {1:3, 2:2, 3:1, 4:4}
+	
+	#append on imports
+	return_txt = get_imports()
 	
 
 	return_txt += '''gpsCoordsFile = open('{gps_coords_file_dir}/GPSCoords{drone_number}.txt', 'w')
@@ -74,7 +78,7 @@ responses = client.simGetImages([{}])'''
 print('Writing files to ', "{saved_images_dir}"+"{rav_images_dir}" + "{camera_images_dir}"+ "{file_name}")'''.format(saved_images_dir=saved_images_dir, rav_images_dir = rav_images_dir.format(drone_number), camera_images_dir = camera_images_dir.format("examplecamera"), file_name = image_files.format('0'))
 			return_txt+= '''
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("{saved_images_dir}"+"{rav_images_dir}" + "{camera_images_dir}"+ "{file_name}".format(camera_index))
+	AirSimClientBase.write_file("{saved_images_dir}"+"{rav_images_dir}" + "{camera_images_dir}".format(camera_index+1)+ "{file_name}", image.image_data_uint8)
 '''.format(saved_images_dir=saved_images_dir, rav_images_dir = rav_images_dir.format(drone_number), camera_images_dir = camera_images_dir,drone_number=drone_number,file_name=image_files.format(line_index))
 
 #			return_txt += '''

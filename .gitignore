@@ -152,5 +152,7 @@ PythonCode/Routing/AirSimPythonClient/RAVExecuteRoutes/*
 BlogRuntime/*
 JavaRuntime/*
 *csv
+*png
 elasticsearch-oss-6.3.0/*
 RAVPlannedRoutes/*
+RAVCollectedData/*

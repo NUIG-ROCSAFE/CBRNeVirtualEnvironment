@@ -30,10 +30,10 @@ print('Client position: {}'.format(client.getPosition()))
 client.moveToGPSPosition(GPSCoordinate(53.280000000000001136868377216160297393798828125,  -9.0619999999999993889332472463138401508331298828125, 30.0), 7)
 time.sleep(1)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_0.png", image.image_data_uint8)
 gpsCoordsFile.write('53.280000000000001136868377216160297393798828125,  -9.0619999999999993889332472463138401508331298828125/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
@@ -42,14 +42,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279963157689398138588876463472843170166015625,  -9.0621447562722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.27990222262589912109760916791856288909912109375,  -9.0619665383316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279963157689398138588876463472843170166015625,  -9.0621447562722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_1.png", image.image_data_uint8)
+gpsCoordsFile.write('53.27990222262589912109760916791856288909912109375,  -9.0619665383316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -57,14 +57,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279963157689398138588876463472843170166015625,  -9.0626835822722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.27990222262589912109760916791856288909912109375,  -9.0623460709316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279963157689398138588876463472843170166015625,  -9.0626835822722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_2.png", image.image_data_uint8)
+gpsCoordsFile.write('53.27990222262589912109760916791856288909912109375,  -9.0623460709316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -72,14 +72,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279963157689398138588876463472843170166015625,  -9.0632224082722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.27990222262589912109760916791856288909912109375,  -9.0627256035316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279963157689398138588876463472843170166015625,  -9.0632224082722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_3.png", image.image_data_uint8)
+gpsCoordsFile.write('53.27990222262589912109760916791856288909912109375,  -9.0627256035316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -87,14 +87,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279963157689398138588876463472843170166015625,  -9.0637612342722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.27990222262589912109760916791856288909912109375,  -9.0631051361316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279963157689398138588876463472843170166015625,  -9.0637612342722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_4.png", image.image_data_uint8)
+gpsCoordsFile.write('53.27990222262589912109760916791856288909912109375,  -9.0631051361316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -102,14 +102,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279446763889398138588876463472843170166015625,  -9.0637612342722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.27952535082589912109760916791856288909912109375,  -9.0631051361316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279446763889398138588876463472843170166015625,  -9.0637612342722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_5.png", image.image_data_uint8)
+gpsCoordsFile.write('53.27952535082589912109760916791856288909912109375,  -9.0631051361316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -117,14 +117,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279446763889398138588876463472843170166015625,  -9.0632224082722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.27952535082589912109760916791856288909912109375,  -9.0627256035316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279446763889398138588876463472843170166015625,  -9.0632224082722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_6.png", image.image_data_uint8)
+gpsCoordsFile.write('53.27952535082589912109760916791856288909912109375,  -9.0627256035316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -132,14 +132,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279446763889398138588876463472843170166015625,  -9.0626835822722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.27952535082589912109760916791856288909912109375,  -9.0623460709316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279446763889398138588876463472843170166015625,  -9.0626835822722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_7.png", image.image_data_uint8)
+gpsCoordsFile.write('53.27952535082589912109760916791856288909912109375,  -9.0623460709316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -147,14 +147,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279446763889398138588876463472843170166015625,  -9.0621447562722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.27952535082589912109760916791856288909912109375,  -9.0619665383316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279446763889398138588876463472843170166015625,  -9.0621447562722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_8.png", image.image_data_uint8)
+gpsCoordsFile.write('53.27952535082589912109760916791856288909912109375,  -9.0619665383316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -162,14 +162,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279446763889398138588876463472843170166015625,  -9.0616059302722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.27952535082589912109760916791856288909912109375,  -9.0615870057316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279446763889398138588876463472843170166015625,  -9.0616059302722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_9.png", image.image_data_uint8)
+gpsCoordsFile.write('53.27952535082589912109760916791856288909912109375,  -9.0615870057316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -177,14 +177,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279446763889398138588876463472843170166015625,  -9.0610671042722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.27952535082589912109760916791856288909912109375,  -9.0612074731316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279446763889398138588876463472843170166015625,  -9.0610671042722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_10.png", image.image_data_uint8)
+gpsCoordsFile.write('53.27952535082589912109760916791856288909912109375,  -9.0612074731316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -192,14 +192,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279446763889398138588876463472843170166015625,  -9.0605282782722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.27952535082589912109760916791856288909912109375,  -9.0608279405316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279446763889398138588876463472843170166015625,  -9.0605282782722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_11.png", image.image_data_uint8)
+gpsCoordsFile.write('53.27952535082589912109760916791856288909912109375,  -9.0608279405316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -207,14 +207,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279446763889398138588876463472843170166015625,  -9.0599894522722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.27990222262589912109760916791856288909912109375,  -9.0608279405316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279446763889398138588876463472843170166015625,  -9.0599894522722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_12.png", image.image_data_uint8)
+gpsCoordsFile.write('53.27990222262589912109760916791856288909912109375,  -9.0608279405316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -222,14 +222,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279963157689398138588876463472843170166015625,  -9.0599894522722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.27990222262589912109760916791856288909912109375,  -9.0612074731316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279963157689398138588876463472843170166015625,  -9.0599894522722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_13.png", image.image_data_uint8)
+gpsCoordsFile.write('53.27990222262589912109760916791856288909912109375,  -9.0612074731316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -237,14 +237,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279963157689398138588876463472843170166015625,  -9.0605282782722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.27990222262589912109760916791856288909912109375,  -9.0615870057316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279963157689398138588876463472843170166015625,  -9.0605282782722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_14.png", image.image_data_uint8)
+gpsCoordsFile.write('53.27990222262589912109760916791856288909912109375,  -9.0615870057316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -252,14 +252,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279963157689398138588876463472843170166015625,  -9.0610671042722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.28027909442589912109760916791856288909912109375,  -9.0615870057316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279963157689398138588876463472843170166015625,  -9.0610671042722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_15.png", image.image_data_uint8)
+gpsCoordsFile.write('53.28027909442589912109760916791856288909912109375,  -9.0615870057316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -267,14 +267,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.279963157689398138588876463472843170166015625,  -9.0616059302722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.28027909442589912109760916791856288909912109375,  -9.0619665383316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.279963157689398138588876463472843170166015625,  -9.0616059302722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_16.png", image.image_data_uint8)
+gpsCoordsFile.write('53.28027909442589912109760916791856288909912109375,  -9.0619665383316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -282,14 +282,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.280479551489398138588876463472843170166015625,  -9.0616059302722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.28027909442589912109760916791856288909912109375,  -9.0623460709316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.280479551489398138588876463472843170166015625,  -9.0616059302722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_17.png", image.image_data_uint8)
+gpsCoordsFile.write('53.28027909442589912109760916791856288909912109375,  -9.0623460709316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -297,14 +297,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.280479551489398138588876463472843170166015625,  -9.0621447562722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.28027909442589912109760916791856288909912109375,  -9.0627256035316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.280479551489398138588876463472843170166015625,  -9.0621447562722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_18.png", image.image_data_uint8)
+gpsCoordsFile.write('53.28027909442589912109760916791856288909912109375,  -9.0627256035316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -312,14 +312,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.280479551489398138588876463472843170166015625,  -9.0626835822722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.28027909442589912109760916791856288909912109375,  -9.0631051361316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.280479551489398138588876463472843170166015625,  -9.0626835822722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_19.png", image.image_data_uint8)
+gpsCoordsFile.write('53.28027909442589912109760916791856288909912109375,  -9.0631051361316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -327,14 +327,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.280479551489398138588876463472843170166015625,  -9.0632224082722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.28027909442589912109760916791856288909912109375,  -9.0612074731316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.280479551489398138588876463472843170166015625,  -9.0632224082722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_20.png", image.image_data_uint8)
+gpsCoordsFile.write('53.28027909442589912109760916791856288909912109375,  -9.0612074731316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()
@@ -342,59 +342,14 @@ AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+
 AirSimgpsRelativeCoordsFile.flush()
 print('NUIG relative GPS location: ', client.getGPSLocationRelative())
 
-client.moveToGPSPosition(GPSCoordinate(53.280479551489398138588876463472843170166015625,  -9.0637612342722203495886788005009293556213378906250, 30.0), 10.0)
+client.moveToGPSPosition(GPSCoordinate(53.28027909442589912109760916791856288909912109375,  -9.0608279405316894531250000000000000000000000000000, 30.0), 10.0)
 time.sleep(2)
 
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
+responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene), ImageRequest(2, AirSimImageType.Scene)])
+print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexamplecamera"+ "/image_0.png")
 for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.280479551489398138588876463472843170166015625,  -9.0637612342722203495886788005009293556213378906250/n')
-gpsCoordsFile.flush()
-AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
-AirSimgpsCoordsFile.flush()
-AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+ str(client.getGPSLocationRelative().long)+'/n')
-AirSimgpsRelativeCoordsFile.flush()
-print('NUIG relative GPS location: ', client.getGPSLocationRelative())
-
-client.moveToGPSPosition(GPSCoordinate(53.280479551489398138588876463472843170166015625,  -9.0610671042722203495886788005009293556213378906250, 30.0), 10.0)
-time.sleep(2)
-
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
-for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.280479551489398138588876463472843170166015625,  -9.0610671042722203495886788005009293556213378906250/n')
-gpsCoordsFile.flush()
-AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
-AirSimgpsCoordsFile.flush()
-AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+ str(client.getGPSLocationRelative().long)+'/n')
-AirSimgpsRelativeCoordsFile.flush()
-print('NUIG relative GPS location: ', client.getGPSLocationRelative())
-
-client.moveToGPSPosition(GPSCoordinate(53.280479551489398138588876463472843170166015625,  -9.0605282782722203495886788005009293556213378906250, 30.0), 10.0)
-time.sleep(2)
-
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
-for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.280479551489398138588876463472843170166015625,  -9.0605282782722203495886788005009293556213378906250/n')
-gpsCoordsFile.flush()
-AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
-AirSimgpsCoordsFile.flush()
-AirSimgpsRelativeCoordsFile.write(str(client.getGPSLocationRelative().lat)+', '+ str(client.getGPSLocationRelative().long)+'/n')
-AirSimgpsRelativeCoordsFile.flush()
-print('NUIG relative GPS location: ', client.getGPSLocationRelative())
-
-client.moveToGPSPosition(GPSCoordinate(53.280479551489398138588876463472843170166015625,  -9.0599894522722203495886788005009293556213378906250, 30.0), 10.0)
-time.sleep(2)
-
-responses = client.simGetImages([ImageRequest(3, AirSimImageType.Scene)])
-print('Writing files to ', "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Cameraexample camera"+ "/image_0.png")
-for camera_index, image in enumerate(responses):
-	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}"+ "/image_{}.png".format(camera_index, line_index))
-gpsCoordsFile.write('53.280479551489398138588876463472843170166015625,  -9.0599894522722203495886788005009293556213378906250/n')
+	AirSimClientBase.write_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages"+"/ImagesRAV1" + "/Camera{}".format(camera_index+1)+ "/image_21.png", image.image_data_uint8)
+gpsCoordsFile.write('53.28027909442589912109760916791856288909912109375,  -9.0608279405316894531250000000000000000000000000000/n')
 gpsCoordsFile.flush()
 AirSimgpsCoordsFile.write(str(client.getGpsLocation().latitude)+', '+str(client.getGpsLocation().longitude) + '/n')
 AirSimgpsCoordsFile.flush()

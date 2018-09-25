@@ -68,7 +68,6 @@ def main(no_ravs, no_cameras = 1, rav_velocity = 4, rav_altitude = 35, RAV_route
 		#skip the header
 		python_code = generate_route_text(rav_no+1, ''.join(open(RAVGPSRoutesDir+"/Agent{}.csv".format(rav_no+1)).readlines()[1:]), RAV_recorded_GPS_waypoints,saved_images_dir, config['DATA']['RAVImagesDirFormatStr'], config['DATA']['CameraImagesDirFormatStr'],config['DATA']['ImagesFileFormatStr'],no_cameras, rav_velocity = rav_velocity, rav_altitude=rav_altitude, sleep_time=2, images=True, gps_locations=True)
 		
-		#python_code = generate_route_text(rav_no+1, open(RAVGPSRoutesDir+"/Agent{}.csv".format(rav_no+1)).read()[15:], RAV_recorded_GPS_waypoints, saved_images_dir, no_cameras, #rav_velocity, rav_altitude, images=True, sleep_time = 2, gps_locations=True)
 		#assume that directory layout is that specified in IJCAIDemoCode
 		rav_no_dict={1:'zero', 2:'one', 3: 'two', 4: 'three'}
 		save_python_to_file(python_code, RAV_route_execution_dir + "/rav_{}_mapper.py".format(rav_no_dict[rav_no+1]))
