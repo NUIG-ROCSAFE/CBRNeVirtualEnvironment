@@ -279,7 +279,7 @@ shinyServer(function(input, output, session) {
       #any more than 10 would definitely cause gpu to crash...
       updateSelectInput(session, "num_cameras", label = "Choose the number of cameras to use", c(0:10), selected = 2)
       updateSelectInput(session, "rav_altitude", label = "Choose the altitude at which RAVs will fly (m)", choices = c(1:400)/2, selected = 30)
-      updateSelectInput(session, "rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:50)/5, selected = 3)
+      updateSelectInput(session, "rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:80)/5, selected = 3)
     }
     else{
       updateSelectInput(session, "no_ravs", label="Choose number of RAVs to be used", choices = c("1", "2", "3"), selected = 1)

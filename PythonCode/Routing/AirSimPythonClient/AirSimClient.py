@@ -579,7 +579,7 @@ class MultirotorClient(AirSimClientBase, object):
     def getGPSLocationRelative(self):
         '''Gets the GPS position of the RAV relative to home position'''
         print('Calculated GPS Location Relative as {}'.format(self.gps_mapper.get_GPS_Pos(self.getGpsLocation())))
-        return self.gps_mapper.get_GPS_Pos(self.getGpsLocation())
+        return self.gps_mapper.get_GPS_Pos(GPSCoordinate(self.getGpsLocation().latitude, self.getGpsLocation().longitude, self.getGpsLocation().altitude))
 
     def moveByManual(self, vx_max, vy_max, z_min, duration, drivetrain = DrivetrainType.MaxDegreeOfFreedom, yaw_mode = YawMode()):
         """Read current RC state and use it to control the vehicles.

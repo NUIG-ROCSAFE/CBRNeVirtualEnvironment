@@ -64,6 +64,7 @@ def main(no_ravs, no_cameras = 1, rav_velocity = 4, rav_altitude = 35, RAV_route
 		#[15:] due to lat, long, alt header
 		assert ''.join(open(RAVGPSRoutesDir+"/Agent{}.csv".format(rav_no+1)).readlines()[1:]) == open(RAVGPSRoutesDir+"/Agent{}.csv".format(rav_no+1)).read()[15:]
 		#drone_number, gps_coords, gps_coords_file_dir, saved_images_dir, no_cameras = 1, rav_velocity = 5, rav_altitude = 35, sleep_time = 0.5, images: #bool = True, gps_locations: bool=True
+		#skip the header
 		python_code = generate_route_text(rav_no+1, ''.join(open(RAVGPSRoutesDir+"/Agent{}.csv".format(rav_no+1)).readlines()[1:]), RAV_recorded_GPS_waypoints,saved_images_dir, no_cameras, rav_velocity = rav_velocity, rav_altitude=rav_altitude, sleep_time=2, images=True, gps_locations=True)
 		
 		#python_code = generate_route_text(rav_no+1, open(RAVGPSRoutesDir+"/Agent{}.csv".format(rav_no+1)).read()[15:], RAV_recorded_GPS_waypoints, saved_images_dir, no_cameras, #rav_velocity, rav_altitude, images=True, sleep_time = 2, gps_locations=True)

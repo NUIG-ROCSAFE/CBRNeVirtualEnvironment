@@ -146,7 +146,7 @@ venv.bak/
 WindowsNoEditor
 **/GPSCoords
 RCode/ShinyApp/Data/*.csv
-PythonCode/PythonGridMapping/AirSimPythonClient/rav_*_mapper.py
+PythonCode/Routing/AirSimPythonClient/RAVExecuteRoutes/*
 **/GPSMappings/Images/
 
 BlogRuntime/*

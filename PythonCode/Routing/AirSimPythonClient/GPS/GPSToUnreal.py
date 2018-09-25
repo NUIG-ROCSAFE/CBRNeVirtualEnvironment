@@ -50,6 +50,8 @@ class GPSToUnreal:
         '''AirSim calculates GPS position in relation to microsoft headquarters, 
         this gives the GPS position relative to the home coordinate set by the constructor.'''
         #calculate lat, long distance from current position to microsoft home coordinate
+        if not isinstance(microsoft_relative_GPS_pos, GPSCoordinate):
+            raise Exception("Please provide a valid WGS84 GPS coordinate")
         lat_dist = microsoft_relative_GPS_pos.get_lat_metres_to_other(RAVGPSMapper.ORIGIN_GPS)
         lng_dist = microsoft_relative_GPS_pos.get_long_metres_to_other(RAVGPSMapper.ORIGIN_GPS)
         
