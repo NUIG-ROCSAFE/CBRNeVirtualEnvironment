@@ -136,7 +136,7 @@ body <- dashboardBody(
                 selectInput("lng_spacing", label = "Choose the longitude spacing (m)", choices = c(20,25,30,40,50,100), selected = 25),
                 selectInput("num_cameras", label = "Choose the number of cameras to use", choices = c(0,1,2,3,4), selected = 1),
                 selectInput("rav_altitude", label = "Choose the altitude at which RAVs will fly (m)", choices = c(25, 30, 35, 40), selected = 30),
-                selectInput("rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:8), selected = 3),
+                selectInput("rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:10), selected = 3),
                 actionButton("show_analysis", label="Show analysis"),
                 actionButton("launch_agents", label = "Execute agent routes"),
               offset = 0),

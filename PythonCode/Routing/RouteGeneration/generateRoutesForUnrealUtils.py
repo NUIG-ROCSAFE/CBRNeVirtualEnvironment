@@ -4,7 +4,7 @@ import sys
 
 
 
-def generate_route_text(drone_number, gps_coords, gps_coords_file_dir, saved_images_dir, no_cameras = 1, rav_velocity = 5, rav_altitude = 35, sleep_time = 0.5, images: bool = True, gps_locations: bool=True):
+def generate_route_text(drone_number, gps_coords, gps_coords_file_dir, saved_images_dir, rav_images_dir, camera_images_dir, image_files, no_cameras = 1, rav_velocity = 5, rav_altitude = 35, sleep_time = 0.5, images: bool = True, gps_locations: bool=True):
 	'''Given a drone number, list of gps coordinates, writes a file to /PythonGridMapping/AirSimPythonClient/rav_{}_mapper.py which contains 
 	the AirSim api commands which send the RAV to the generated GPS coordinates to gather image data'''
 	#if the user wants one camera, let that be camera 3 (downward facing). 
@@ -51,7 +51,7 @@ def generate_route_text(drone_number, gps_coords, gps_coords_file_dir, saved_ima
 	
 	moveToGPSPositionString = "\nclient.moveToGPSPosition(GPSCoordinate({{}}, {{}}, {altitude}), {velocity})\ntime.sleep({sleep_time})\n".format(altitude = rav_altitude,velocity=rav_velocity, sleep_time=sleep_time)
 	
-	#new gps coordinate on each line
+	#new gps coordinate on each line. Put this in separate function
 	for line_index, line in enumerate(gps_coords.split('\n')):
 		#ignore blank lines
 		if line == '':
@@ -69,12 +69,19 @@ responses = client.simGetImages([{}])'''
 			image_requests = ', '.join("ImageRequest({}, AirSimImageType.Scene)".format(camera_mapping[i]) for i in range(1, no_cameras+1))
 			return_txt += image_requests_wrapper.format(image_requests)
 
-
+			#pull this into separate function
 			return_txt += '''
-print('Writing files to ', "{saved_images_dir}"+"/Images{drone_number}/Camera{{}}/image_{line_index}.png".format('example', saved_images_dir = '{saved_images_dir}'))
-for image_index, image in enumerate(responses):
-	AirSimClientBase.write_file("{saved_images_dir}"+"/Images{drone_number}/Camera{{}}/image_{line_index}.png".format(image_index+1) , image.image_data_uint8)
-'''.format(saved_images_dir=saved_images_dir, drone_number=drone_number,line_index=line_index)
+print('Writing files to ', "{saved_images_dir}"+"{rav_images_dir}" + "{camera_images_dir}"+ "{file_name}")'''.format(saved_images_dir=saved_images_dir, rav_images_dir = rav_images_dir.format(drone_number), camera_images_dir = camera_images_dir.format("examplecamera"), file_name = image_files.format('0'))
+			return_txt+= '''
+for camera_index, image in enumerate(responses):
+	AirSimClientBase.write_file("{saved_images_dir}"+"{rav_images_dir}" + "{camera_images_dir}"+ "{file_name}".format(camera_index))
+'''.format(saved_images_dir=saved_images_dir, rav_images_dir = rav_images_dir.format(drone_number), camera_images_dir = camera_images_dir,drone_number=drone_number,file_name=image_files.format(line_index))
+
+#			return_txt += '''
+#print('Writing files to ', "{saved_images_dir}"+"/Images{drone_number}/Camera{{}}/image_{line_index}.png".format('example', saved_images_dir = '{saved_images_dir}'))
+#for image_index, image in enumerate(responses):
+#	AirSimClientBase.write_file("{saved_images_dir}"+"/Images{drone_number}/Camera{{}}/image_{line_index}.png".format(image_index+1) , image.image_data_uint8)
+#'''.format(saved_images_dir=saved_images_dir, drone_number=drone_number,line_index=line_index)
 				
 			
 		if gps_locations:
@@ -87,7 +94,7 @@ for image_index, image in enumerate(responses):
 			return_txt += "print('NUIG relative GPS location: ', client.getGPSLocationRelative())\n"
 			
 	#send the rav to its home position and then land it
-	return_txt += moveToGPSPositionString.format("gps_mapper.home_position_GPS()[0]", "gps_mapper.home_position_GPS()[1]")
+	return_txt += moveToGPSPositionString.format("client.GPS_to_unreal.home_position_GPS()[0]", "gps_mapper.home_position_GPS()[1]")
 	return_txt += "client.land()\n"
 	return_txt += "client.armDisarm(False)\n"
 	

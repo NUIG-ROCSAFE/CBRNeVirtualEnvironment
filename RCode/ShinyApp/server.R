@@ -33,9 +33,9 @@ config <<- read.ini("Config/config.ini")
 
 clickedLocs <<- data.frame(lat=numeric(),lng=numeric())
 names(clickedLocs) <- c("lat", "long")
-rav_positions <- data.frame("lat" = c(53.28, 53.286, 53.2798), 
-                            "long" = c(-9.07, -9.0588, -9.0565),
-                            "text" = c("RAV1", "RAV2", "RAV3"))
+rav_positions <- data.frame("lat" = c(53.28, 53.286, 53.2798, 53.280), 
+                            "long" = c(-9.07, -9.0588, -9.0565, -9.062),
+                            "text" = c("RAV1", "RAV2", "RAV3", "HOME POSITION"))
 
 #bottom right, top right,  top left, bottom left
 bounding_rect <- data.frame("lat" =c(53.27959959,53.2805257315, 53.2801009832, 53.2791748417),
@@ -100,7 +100,9 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$plot_grid_points,{
     #hard code in data collection region
-    if(input$DataColletionMode){
+    print('data collection mode: ')
+    print(isolate(input$DataColletionMode))
+    if(isolate(input$DataColletionMode)){
       showNotification(paste("Using pre-defined rectangle to gather images: ", clickedLocs))
       clickedLocs <<- data.frame("lat" = c(53.2780931659, 53.2804041456, 53.281325917, 53.2790149872),
                                  "long" = c( -9.0648465368, -9.0661543305, -9.0615979824, -9.0602901886)) 
@@ -108,6 +110,7 @@ shinyServer(function(input, output, session) {
     
     run_java(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$DATA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
     print("found analysis")
+    #notify app that analysis can be displayed
     agent_route_analysis_flag(agent_route_analysis_flag() + 1) 
     print(agent_route_analysis)
     #grid_points <- read.csv("./RCode/ShinyApp/Data/gridPoints.csv", header = TRUE)
@@ -145,7 +148,7 @@ shinyServer(function(input, output, session) {
       addMarkers(lng = rav_positions$long, lat = rav_positions$lat, icon = RAVIcon)
     
     #hard code in data collection region
-    if(input$DataColletionMode){
+    if(isolate(input$DataColletionMode)){
       showNotification(paste("Using pre-defined rectangle to gather images: ", clickedLocs))
       clickedLocs <<- data.frame("lat" = c(53.2780931659, 53.2804041456, 53.281325917, 53.2790149872),
                                                                  "long" = c( -9.0648465368, -9.0661543305, -9.0615979824, -9.0602901886)) 
@@ -157,23 +160,24 @@ shinyServer(function(input, output, session) {
     }
     #get the java script to generate the routes for each rav
     #java_bin_loc, java_code_loc, java_prog_name, working_dir, no_ravs, locs, lat_spacing, lng_spacing
-    cat(paste0(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing)))
-    agent_routes <- run_java(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$JAVA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
+    #cat(paste0(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing)))
+    
+    agent_routes <- run_java(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$DATA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
     
     # 
     # #read the csvs that contain the routes for each agent
     #points1 <-read.csv("./RCode/ShinyApp/Data/Agent1.csv", header = TRUE)
-    points1 <- read.csv(concat_paths(working_dir, config$DATA$AgentRoutesDir, "Agent1.csv"))
+    points1 <- read.csv(concat_paths(working_dir, config$DATA$RAVGPSRoutesDir, "/Agent1.csv"))
     
     leafletProxy('map') %>% addCircles(lng = points1$long, lat = points1$lat, weight=1, radius=7, color='black', fillColor='blue', popup = paste("RAV1",paste(points1$lat, points1$long))) %>% addPolylines(lng = points1$long, lat = points1$lat, weight=1, color='blue', fillColor='blue')
-    if(isolate(input$no_ravs > 1)){
+    if(isolate(input$no_ravs) > 1){
       #points2 <- read.csv("./RCode/ShinyApp/Data/Agent2.csv")
-      points2 <- read.csv(concat_paths(working_dir, config$DATA$AgentRoutesDir, "Agent2.csv"))
+      points2 <- read.csv(concat_paths(working_dir, config$DATA$RAVGPSRoutesDir, "/Agent2.csv"))
       leafletProxy('map') %>% addCircles(lng = points2$long, lat = points2$lat, weight=1, radius=7, color='black', fillColor='green', popup = paste("RAV2",paste(points2$lat, points2$long))) %>% addPolylines(lng = points2$long, lat = points2$lat, weight=1, color='green', fillColor='green')
     }
-    if(isolate(input$no_ravs > 2)){
+    if(isolate(input$no_ravs) > 2){
       #points3 <- read.csv("./RCode/ShinyApp/Data/Agent3.csv")
-      points3 <- read.csv(concat_paths(working_dir, config$DATA$AgentRoutesDir, "Agent3.csv"))
+      points3 <- read.csv(concat_paths(working_dir, config$DATA$RAVGPSRoutesDir, "/Agent3.csv"))
       leafletProxy('map') %>% addCircles(lng = points3$long, lat = points3$lat, weight=1, radius=7, color='black', fillColor='red', popup = paste("RAV3",paste(points3$lat, points3$long))) %>% addPolylines(lng = points3$long, lat = points3$lat, weight=1,color='red', fillColor='red')
     }
   })
@@ -287,7 +291,7 @@ shinyServer(function(input, output, session) {
       updateSelectInput(session, "lng_spacing", label = "Choose the longitude spacing", choices = c(20,25,30,40,50,100), selected = 25)
       updateSelectInput(session, "num_cameras", label = "Choose the number of cameras to use", choices = c(0,1,2,3,4), selected = 1)
       updateSelectInput(session, "rav_altitude", label = "Choose the altitude at which RAVs will fly (m)", choices =  c(25, 30, 35, 40), selected = 30)
-      updateSelectInput(session, "rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:8), selected = 3)
+      updateSelectInput(session, "rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:10), selected = 3)
       
     }
   })

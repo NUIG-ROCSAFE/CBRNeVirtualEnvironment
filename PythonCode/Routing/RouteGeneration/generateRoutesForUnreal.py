@@ -20,43 +20,44 @@ def main(no_ravs, no_cameras = 1, rav_velocity = 4, rav_altitude = 35, RAV_route
 	config = get_config()
 	print('config: ', config.sections())
 	print("Generating routes for ", no_ravs, " ravs")
-	base_dir = os.path.abspath(__file__).split('PythonCode')[0].replace('\\', '/')
+	base_dir = os.path.abspath(__file__).split('PythonCode')[0].replace('\\', '/')[:-1]
+	print("Generating routes using base directory: {}".format(base_dir))
 	#READ DEFAULTS
 	RAVGPSRoutesDir = base_dir + config["DATA"]["PlannedAgentRoutesDir"]
+	
 	if saved_images_dir == "":
 			#saved_images_dir = base_dir + "/PythonCode/PythonClientGPSMapping/GPSMappings/Images"
 			saved_images_dir = base_dir + config["DATA"]["CollectedPNGImagesDir"]
 			
+	#create saved images directory if not already in existence
 	if not os.path.isdir(saved_images_dir):
 			#exit program and ask for valid path
 			print('Directory {} does not exist, creating'.format(saved_images_dir))
 			os.makedirs(saved_images_dir)
-			
+	
+	
 	if RAV_recorded_GPS_waypoints == "":
 		RAV_recorded_GPS_waypoints = base_dir + config["DATA"]["RAVRecordedGPSWaypoints"]
 		#RAV_recorded_GPS_waypoints = base_dir + "/PythonCode/PythonClientGPSMapping/GPSMappings/GPSCoords"
 		
+	#create route execution directory if not already in existence
 	if RAV_route_execution_dir == "":
 		RAV_route_execution_dir = base_dir + config['PYTHON']['PythonRAVRouteExecutionDir']
 		#RAV_route_execution_dir = base_dir + "/PythonCode/PythonGridMapping/AirSimPythonClient"
 		
-	
+	#create recorded waypoints directory if not already in existence
 	if not os.path.isdir(RAV_recorded_GPS_waypoints):
 		print('Directory {} does not exist, creating in default location'.format(saved_images_dir))
-		os.makedirs(RAV_recorded_GPS_waypoints)
-
-	if not os.path.isdir(RAV_recorded_GPS_waypoints):
-		print('Directory {} does not exist, creating in default location'.format(RAV_recorded_GPS_waypoints))
 		os.makedirs(RAV_recorded_GPS_waypoints)
 		
 	#create images directory
 	for rav_no in range(int(no_ravs)):
-		if not os.path.isdir(saved_images_dir + '/ImagesRAV%d' % (rav_no + 1)):
-			os.makedirs(saved_images_dir + '/ImagesRAV%d' % (rav_no + 1))
+		if not os.path.isdir(saved_images_dir + config['DATA']['RAVImagesDirFormatStr'].format(rav_no + 1)):
+			os.makedirs(saved_images_dir + config['DATA']['RAVImagesDirFormatStr'].format(rav_no + 1))
 		for camera_no in range(int(no_cameras)):
-			if not os.path.isdir(saved_images_dir + '/ImagesRAV%d' % (rav_no + 1) + '/Camera{}'.format(camera_no+1)):
-				print('Directory {} does not exist, creating in default location'.format(saved_images_dir + '/ImagesRAV%d' % (rav_no + 1) + '/Camera{}'.format(camera_no+1)))
-				os.makedirs(saved_images_dir + '/ImagesRAV%d' % (rav_no + 1) + '/Camera{}'.format(camera_no+1))
+			if not os.path.isdir(saved_images_dir + config['DATA']['RAVImagesDirFormatStr'].format(rav_no + 1) + config['DATA']['CameraImagesDirFormatStr'].format(camera_no+1)):
+				print('Directory {} does not exist, creating in default location'.format(saved_images_dir + config['DATA']['RAVImagesDirFormatStr'].format(rav_no + 1) + config['DATA']['CameraImagesDirFormatStr'].format(camera_no+1)))
+				os.makedirs(saved_images_dir + config['DATA']['RAVImagesDirFormatStr'].format(rav_no + 1) + config['DATA']['CameraImagesDirFormatStr'].format(camera_no+1))
 
 	for rav_no in range(int(no_ravs)):
 		
@@ -65,7 +66,7 @@ def main(no_ravs, no_cameras = 1, rav_velocity = 4, rav_altitude = 35, RAV_route
 		assert ''.join(open(RAVGPSRoutesDir+"/Agent{}.csv".format(rav_no+1)).readlines()[1:]) == open(RAVGPSRoutesDir+"/Agent{}.csv".format(rav_no+1)).read()[15:]
 		#drone_number, gps_coords, gps_coords_file_dir, saved_images_dir, no_cameras = 1, rav_velocity = 5, rav_altitude = 35, sleep_time = 0.5, images: #bool = True, gps_locations: bool=True
 		#skip the header
-		python_code = generate_route_text(rav_no+1, ''.join(open(RAVGPSRoutesDir+"/Agent{}.csv".format(rav_no+1)).readlines()[1:]), RAV_recorded_GPS_waypoints,saved_images_dir, no_cameras, rav_velocity = rav_velocity, rav_altitude=rav_altitude, sleep_time=2, images=True, gps_locations=True)
+		python_code = generate_route_text(rav_no+1, ''.join(open(RAVGPSRoutesDir+"/Agent{}.csv".format(rav_no+1)).readlines()[1:]), RAV_recorded_GPS_waypoints,saved_images_dir, config['DATA']['RAVImagesDirFormatStr'], config['DATA']['CameraImagesDirFormatStr'],config['DATA']['ImagesFileFormatStr'],no_cameras, rav_velocity = rav_velocity, rav_altitude=rav_altitude, sleep_time=2, images=True, gps_locations=True)
 		
 		#python_code = generate_route_text(rav_no+1, open(RAVGPSRoutesDir+"/Agent{}.csv".format(rav_no+1)).read()[15:], RAV_recorded_GPS_waypoints, saved_images_dir, no_cameras, #rav_velocity, rav_altitude, images=True, sleep_time = 2, gps_locations=True)
 		#assume that directory layout is that specified in IJCAIDemoCode
