@@ -38,9 +38,10 @@ end_of_file <- readtext(paste(blog_code_loc, "/ChemProbReasoningSecondHalf.txt",
 
 concat_paths <- function(arg1,...){
   inargs <<- paste(arg1, ..., sep = "/")
+  inargs <<- str_replace_all(string = inargs, pattern = "\\\\", replacement = "/")
   inargs <<- str_replace_all(string = inargs, pattern = "///", replacement = "/")
   inargs <<- str_replace_all(string = inargs, pattern = "//", replacement = "/")
-  return(paste0(inargs, "/"))
+  return(inargs)
 }
 
 RAVIcon <- makeIcon(

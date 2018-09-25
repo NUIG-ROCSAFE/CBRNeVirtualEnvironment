@@ -1,7 +1,7 @@
-cd ..
+cd ../..
 set base_dir=%cd%
 
-cd ./RAVCollectedData/PNGImages/
+cd ./RAVCollectedData/PNGImages/ImagesRAV1
 del /F /S *.png
 
 cd %base_dir%
