@@ -198,10 +198,11 @@ shinyServer(function(input, output, session) {
     ###################### Put all of this into utils.py ######################
     
     showNotification("Agents ready to execute planned routes", duration = 10, type = "message")
-    setwd(concat_paths(working_dir, config$BATCHSCRIPTS$BatchScriptsLoc))
     noDrones = ifelse(isolate(input$no_ravs) == 1, "one", ifelse(isolate(input$no_ravs)==2, "two", "three"))
+    setwd(concat_paths(working_dir, config$BATCHSCRIPTS$BatchScriptsLoc))
     if((stringr::str_extract(config$BATCHSCRIPTS$BatchScriptsLoc, "Unix")) == "Unix"){
-      system2(paste("bash ", noDrones,"_drone.sh", sep="", collapse=""))
+      drone_ex <<- concat_paths(working_dir, config$BATCHSCRIPTS$BatchScriptsLoc, paste(noDrones, "_drone.sh", sep="", collapse=""))
+      system(drone_ex)
     }
     else {
       system2(paste(noDrones,"_drone.bat", sep="", collapse=""))
