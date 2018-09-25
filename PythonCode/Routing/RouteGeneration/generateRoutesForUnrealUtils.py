@@ -103,8 +103,47 @@ def save_python_to_file(python_code, file_loc):
 	print("writing to file: ", file_loc)
 	file = open(file_loc, 'w')
 	file.write(python_code)
-	file.close()	
-	
+	file.close()
+
+def clean_path(path):
+	path = path.replace("\\", "/")
+	path = path.replace("///", "/")
+	return  path.replace("//", "/")
+
+def gen_batch_scripts(folder, rav_no, python):
+	rav_no_dict = {1: 'zero', 2: 'one', 3: 'two', 4: 'three'}
+	return_txt = "cd ../.."
+
+	if not 'windows' in folder.lower():
+		return_txt += "set base_dir=%cd%"
+		return_txt += ""
+		return_txt += "cd ./RAVCollectedData/PNGImages/ImagesRAV" + str(rav_no+1)
+		return_txt += "del /F /S *.png"
+		return_txt += ""
+		return_txt += "cd %base_dir%"
+		return_txt += ""
+		return_txt += "cd ./PythonCode/Routing/AirSimPythonClient/RAVExecuteRoutes"
+		rav_text = ""
+		return_txt += "start %s rav_%s_mapper.py" % (python, rav_text)
+		print(folder)
+		bat_file = open(folder + '/' + rav_no_dict[rav_no + 1] + '_drone.bat', 'w+')
+		bat_file.write(return_txt)
+		bat_file.close()
+	else:
+		return_txt += 'base_dir="$( cd "$(dirname "$0")" ; pwd -P )"'
+		return_txt += ""
+		return_txt += "cd ./RAVCollectedData/PNGImages/ImagesRAV" + str(rav_no+1)
+		return_txt += "find -type f -iname '*.png' -delete"
+		return_txt += ""
+		return_txt += "cd $base_dir%"
+		return_txt += ""
+		return_txt += "cd ./PythonCode/Routing/AirSimPythonClient/RAVExecuteRoutes"
+		return_txt += "%s rav_%s_mapper.py" % (python, rav_no_dict[rav_no])
+		sh_file = open(folder + rav_no_dict[rav_no + 1] + '_drone.sh', 'w+')
+		sh_file.write(return_txt)
+		sh_file.close()
+
+
 def get_txt():
 	#reads file as text
 	txt = ''

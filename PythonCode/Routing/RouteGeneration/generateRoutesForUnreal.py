@@ -2,12 +2,12 @@ import argparse
 import sys
 import os
 import configparser
-from generateRoutesForUnrealUtils import generate_route_text, save_python_to_file, get_txt
+from generateRoutesForUnrealUtils import generate_route_text, save_python_to_file, get_txt, gen_batch_scripts, clean_path
 
-def get_config() -> configparser.ConfigParser:
+def get_config() :
 	config = configparser.ConfigParser()
 	#read the global default config
-	config.read(os.getcwd().replace("\\", "/") + '/../../../../Config/config.ini')
+	config.read(os.getcwd().replace("\\", "/") + '/../../../Config/config.ini')
 	print("Read config file from here: {}".format(os.getcwd().replace("\\", "/") + '/../../../../Config/config.ini'))
 	return config
 	
@@ -19,13 +19,14 @@ def create_folders_if_dont_exist():
 def main(no_ravs, no_cameras = 1, rav_velocity = 4, rav_altitude = 35, RAV_route_execution_dir = "", RAV_recorded_GPS_waypoints="", saved_images_dir=""):
 	config = get_config()
 	print('config: ', config.sections())
-	print("Generating routes for ", no_ravs, " ravs")
 	base_dir = os.path.abspath(__file__).split('PythonCode')[0].replace('\\', '/')
+	print("Generating routes for ", no_ravs, " ravs")
 	#READ DEFAULTS
-	RAVGPSRoutesDir = base_dir + config["DATA"]["PlannedAgentRoutesDir"]
+	RAVGPSRoutesDir = clean_path(base_dir + config["DATA"]["PlannedAgentRoutesDir"])
+
 	if saved_images_dir == "":
 			#saved_images_dir = base_dir + "/PythonCode/PythonClientGPSMapping/GPSMappings/Images"
-			saved_images_dir = base_dir + config["DATA"]["CollectedPNGImagesDir"]
+			saved_images_dir = clean_path(base_dir + config["DATA"]["CollectedPNGImagesDir"])
 			
 	if not os.path.isdir(saved_images_dir):
 			#exit program and ask for valid path
@@ -33,11 +34,11 @@ def main(no_ravs, no_cameras = 1, rav_velocity = 4, rav_altitude = 35, RAV_route
 			os.makedirs(saved_images_dir)
 			
 	if RAV_recorded_GPS_waypoints == "":
-		RAV_recorded_GPS_waypoints = base_dir + config["DATA"]["RAVRecordedGPSWaypoints"]
+		RAV_recorded_GPS_waypoints = clean_path(base_dir + config["DATA"]["RAVRecordedGPSWaypoints"])
 		#RAV_recorded_GPS_waypoints = base_dir + "/PythonCode/PythonClientGPSMapping/GPSMappings/GPSCoords"
 		
 	if RAV_route_execution_dir == "":
-		RAV_route_execution_dir = base_dir + config['PYTHON']['PythonRAVRouteExecutionDir']
+		RAV_route_execution_dir = clean_path(base_dir + config['PYTHON']['PythonRAVRouteExecutionDir'])
 		#RAV_route_execution_dir = base_dir + "/PythonCode/PythonGridMapping/AirSimPythonClient"
 		
 	
@@ -48,11 +49,20 @@ def main(no_ravs, no_cameras = 1, rav_velocity = 4, rav_altitude = 35, RAV_route
 	if not os.path.isdir(RAV_recorded_GPS_waypoints):
 		print('Directory {} does not exist, creating in default location'.format(RAV_recorded_GPS_waypoints))
 		os.makedirs(RAV_recorded_GPS_waypoints)
-		
+
+	batch_folder = clean_path(base_dir + config['BATCHSCRIPTS']['BatchScriptsLoc'])
+	if not os.path.isdir(batch_folder):
+		print('Directory {} does not exist, creating bash scripts folder'.format(batch_folder))
+		os.makedirs(batch_folder)
+
 	#create images directory
 	for rav_no in range(int(no_ravs)):
 		if not os.path.isdir(saved_images_dir + '/ImagesRAV%d' % (rav_no + 1)):
 			os.makedirs(saved_images_dir + '/ImagesRAV%d' % (rav_no + 1))
+
+		# Generate batch scripts
+		gen_batch_scripts(batch_folder, rav_no, config['PYTHON']['PythonExe'])
+
 		for camera_no in range(int(no_cameras)):
 			if not os.path.isdir(saved_images_dir + '/ImagesRAV%d' % (rav_no + 1) + '/Camera{}'.format(camera_no+1)):
 				print('Directory {} does not exist, creating in default location'.format(saved_images_dir + '/ImagesRAV%d' % (rav_no + 1) + '/Camera{}'.format(camera_no+1)))
