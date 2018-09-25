@@ -64,7 +64,7 @@ shinyServer(function(input, output, session) {
   
   blog_chem_likelihood_output <- eventReactive(input$do_blog_analysis,{
     showNotification("Calculating likelihoods of threat", duration = 8, type = "message")
-    run_blog(concat_paths(working_dir,config$BLOG$BlogCodeLoc), config$BLOG$BlogProgName, concat_paths(working_dir, config$BLOG$BlogBinLoc), working_dir, isolate(input$odors), isolate(input$nerve_agents), isolate(input$dispersion_methods))
+    run_blog(concat_paths(working_dir,config$BLOG$BlogCodeLoc), config$BLOG$BlogProgName, config$BLOG$BlogBinLoc, working_dir, isolate(input$odors), isolate(input$nerve_agents), isolate(input$dispersion_methods))
     file = readtext(concat_paths(working_dir, config$BLOG$BlogCodeLoc,"/output.txt"))$text
     #relevant_data = strsplit(file, 'Query Results')
     x <- str_split(file, "Query Results", 2, TRUE)
