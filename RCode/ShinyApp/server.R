@@ -273,7 +273,7 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$RankTerms, {
     print("Ranking user terms")
-    value <- run_elasticMain(isolate(input$SOPRetrievalInput))
+    value <- run_elasticMain(config$PYTHON$PythonExe, concat_paths(working_dir, config$PYTHON$PythonDocRetrievalCodeLoc), config$PYTHON$PythonElasticMain, isolate(input$SOPRetrievalInput))
     update_sops(update_sops() + 1)
   })
   

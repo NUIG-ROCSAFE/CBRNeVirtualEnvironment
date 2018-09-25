@@ -130,15 +130,14 @@ run_java <- function(java_bin_loc, java_code_loc, java_prog_name, working_dir, w
   return(agent_route_analysis)
 }
 
-run_elasticMain <- function(search_terms){
+run_elasticMain <- function(python_exe, python_code_loc, script_name, search_terms){
   print("search terms:")
   print(search_terms)
   #build up args to send to python
   argString <- paste(search_terms, collapse = ' ')
-  argString <- paste(python_prog_name, argString, collapse = ' ')
+  argString <- paste(concat_paths(python_code_loc, script_name), argString, collapse = ' ')
   print(paste("Calling python with arguments: ", argString))
   #run elastic main
-  setwd(python_code_loc)
-  result <- system2("python", args = argString)
+  result <- system2(python_exe, args = argString)
   print(result)
 }
