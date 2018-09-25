@@ -37,7 +37,11 @@ end_of_file <- readtext(paste(blog_code_loc, "/ChemProbReasoningSecondHalf.txt",
 ################### Put this in config ###################
 
 concat_paths <- function(arg1,...){
-  return(paste0(arg1, ..., sep = ''))
+  inargs <<- paste(arg1, ..., sep = "/")
+  inargs <<- str_replace_all(string = inargs, pattern = "\\\\", replacement = "/")
+  inargs <<- str_replace_all(string = inargs, pattern = "///", replacement = "/")
+  inargs <<- str_replace_all(string = inargs, pattern = "//", replacement = "/")
+  return(inargs)
 }
 
 RAVIcon <- makeIcon(
@@ -104,6 +108,7 @@ run_java <- function(java_bin_loc, java_code_loc, java_prog_name, working_dir, w
   
   
   #pass in the working directory to the java code
+  print(java_prog_name)
   argsString <- paste(argsString, java_prog_name, sep='')
   argsString <- paste(argsString, working_dir)
   argsString <- paste(argsString, concat_paths(working_dir, write_dir))

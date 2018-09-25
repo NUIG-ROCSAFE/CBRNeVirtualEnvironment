@@ -105,7 +105,7 @@ shinyServer(function(input, output, session) {
       clickedLocs <<- data.frame("lat" = c(53.2780931659, 53.2804041456, 53.281325917, 53.2790149872),
                                  "long" = c( -9.0648465368, -9.0661543305, -9.0615979824, -9.0602901886)) 
     }
-    
+  
     run_java(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$DATA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
     print("found analysis")
     agent_route_analysis_flag(agent_route_analysis_flag() + 1) 
@@ -158,22 +158,23 @@ shinyServer(function(input, output, session) {
     #get the java script to generate the routes for each rav
     #java_bin_loc, java_code_loc, java_prog_name, working_dir, no_ravs, locs, lat_spacing, lng_spacing
     cat(paste0(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing)))
-    agent_routes <- run_java(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$JAVA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
+    print(concat_paths(working_dir, config$JAVA$JavaBinLoc))
+    agent_routes <- run_java(concat_paths(config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$DATA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
     
     # 
     # #read the csvs that contain the routes for each agent
     #points1 <-read.csv("./RCode/ShinyApp/Data/Agent1.csv", header = TRUE)
-    points1 <- read.csv(concat_paths(working_dir, config$DATA$AgentRoutesDir, "Agent1.csv"))
+    points1 <- read.csv(concat_paths(working_dir, config$DATA$PlannedAgentRoutesDir, "Agent1.csv"))
     
     leafletProxy('map') %>% addCircles(lng = points1$long, lat = points1$lat, weight=1, radius=7, color='black', fillColor='blue', popup = paste("RAV1",paste(points1$lat, points1$long))) %>% addPolylines(lng = points1$long, lat = points1$lat, weight=1, color='blue', fillColor='blue')
     if(isolate(input$no_ravs > 1)){
       #points2 <- read.csv("./RCode/ShinyApp/Data/Agent2.csv")
-      points2 <- read.csv(concat_paths(working_dir, config$DATA$AgentRoutesDir, "Agent2.csv"))
+      points2 <- read.csv(concat_paths(working_dir, config$DATA$PlannedAgentRoutesDir, "Agent2.csv"))
       leafletProxy('map') %>% addCircles(lng = points2$long, lat = points2$lat, weight=1, radius=7, color='black', fillColor='green', popup = paste("RAV2",paste(points2$lat, points2$long))) %>% addPolylines(lng = points2$long, lat = points2$lat, weight=1, color='green', fillColor='green')
     }
     if(isolate(input$no_ravs > 2)){
       #points3 <- read.csv("./RCode/ShinyApp/Data/Agent3.csv")
-      points3 <- read.csv(concat_paths(working_dir, config$DATA$AgentRoutesDir, "Agent3.csv"))
+      points3 <- read.csv(concat_paths(working_dir, config$DATA$PlannedAgentRoutesDir, "Agent3.csv"))
       leafletProxy('map') %>% addCircles(lng = points3$long, lat = points3$lat, weight=1, radius=7, color='black', fillColor='red', popup = paste("RAV3",paste(points3$lat, points3$long))) %>% addPolylines(lng = points3$long, lat = points3$lat, weight=1,color='red', fillColor='red')
     }
   })
@@ -193,13 +194,19 @@ shinyServer(function(input, output, session) {
     gen_route_command <- paste(concat_paths(working_dir, config$PYTHON$PythonGenerateRouteDir, config$PYTHON$PythonGenerateRoutesFileLoc), isolate(input$no_ravs), isolate(input$num_cameras), isolate(input$rav_veloctiy), isolate(input$rav_altitude), collapse='')
   
     print(paste("running python command", gen_route_command))
-    system2("python", args = c(gen_route_command))
+    system2(config$PYTHON$PythonExe, args = c(gen_route_command))
     ###################### Put all of this into utils.py ######################
     
     showNotification("Agents ready to execute planned routes", duration = 10, type = "message")
-    setwd(concat_paths(working_dir, config$BATCHSCRIPTS$BatchScriptsLoc))
     noDrones = ifelse(isolate(input$no_ravs) == 1, "one", ifelse(isolate(input$no_ravs)==2, "two", "three"))
-    system2(paste(noDrones,"_drone.bat", sep="", collapse=""))
+    setwd(concat_paths(working_dir, config$BATCHSCRIPTS$BatchScriptsLoc))
+    if((stringr::str_extract(config$BATCHSCRIPTS$BatchScriptsLoc, "Unix")) == "Unix"){
+      drone_ex <<- concat_paths(working_dir, config$BATCHSCRIPTS$BatchScriptsLoc, paste(noDrones, "_drone.sh", sep="", collapse=""))
+      system(drone_ex)
+    }
+    else {
+      system2(paste(noDrones,"_drone.bat", sep="", collapse=""))
+    }
     setwd(working_dir)
     showNotification("RAVs executing planned routes in games engine")
   })

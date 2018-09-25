@@ -5,7 +5,7 @@ import sys
 
 
 def generate_route_text(drone_number, gps_coords, gps_coords_file_dir, saved_images_dir, no_cameras = 1, rav_velocity = 5, rav_altitude = 35, sleep_time = 0.5, images: bool = True, gps_locations: bool=True):
-	'''Given a drone number, list of gps coordinates, writes a file to \\PythonGridMapping\\AirSimPythonClient\\rav_{}_mapper.py which contains 
+	'''Given a drone number, list of gps coordinates, writes a file to /PythonGridMapping/AirSimPythonClient/rav_{}_mapper.py which contains 
 	the AirSim api commands which send the RAV to the generated GPS coordinates to gather image data'''
 	#if the user wants one camera, let that be camera 3 (downward facing). 
 	camera_mapping = {1:3, 2:2, 3:1, 4:4}
@@ -23,9 +23,9 @@ def generate_route_text(drone_number, gps_coords, gps_coords_file_dir, saved_ima
 	'''
 	
 
-	return_txt += '''gpsCoordsFile = open('{gps_coords_file_dir}\\GPSCoords{drone_number}.txt', 'w')
-	AirSimgpsCoordsFile = open('{gps_coords_file_dir}\\AirSimGPSCoords{drone_number}.txt', 'w')
-	AirSimgpsRelativeCoordsFile = open('{gps_coords_file_dir}\\AirSimRelativeGPSCoords{drone_number}.txt', 'w')
+	return_txt += '''gpsCoordsFile = open('{gps_coords_file_dir}/GPSCoords{drone_number}.txt', 'w')
+	AirSimgpsCoordsFile = open('{gps_coords_file_dir}/AirSimGPSCoords{drone_number}.txt', 'w')
+	AirSimgpsRelativeCoordsFile = open('{gps_coords_file_dir}/AirSimRelativeGPSCoords{drone_number}.txt', 'w')
 	'''.format(gps_coords_file_dir = gps_coords_file_dir, drone_number=drone_number)
 	
 	return_txt += '''port = {port}
@@ -71,18 +71,18 @@ responses = client.simGetImages([{}])'''
 
 
 			return_txt += '''
-print('Writing files to ', "{saved_images_dir}"+"\\Images{drone_number}\\Camera{{}}\\image_{line_index}.png".format('example', saved_images_dir = '{saved_images_dir}'))
+print('Writing files to ', "{saved_images_dir}"+"/Images{drone_number}/Camera{{}}/image_{line_index}.png".format('example', saved_images_dir = '{saved_images_dir}'))
 for image_index, image in enumerate(responses):
-	AirSimClientBase.write_file("{saved_images_dir}"+"\\Images{drone_number}\\Camera{{}}\\image_{line_index}.png".format(image_index+1) , image.image_data_uint8)
+	AirSimClientBase.write_file("{saved_images_dir}"+"/Images{drone_number}/Camera{{}}/image_{line_index}.png".format(image_index+1) , image.image_data_uint8)
 '''.format(saved_images_dir=saved_images_dir, drone_number=drone_number,line_index=line_index)
 				
 			
 		if gps_locations:
-			return_txt += "gpsCoordsFile.write('{}, {}\\n')\n".format(line.split(',')[0], line.split(',')[1])
+			return_txt += "gpsCoordsFile.write('{}, {}/n')\n".format(line.split(',')[0], line.split(',')[1])
 			return_txt += "gpsCoordsFile.flush()\n"
-			return_txt += "AirSimgpsCoordsFile.write(str({})+', '+str({}) + '\\n')\n".format("client.getGpsLocation().latitude", "client.getGpsLocation().longitude")
+			return_txt += "AirSimgpsCoordsFile.write(str({})+', '+str({}) + '/n')\n".format("client.getGpsLocation().latitude", "client.getGpsLocation().longitude")
 			return_txt += "AirSimgpsCoordsFile.flush()\n"
-			return_txt += "AirSimgpsRelativeCoordsFile.write(str({})+', '+ str({})+'\\n')\n".format("client.getGPSLocationRelative().lat", "client.getGPSLocationRelative().long")
+			return_txt += "AirSimgpsRelativeCoordsFile.write(str({})+', '+ str({})+'/n')\n".format("client.getGPSLocationRelative().lat", "client.getGPSLocationRelative().long")
 			return_txt += "AirSimgpsRelativeCoordsFile.flush()\n"
 			return_txt += "print('NUIG relative GPS location: ', client.getGPSLocationRelative())\n"
 			
@@ -103,8 +103,45 @@ def save_python_to_file(python_code, file_loc):
 	print("writing to file: ", file_loc)
 	file = open(file_loc, 'w')
 	file.write(python_code)
-	file.close()	
-	
+	file.close()
+
+def clean_path(path):
+	path = path.replace("/", "/")
+	path = path.replace("///", "/")
+	return path.replace("//", "/")
+
+def gen_batch_scripts(folder, rav_no, python):
+	rav_no_dict = {0: 'zero', 1: 'one', 2: 'two', 3: 'three'}
+	return_txt = "cd ../..\n"
+	if 'windows' in folder.lower():
+		print("Generating BAT")
+		return_txt += "set base_dir=%cd%"
+		return_txt += ""
+		return_txt += "cd ./RAVCollectedData/PNGImages/ImagesRAV" + str(rav_no+1)
+		return_txt += "del /F /S *.png"
+		return_txt += ""
+		return_txt += "cd %base_dir%"
+		return_txt += ""
+		return_txt += "cd ./PythonCode/Routing/AirSimPythonClient/RAVExecuteRoutes"
+		return_txt += "start %s rav_%s_mapper.py" % (python, rav_no_dict[rav_no])
+		print(folder)
+		bat_file = open(folder + '/' + rav_no_dict[rav_no + 1] + '_drone.bat', 'w+')
+		bat_file.write(return_txt)
+		bat_file.close()
+	else:
+		print("Generating BASH")
+		return_txt += 'base_dir=$(pwd)\n'
+		return_txt += "cd ./RAVCollectedData/PNGImages/ImagesRAV" + str(rav_no+1) + '\n'
+		return_txt += "find -type f -iname '*.png' -delete\n"
+		return_txt += "\n"
+		return_txt += "cd ${base_dir} \n"
+		return_txt += "cd ./PythonCode/Routing/AirSimPythonClient/RAVExecuteRoutes\n"
+		return_txt += "%s rav_%s_mapper.py\n" % (python, rav_no_dict[rav_no])
+		sh_file = open(folder + '/' + rav_no_dict[rav_no + 1] + '_drone.sh', 'w+')
+		sh_file.write(return_txt)
+		sh_file.close()
+
+
 def get_txt():
 	#reads file as text
 	txt = ''
