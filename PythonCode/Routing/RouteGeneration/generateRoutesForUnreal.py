@@ -7,7 +7,7 @@ from generateRoutesForUnrealUtils import generate_route_text, save_python_to_fil
 def get_config() :
 	config = configparser.ConfigParser()
 	#read the global default config
-	config.read(os.getcwd().replace("\\", "/") + '/../../../Config/config.ini')
+	config.read(os.getcwd().replace("\\", "/") + '/../../../../Config/config.ini')
 	print("Read config file from here: {}".format(os.getcwd().replace("\\", "/") + '/../../../../Config/config.ini'))
 	return config
 	

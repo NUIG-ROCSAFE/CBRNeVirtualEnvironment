@@ -108,13 +108,13 @@ def save_python_to_file(python_code, file_loc):
 def clean_path(path):
 	path = path.replace("\\", "/")
 	path = path.replace("///", "/")
-	return  path.replace("//", "/")
+	return path.replace("//", "/")
 
 def gen_batch_scripts(folder, rav_no, python):
-	rav_no_dict = {1: 'zero', 2: 'one', 3: 'two', 4: 'three'}
-	return_txt = "cd ../.."
-
-	if not 'windows' in folder.lower():
+	rav_no_dict = {0: 'zero', 1: 'one', 2: 'two', 3: 'three'}
+	if 'windows' in folder.lower():
+		print("Generating BAT")
+		return_txt = "cd ../.."
 		return_txt += "set base_dir=%cd%"
 		return_txt += ""
 		return_txt += "cd ./RAVCollectedData/PNGImages/ImagesRAV" + str(rav_no+1)
@@ -123,23 +123,25 @@ def gen_batch_scripts(folder, rav_no, python):
 		return_txt += "cd %base_dir%"
 		return_txt += ""
 		return_txt += "cd ./PythonCode/Routing/AirSimPythonClient/RAVExecuteRoutes"
-		rav_text = ""
-		return_txt += "start %s rav_%s_mapper.py" % (python, rav_text)
+		return_txt += "start %s rav_%s_mapper.py" % (python, rav_no_dict[rav_no])
 		print(folder)
 		bat_file = open(folder + '/' + rav_no_dict[rav_no + 1] + '_drone.bat', 'w+')
 		bat_file.write(return_txt)
 		bat_file.close()
 	else:
-		return_txt += 'base_dir="$( cd "$(dirname "$0")" ; pwd -P )"'
-		return_txt += ""
-		return_txt += "cd ./RAVCollectedData/PNGImages/ImagesRAV" + str(rav_no+1)
-		return_txt += "find -type f -iname '*.png' -delete"
-		return_txt += ""
-		return_txt += "cd $base_dir%"
-		return_txt += ""
-		return_txt += "cd ./PythonCode/Routing/AirSimPythonClient/RAVExecuteRoutes"
-		return_txt += "%s rav_%s_mapper.py" % (python, rav_no_dict[rav_no])
-		sh_file = open(folder + rav_no_dict[rav_no + 1] + '_drone.sh', 'w+')
+		print("Generating BASH")
+		return_txt = "#!/bin/bash\n"
+		return_txt += "cd ../.."
+		return_txt += 'base_dir="$( cd "$(dirname "$0")" ; pwd -P )"\n'
+		return_txt += "\n"
+		return_txt += "cd ./RAVCollectedData/PNGImages/ImagesRAV" + str(rav_no+1) + '\n'
+		return_txt += "find -type f -iname '*.png' -delete\n"
+		return_txt += "\n"
+		return_txt += "cd $base_dir\n"
+		return_txt += "\n"
+		return_txt += "cd ./PythonCode/Routing/AirSimPythonClient/RAVExecuteRoutes\n"
+		return_txt += "%s rav_%s_mapper.py\n" % (python, rav_no_dict[rav_no])
+		sh_file = open(folder + '/' + rav_no_dict[rav_no + 1] + '_drone.sh', 'w+')
 		sh_file.write(return_txt)
 		sh_file.close()
 

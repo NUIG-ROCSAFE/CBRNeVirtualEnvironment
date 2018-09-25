@@ -200,7 +200,12 @@ shinyServer(function(input, output, session) {
     showNotification("Agents ready to execute planned routes", duration = 10, type = "message")
     setwd(concat_paths(working_dir, config$BATCHSCRIPTS$BatchScriptsLoc))
     noDrones = ifelse(isolate(input$no_ravs) == 1, "one", ifelse(isolate(input$no_ravs)==2, "two", "three"))
-    system2(paste(noDrones,"_drone.bat", sep="", collapse=""))
+    if((stringr::str_extract(config$BATCHSCRIPTS$BatchScriptsLoc, "Unix")) == "Unix"){
+      system2(paste("bash ", noDrones,"_drone.sh", sep="", collapse=""))
+    }
+    else {
+      system2(paste(noDrones,"_drone.bat", sep="", collapse=""))
+    }
     setwd(working_dir)
     showNotification("RAVs executing planned routes in games engine")
   })
