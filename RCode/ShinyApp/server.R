@@ -33,8 +33,8 @@ config <<- read.ini("Config/config.ini")
 
 clickedLocs <<- data.frame(lat=numeric(),lng=numeric())
 names(clickedLocs) <- c("lat", "long")
-rav_positions <- data.frame("lat" = c(53.28, 53.286, 53.2798, 53.280), 
-                            "long" = c(-9.07, -9.0588, -9.0565, -9.062),
+rav_positions <- data.frame("lat" = c(53.28, 53.286, 53.2798, 53.2793), 
+                            "long" = c(-9.07, -9.0588, -9.0565, -9.0638),
                             "text" = c("RAV1", "RAV2", "RAV3", "HOME POSITION"))
 
 #bottom right, top right,  top left, bottom left
@@ -42,6 +42,23 @@ bounding_rect <- data.frame("lat" =c(53.27959959,53.2805257315, 53.2801009832, 5
                             "long" = c(-9.0617270785, -9.0621271428, -9.0648776011, -9.0644775368))
 
 
+#[[[-9.0639073588,53.2793739245],[-9.0602166392,53.2793739245],[-9.0602166392,53.2809840387],[-9.0639073588,53.2809840387],[-9.0639073588,53.2793739245]]]
+#[-9.0638071843,53.2792976752],[-9.0639982336,53.2809037353],[-9.0603168136,53.281060285],[-9.0601257644,53.2794542308],[-9.0638071843,53.2792976752]
+#[-9.0639442718,53.2791398872],[-9.0642202286,53.2808642442],[-9.0602413557,53.2810918737],[-9.0599653988,53.2793675258],[-9.0639442718,53.2791398872]
+#[-9.0642552649,53.2790726084],[-9.064614238,53.2807914958],[-9.0608927529,53.2810693303],[-9.0605337799,53.2793504542],[-9.0642552649,53.2790726084]
+#[-9.0641369754,53.2789154775],[-9.064593214,53.2811001023],[-9.0609988415,53.2813684451],[-9.0605426028,53.279183834],[-9.0641369754,53.2789154775]
+#[-9.0636857335,53.2787326731],[-9.0642010013,53.2811999515],[-9.0611414417,53.2814283667],[-9.060626174,53.2789611015],[-9.0636857335,53.2787326731]
+#[-9.064461895,53.2787165425],[-9.0647670393,53.2806117414],[-9.0619860536,53.2807718114],[-9.0616809092,53.2788766196],[-9.064461895,53.2787165425]
+#[-9.064574293,53.2786446613],[-9.0647813482,53.2807282818],[-9.0617803398,53.2808348909],[-9.0615732847,53.2787512756],[-9.064574293,53.2786446613]
+#[-9.064574293,53.2786446613],[-9.0647956219,53.2808719159],[-9.0617946135,53.2809785246],[-9.0615732847,53.2787512756],[-9.064574293,53.2786446613]
+#[-9.064727017,53.2786392356],[-9.0649648993,53.2810330653],[-9.061811167,53.281145099],[-9.0615732847,53.2787512756],[-9.064727017,53.2786392356]
+
+get_lats = function(str){
+  return()
+}
+
+data_collection_rect <<- data.frame("lat" = c(53.2786520051, 53.2810475529, 53.2811390512, 53.2787435086), 
+                                   "long" = c(-9.0647555694,-9.0649387627,-9.0615917771,-9.0614085838))
 
 agent_route_analysis <<- ""
 f_snapshot_old <<- fileSnapshot(concat_paths(working_dir, config$DATA$UIImagesDir), md5sum = TRUE)
@@ -104,8 +121,9 @@ shinyServer(function(input, output, session) {
     print(isolate(input$DataColletionMode))
     if(isolate(input$DataColletionMode)){
       showNotification(paste("Using pre-defined rectangle to gather images: ", clickedLocs))
-      clickedLocs <<- data.frame("lat" = c(53.2780931659, 53.2804041456, 53.281325917, 53.2790149872),
-                                 "long" = c( -9.0648465368, -9.0661543305, -9.0615979824, -9.0602901886)) 
+      #clickedLocs <<- data.frame("lat" = c(53.2780931659, 53.2804041456, 53.281325917, 53.2790149872),
+      #                           "long" = c( -9.0648465368, -9.0661543305, -9.0615979824, -9.0602901886))
+      clickedLocs <<- data_collection_rect
     }
     
     run_java(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$DATA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
@@ -126,7 +144,7 @@ shinyServer(function(input, output, session) {
   
   output$map <- renderLeaflet({
     leaflet() %>%
-      setView(lng = -9.0615, lat = 53.2770, zoom = 12) %>%
+      setView(lng = -9.0615, lat = 53.2770, zoom = 15) %>%
       addTiles(options = providerTileOptions(noWrap = TRUE)) %>%
       addMarkers(lng = rav_positions$long, lat = rav_positions$lat, icon = RAVIcon) %>%
       addPolygons(lng = bounding_rect$long, lat = bounding_rect$lat, opacity = 0.2, color = '#ff0000')
@@ -150,8 +168,9 @@ shinyServer(function(input, output, session) {
     #hard code in data collection region
     if(isolate(input$DataColletionMode)){
       showNotification(paste("Using pre-defined rectangle to gather images: ", clickedLocs))
-      clickedLocs <<- data.frame("lat" = c(53.2780931659, 53.2804041456, 53.281325917, 53.2790149872),
-                                                                 "long" = c( -9.0648465368, -9.0661543305, -9.0615979824, -9.0602901886)) 
+      #clickedLocs <<- data.frame("lat" = c(53.2780931659, 53.2804041456, 53.281325917, 53.2790149872),
+      #                                                           "long" = c( -9.0648465368, -9.0661543305, -9.0615979824, -9.0602901886)) 
+      clickedLocs <<- data_collection_rect
     }
     
     if(is.null(config$JAVA$JavaBinLoc)){

@@ -98,7 +98,7 @@ for camera_index, image in enumerate(responses):
 			return_txt += "print('NUIG relative GPS location: ', client.getGPSLocationRelative())\n"
 			
 	#send the rav to its home position and then land it
-	return_txt += moveToGPSPositionString.format("client.GPS_to_unreal.home_position_GPS()[0]", "gps_mapper.home_position_GPS()[1]")
+	return_txt += moveToGPSPositionString.format("client.GPS_to_unreal.home_position_GPS.lat", "gps_mapper.home_position_GPS.long")
 	return_txt += "client.land()\n"
 	return_txt += "client.armDisarm(False)\n"
 	

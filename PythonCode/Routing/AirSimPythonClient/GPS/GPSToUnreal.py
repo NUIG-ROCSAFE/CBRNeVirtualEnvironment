@@ -16,7 +16,7 @@ class GPSToUnreal:
 
     # home_position_GPS is the home gps location of the drone in AirSim
     # (close to microsoft headquarters)
-    def __init__(self, home_position_GPS: GPSCoordinate = GPSCoordinate(53.280, -9.062)):
+    def __init__(self, home_position_GPS: GPSCoordinate = GPSCoordinate(53.2793, -9.0638)):
         '''Set the home gps coordinate of the rav'''
         self.home_position_GPS = home_position_GPS
         #self.home_position_GPS = GPSCoordinate(53.280, -9.062, 0)
