@@ -209,6 +209,13 @@ run_java <- function(java_bin_loc, java_code_loc, java_prog_name, working_dir, w
   return(agent_route_analysis)
 }
 
+gen_airsim <- function(python_exe, python_code_loc) {
+  argString <- concat_paths(python_code_loc, "gen_airsim.py")
+  argString <- paste(python_exe, argString, concat_paths(working_dir, "Config/settings.json"), sep=" ")
+  print(argString)
+  system(argString)
+}
+
 run_elasticMain <- function(python_exe, python_code_loc, script_name, search_terms){
   err_type <- "Elastic Search Error."
   print(search_terms)

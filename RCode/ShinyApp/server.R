@@ -59,6 +59,7 @@ shinyServer(function(input, output, session) {
   update_sops <- reactiveVal(value = 0)
   agent_route_analysis_flag <- reactiveVal(value = 0)
   
+  
   blog_chem_likelihood_output <- eventReactive(input$do_blog_analysis,{
     showNotification("Calculating likelihoods of threat", duration = 8, type = "message")
     run_blog(concat_paths(working_dir,config$BLOG$BlogCodeLoc), config$BLOG$BlogProgName, config$BLOG$BlogBinLoc, working_dir, isolate(input$odors), isolate(input$nerve_agents), isolate(input$dispersion_methods))
@@ -296,4 +297,6 @@ shinyServer(function(input, output, session) {
     }
   })
   
+  
+  gen_airsim(config$PYTHON$PythonExe, concat_paths(working_dir, "PythonCode"))
 })
