@@ -28,9 +28,6 @@ print(paste("Working directory: ",getwd()))
 
 config <<- read.ini("Config/config.ini")
 
-
-
-
 clickedLocs <<- data.frame(lat=numeric(),lng=numeric())
 names(clickedLocs) <- c("lat", "long")
 rav_positions <- data.frame("lat" = c(53.28, 53.286, 53.2798), 
@@ -55,7 +52,7 @@ f_snapshot_old <<- fileSnapshot(concat_paths(working_dir, config$DATA$UIImagesDi
 # dat$long <- c(-9.062691,-9.055781,-9.057240,-9.065051,-9.067411)
 
 shinyServer(function(input, output, session) {
-  
+  check_config(working_dir, config)
   #check for new images every 10 seconds
   autoInvalidate <- reactiveTimer(10000)
   update_images <- reactiveVal(value = 0)

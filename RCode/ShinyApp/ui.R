@@ -25,6 +25,7 @@ library(shinycssloaders)
 library(shinydashboard)
 library(shinyWidgets)
 library(leaflet)
+library(shinyalert)
 library(ggmap)
 
 
@@ -52,6 +53,7 @@ sidebar <- dashboardSidebar(
 )
   
 body <- dashboardBody(
+  useShinyalert(),
   tags$style("background-image: url('www/ROCSAFE-logo-final.png'"),
   tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}"),
     tabItems(

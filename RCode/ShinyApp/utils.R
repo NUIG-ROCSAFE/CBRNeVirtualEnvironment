@@ -37,11 +37,15 @@ end_of_file <- readtext(paste(blog_code_loc, "/ChemProbReasoningSecondHalf.txt",
 ################### Put this in config ###################
 
 concat_paths <- function(arg1,...){
-  inargs <<- paste(arg1, ..., sep = "/")
-  inargs <<- str_replace_all(string = inargs, pattern = "\\\\", replacement = "/")
-  inargs <<- str_replace_all(string = inargs, pattern = "///", replacement = "/")
-  inargs <<- str_replace_all(string = inargs, pattern = "//", replacement = "/")
+  inargs <- paste(arg1, ..., sep = "/")
+  inargs <- str_replace_all(string = inargs, pattern = "\\\\", replacement = "/")
+  inargs <- str_replace_all(string = inargs, pattern = "///", replacement = "/")
+  inargs <- str_replace_all(string = inargs, pattern = "//", replacement = "/")
   return(inargs)
+}
+
+display_err <- function(err_title, err_msg) {
+  shinyalert(err_title, err_msg, type = "error")
 }
 
 RAVIcon <- makeIcon(
@@ -49,6 +53,74 @@ RAVIcon <- makeIcon(
   iconWidth = 35, iconHeight = 35,
   iconAnchorX = 0, iconAnchorY = 0
 )
+
+check_dir_exists <- function(path, err_type, msg) {
+  if(isFALSE(dir.exists(path))){
+    display_err(err_type, msg)
+  }
+}
+
+check_file_exists <- function(filepath, err_type, msg) {
+  if(isFALSE(file.exists(filepath))){
+    display_err(err_type, msg)
+  }
+}
+
+check_config <- function(working_dir, config) {
+  err_type <- ""
+  
+  # [JAVA]
+  err_type <- "Java Error"
+  if(config$JAVA$JavaBinLoc == ""){
+    x <- system("java -h")
+    if(x == 127){
+      display_err(err_type, "Could not find 'java' in PATH environment variable. Please fix PATH or enter java bin destination Config/config.ini [JAVA] JavaBinLoc.")
+    }
+  }
+  else {
+    check_file_exists(concat_paths(config$JAVA$JavaBinLoc, "java"), err_type, "Please fix [JAVA] JavaBinLoc in Config/config.ini.")
+  }
+  check_file_exists(concat_paths(working_dir, config$JAVA$JavaCodeLoc, config$JAVA$JavaMissionDesignerJar), err_type, "Please fix [JAVA] JavaCodeLoc/JavaMissionDesignerJar in Config/config.ini.")
+  
+  # [BLOG]
+  err_type <- "Blog Error"
+  if(config$BLOG$BlogBinLoc  == ""){
+    x <- system("blog -h")
+    if(x == 127){
+      display_err(err_type, "Could not find 'blog' in PATH environment variable. Please fix PATH or enter blog bin destination Config/config.ini [BLOG] BlogBinLoc.")
+    }
+  }
+  else {
+    check_file_exists(concat_paths(config$BLOG$BlogBinLoc, "blog"), err_type, "Please fix [BLOG] BlogBinLoc in Config/config.ini.")
+  }
+  check_file_exists(concat_paths(working_dir, config$BLOG$BlogCodeLoc, config$BLOG$BlogProgName), err_type, "BlogCodeLoc/BlogProgName doesn't exist, please fix [BLOG] BlogCodeLoc/BlogProgName in Config/config.ini.")
+
+  # [PYTHON]
+  err_type <- "Python Error"
+  x <- system(paste(config$PYTHON$PythonExe, " -V", sep = ""))
+  if(x == 127){
+    display_err(err_type, sprintf("Could not find '%s' in PATH environment variable. Please fix PATH or change PythonExe in Config/config.ini.", config$PYTHON$PythonExe))
+  }
+  check_dir_exists(concat_paths(working_dir, config$PYTHON$PythonDocRetrievalCodeLoc), err_type, "PythonDocRetrievalCodeLoc doesn't exist, please fix [PYTHON] PythonDocRetrievalCodeLoc  in Config/config.ini.")
+  check_file_exists(concat_paths(working_dir, config$PYTHON$PythonDocRetrievalCodeLoc, config$PYTHON$PythonElasticMain ), err_type, "PythonElasticMain doesn't exist, please fix [PYTHON] PythonElasticMain in Config/config.ini.")
+  
+  check_dir_exists(concat_paths(working_dir, config$PYTHON$PythonRAVRouteExecutionDir), err_type, "PythonRAVRouteExecutionDir doesn't exist, please fix [PYTHON] PythonRAVRouteExecutionDir  in Config/config.ini.")
+  check_dir_exists(concat_paths(working_dir, config$PYTHON$PythonGenerateRouteDir), err_type, "PythonGenerateRouteDir doesn't exist, please fix [PYTHON] PythonGenerateRouteDir in Config/config.ini.")
+  check_file_exists(concat_paths(working_dir, config$PYTHON$PythonGenerateRouteDir, config$PYTHON$PythonGenerateRoutesFileLoc), err_type, "PythonGenerateRouteDir/PythonGenerateRoutesFileLoc doesn't exist, please fix [PYTHON] PythonGenerateRoutesFileLoc in Config/config.ini.")
+  
+  # [BATCHSCRIPTS]
+  err_type <- "BatchScripts Error"
+  check_dir_exists(concat_paths(working_dir, config$BATCHSCRIPTS$BatchScriptsLoc), err_type, sprintf("%s doesn't exist, please fix [BATCHSCRIPTS] BatchScriptsLoc in Config/config.ini.", concat_paths(working_dir, config$BATCHSCRIPTS$BatchScriptsLoc)))
+  
+  # [DATA]
+  err_type <- "Data Error"
+  check_dir_exists(concat_paths(working_dir, config$DATA$RAVGPSRoutesDir), err_type, sprintf("%s doesn't exist, please fix [DATA] RAVGPSRoutesDir in Config/config.ini.", concat_paths(working_dir, config$DATA$RAVGPSRoutesDir)))
+  check_dir_exists(concat_paths(working_dir, config$DATA$CollectedPNGImagesDir), err_type, sprintf("%s doesn't exist, please fix [DATA] CollectedPNGImagesDir in Config/config.ini.", concat_paths(working_dir, config$DATA$CollectedPNGImagesDir)))
+  check_dir_exists(concat_paths(working_dir, config$DATA$RAVRecordedGPSWaypoints), err_type, sprintf("%s doesn't exist, please fix [DATA] RAVRecordedGPSWaypoints in Config/config.ini.", concat_paths(working_dir, config$DATA$RAVRecordedGPSWaypoints )))
+  check_dir_exists(concat_paths(working_dir, config$DATA$UIImagesDir), err_type, sprintf("%s doesn't exist, please fix [DATA] UIImagesDir  in Config/config.ini.", concat_paths(working_dir, config$DATA$UIImagesDir  )))
+  check_dir_exists(concat_paths(working_dir, config$DATA$PlannedAgentRoutesDir), err_type, sprintf("%s doesn't exist, please fix [DATA] PlannedAgentRoutesDir  in Config/config.ini.", concat_paths(working_dir, config$DATA$PlannedAgentRoutesDir  )))
+  
+}
 
 
 run_blog <- function(blog_code_loc, blog_prog_name, blog_bin_loc, working_dir, odors_input, nerve_agents_input, dispersion_methods_input){
@@ -89,8 +161,9 @@ run_blog <- function(blog_code_loc, blog_prog_name, blog_bin_loc, working_dir, o
   
   print('blog_bin_log')
   print(blog_bin_loc)
-  
-  setwd(blog_bin_loc)
+  if(blog_bin_loc != ""){
+    setwd(blog_bin_loc)
+  }
   blog_code_output <- system2('blog', args=c (paste(blog_code_loc,'/ChemicalProbablisticReasoning.blog',sep='')), stdout= TRUE, wait= TRUE)
   setwd(working_dir)
   #write the result of the blog program
@@ -100,7 +173,9 @@ run_blog <- function(blog_code_loc, blog_prog_name, blog_bin_loc, working_dir, o
 run_java <- function(java_bin_loc, java_code_loc, java_prog_name, working_dir, write_dir, no_ravs, locs, lat_spacing, lng_spacing){
   print("java_bin_loc: ")
   print(java_bin_loc)
-  setwd(java_bin_loc)
+  if(java_bin_loc != ""){
+    setwd(java_bin_loc)
+  }
   
   #add jar and code location
   #argsString <- paste("-jar", str_replace(java_code_loc, '/', '\\\\'))
@@ -125,12 +200,21 @@ run_java <- function(java_bin_loc, java_code_loc, java_prog_name, working_dir, w
   print(argsString)
   print("calling")
   agent_route_analysis <<- system2("java", args = c(argsString), stdout = TRUE, wait = TRUE)
+  if(agent_route_analysis == 1) {
+    display_err("Java Error", "Cannot create a polygon with less than 3 vertices.")
+  }
   setwd(working_dir)
   print(agent_route_analysis)
   return(agent_route_analysis)
 }
 
 run_elasticMain <- function(python_exe, python_code_loc, script_name, search_terms){
+  err_type = "Elastic Search Error."
+  print(search_terms)
+  if(is.null(search_terms)){
+    display_err(err_type, "Please select a search item.")
+    return()
+  }
   print("search terms:")
   print(search_terms)
   #build up args to send to python
@@ -140,4 +224,7 @@ run_elasticMain <- function(python_exe, python_code_loc, script_name, search_ter
   #run elastic main
   result <- system2(python_exe, args = argString)
   print(result)
+  if(result == 1) {
+    display_err(err_type, "Elastic search is not running correctly, make sure elastic search is running on port 9200.")
+  }
 }
