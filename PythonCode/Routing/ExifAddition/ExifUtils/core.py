@@ -23,7 +23,8 @@ def get_exiftool_commands(tags_values: dict, image_loc:str):
 def run_exiftool(tags_values: dict, image_loc: str):
 	'''Runs exiftool with the given tags=value pairs in the tags_value dict'''
 	commands_list = get_exiftool_commands(tags_values, image_loc)
-	exiftool_location = str(pathlib.Path(os.path.dirname(os.path.abspath(__file__))).joinpath("../bin/exiftool-10.88/exiftool"))
+	exiftool_location = "C:/Users/13383861/Dropbox/SoftwareDevelopment/miscProjects/ExifUtils_module/bin/exiftool-10.88/exiftool.exe"
+	#exiftool_location = #str(pathlib.Path(os.path.dirname(os.path.abspath(__file__))).joinpath("../bin/exiftool-10.88/exiftool"))
 	try:	
 		return subprocess.check_output([exiftool_location] + commands_list)
 	except Exception as e:
@@ -56,7 +57,7 @@ def write_author(image_loc, author: str):
 	return run_exiftool({'author': author}, image_loc)
 	#subprocess.check_output(["exiftool", '"-datetimeoriginal={}"'.format(date), image_loc])
 
-def process_image(from_file_location: str, to_dir_location: str, comment: str = '', tags: "list of strings", date: str, 
+def process_image(from_file_location: str, to_dir_location: str, comment: str = None, tags: "list of strings"=None, date: str = None, 
 	gps_lat: float = None, gps_long: float = None, gps_alt: float = 32):
 	'''Given a raw png image and metadata about that image, copies it to a specified location 
 	in jpg format and writes metadata to exif'''

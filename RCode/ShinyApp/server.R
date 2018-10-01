@@ -146,15 +146,15 @@ shinyServer(function(input, output, session) {
     leaflet() %>%
       setView(lng = -9.0615, lat = 53.2770, zoom = 15) %>%
       addTiles(options = providerTileOptions(noWrap = TRUE)) %>%
-      addMarkers(lng = rav_positions$long, lat = rav_positions$lat, icon = RAVIcon) %>%
-      addPolygons(lng = bounding_rect$long, lat = bounding_rect$lat, opacity = 0.2, color = '#ff0000')
+      addMarkers(lng = rav_positions$long, lat = rav_positions$lat, icon = RAVIcon) #%>%
+      #addPolygons(lng = bounding_rect$long, lat = bounding_rect$lat, opacity = 0.2, color = '#ff0000')
   })
   
   observeEvent(input$clear_region, {
     clickedLocs<<-clickedLocs[0,]
     leafletProxy('map') %>% clearShapes() %>% clearMarkers() %>% 
-      addMarkers(lng = rav_positions$long, lat = rav_positions$lat, icon = RAVIcon) %>%
-      addPolygons(lng = bounding_rect$long, lat = bounding_rect$lat, opacity = 0.2, color = '#ff0000')
+      addMarkers(lng = rav_positions$long, lat = rav_positions$lat, icon = RAVIcon) #%>%
+      #addPolygons(lng = bounding_rect$long, lat = bounding_rect$lat, opacity = 0.2, color = '#ff0000')
   })
   
   observeEvent(input$map_region, {

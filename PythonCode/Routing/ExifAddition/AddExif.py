@@ -27,7 +27,7 @@ def verify_gps_lats_longs(gps_lats, gps_longs):
 		return False
 	
 	
-def copy_png_files_and_convert_to_jpg(png_folder, jpg_folder, sorting_lambda = lambda file_name: int(file_name.split('_')[1].replace('.png','')),gps_lats, gps_longs, gps_alts = []):
+def copy_png_files_and_convert_to_jpg(png_folder, jpg_folder, gps_lats, gps_longs, gps_alts = [], sorting_lambda = lambda file_name: int(file_name.split('_')[1].replace('.png','').replace('.jpg',''))):
 	'''Given a folder containing png files and a corresponding csv file containing lat, 
 	long, alt for images, will create a new folder in specified location, copy png files to 
 	jpg and write GPS details to exif. If a file in png_folder is not png it will be copied to 
@@ -42,52 +42,66 @@ def copy_png_files_and_convert_to_jpg(png_folder, jpg_folder, sorting_lambda = l
 		if os.listdir(jpg_folder) != []:
 			print('{} is not an empty directory, may accidentally overwrite images'.format(jpg_folder))
 	
-	
+	print(os.listdir(png_folder))
 	#first copy files from png_folder to jpg_folder if they are .png format
+	
 	for png_file in os.listdir(png_folder):
+		#if int(png_file.split('_')[1].replace('.png','')) %2:
 		try:
-			copy_file(png_file, jpg_folder)
+			copy_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages/ImagesRAV1/Camera3/"+png_file, jpg_folder)
 		except Exception as e:
 		#don't try and deal with exception (may change this)
 			raise e
-		
+	
 	#now convert files to jpg
+	
 	for unconverted_png_file in os.listdir(jpg_folder):
 		try:
-			convert_png_to_jpg(unconverted_png_file, )
+			convert_png_to_jpg(jpg_folder + unconverted_png_file)
 		except Exception as e:
 		#don't try and deal with exception (may change this)
 			raise e
+	
 	
 	#process images by adding gps exif data. Assume that gps_lats and gps_longs are valid
 	counter = 0
 	for jpg_file in sorted(os.listdir(jpg_folder), key = sorting_lambda):
-		write_exif_gps_data(gps_lats[counter], gps_longs[counter], gps_alts[counter])
+		write_exif_gps_data(jpg_folder + jpg_file, gps_lats[counter], gps_longs[counter], gps_alts[counter])
 		counter += 1
 	
 def get_gps_coords_default(rav_number):
 	'''Gets lats, longs from default location in ROCSAFE project'''
-	config = getConfig()
-	curdir = os.path.realpath(__file__)
-	os.chdir(curdir)
-	os.chdir("../..")
-	base_dir = os.getcwd()
-	gps_coords = open(base_dir + config['DEFAULT']['gpslocations'] + str(rav_number) + ".txt", 'r' ).readlines()
-	lats = [float(coord.split(',')[0]) for coord in gps_coords.split('\n')]
-	longs = [float(coord.split(',')[1]) for coord in gps_coords.split('\n')]
-	alts = [float(coord.split(',')[2]) for coord in gps_coords.split('\n')]
+	#config = getConfig()
+	#curdir = os.path.realpath(__file__)
+	#os.chdir(curdir)
+	#os.chdir("../../..")
+	#base_dir = os.getcwd()
+	#gps_coords = open(base_dir + config['DEFAULT']['gpslocations'] + str(rav_number) + ".txt", 'r' ).readlines()
+	gps_coords = open("D:\TempFiles\CBRNeVirtualEnvironment\RAVCollectedData\GPSCoords\AirSimRelativeGPSCoords1.txt","r").read() 
+	print(gps_coords.split('/n'))
+	lats = [float(coord.split(',')[0]) for coord in gps_coords.split('/n')]
+	#lats = [lats[i] if i%2 for i in range(len(lats))]
+	longs = [float(coord.split(',')[1]) for coord in gps_coords.split('/n')]
+	#longs = [lats[i] if i%2 for i in range(len(longs))]
+	#alts = [float(coord.split(',')[2]) for coord in gps_coords.split('/n')]
+	alts = [55 for i in range(len(lats))]
+	#alts = [alts[i] if i%2 for i in range(len(alts))]
 	return lats, longs, alts
 	
 def get_RAV_image_dir(rav_number):
-	config = getConfig()
-	curdir = os.path.realpath(__file__)
-	os.chdir(curdir)
-	os.chdir("../..")
-	base_dir = os.getcwd()
-	rav_png_images_loc = base_dir + config['DEFAULT']['RAVImages_location']
-	return rav_png_images_loc + 'Drone{}Camera3'.format(rav_number)
+	'''Returns 
+	#config = getConfig()
+	#curdir = os.path.realpath(__file__)
+	#os.chdir(curdir)
+	#os.chdir("../../..")
+	#base_dir = os.getcwd()
+	#rav_png_images_loc = base_dir + config['DEFAULT']['RAVImages_location']
+	#return rav_png_images_loc + 'Drone{}Camera3'.format(rav_number)
+	'''
+	return "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages/ImagesRAV1/Camera3"
 	
 def get_RAV_JPG_image_dir(rav_number):
+	'''
 	config = getConfig()
 	curdir = os.path.realpath(__file__)
 	os.chdir(curdir)
@@ -95,6 +109,8 @@ def get_RAV_JPG_image_dir(rav_number):
 	base_dir = os.getcwd()
 	rav_jpg_dir = base_dir + config['DEFAULT']['jpg_images_location']
 	return rav_jpg_dir
+	'''
+	return "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/JPGImagesWithExif/Drone1Camera3JPG/"
 	
 	
 	
@@ -126,7 +142,7 @@ def get_gps_locations():
 #drone3Images = base_dir + config['DEFAULT']['drone3Images_location']
 
 
-
+'''
 def copy_png_files_and_convert_to_jpg(drone_index, drone_images, camera_number):
     print('Copying files from directory {}'.format(drone_images))
     print("Converting {} images taken from RAV {} to jpg".format(len(os.listdir(drone_images)), drone_index))
@@ -161,13 +177,13 @@ def write_exif_data(drone_index, camera_number):
 			#os.rename('D:\IJCAIDemoCode\PythonClientGPSMapping\GPSMappings\GPSAnnotatedImages\JPGImages\Drone{}Camera3JPG'.format(drone_index) + '\\' + image, 'D:\IJCAIDemoCode\PythonClientGPSMapping\GPSMappings\GPSAnnotatedImages\JPGImages\Drone{}Camera3JPG'.format(drone_index) + '\\' + 'drone3' + image)
 			if '_original' in image:
 				os.remove(JPGImages + '\Drone{}Camera{}JPG'.format(drone_index, camera_number) + '\\' + image)
-            
+'''          
 			
 #copy_png_files_and_convert_to_jpg(1, drone1Images, 3)
 #copy_png_files_and_convert_to_jpg(2, drone2Images, 3)
 #copy_png_files_and_convert_to_jpg(3, drone3Images, 3)
 
-write_exif_data(1, 3)
+#write_exif_data(1, 3)
 #write_exif_data(2, 3)
 #write_exif_data(3, 3)
 
