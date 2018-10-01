@@ -200,16 +200,17 @@ run_java <- function(java_bin_loc, java_code_loc, java_prog_name, working_dir, w
   print(argsString)
   print("calling")
   agent_route_analysis <<- system2("java", args = c(argsString), stdout = TRUE, wait = TRUE)
-  if(agent_route_analysis == 1) {
+  
+  print(agent_route_analysis)
+  if(length(agent_route_analysis) == 4) {
     display_err("Java Error", "Cannot create a polygon with less than 3 vertices.")
   }
   setwd(working_dir)
-  print(agent_route_analysis)
   return(agent_route_analysis)
 }
 
 run_elasticMain <- function(python_exe, python_code_loc, script_name, search_terms){
-  err_type = "Elastic Search Error."
+  err_type <- "Elastic Search Error."
   print(search_terms)
   if(is.null(search_terms)){
     display_err(err_type, "Please select a search item.")
