@@ -15,18 +15,6 @@ from ExifUtils.helpers import verify_file_exists, verify_dir_exists, copy_file, 
 #parse config file, which contains locations of images gathered by RAV in AirSim
 #and location of file where files with EXIF data attached should go
 
-
-def getConfig():
-	config = configparser.ConfigParser()
-	config.read('AddExif.conf')
-	return config
-	
-
-def verify_gps_lats_longs(gps_lats, gps_longs):
-	if len(gps_lats) != len(gps_longs):
-		return False
-	
-	
 def copy_png_files_and_convert_to_jpg(png_folder, jpg_folder, gps_lats, gps_longs, gps_alts = [], sorting_lambda = lambda file_name: int(file_name.split('_')[1].replace('.png','').replace('.jpg',''))):
 	'''Given a folder containing png files and a corresponding csv file containing lat, 
 	long, alt for images, will create a new folder in specified location, copy png files to 
@@ -37,7 +25,6 @@ def copy_png_files_and_convert_to_jpg(png_folder, jpg_folder, gps_lats, gps_long
 	if not verify_dir_exists(jpg_folder):
 		print('Creating folder: {}'.format(jpg_folder))
 		os.makedirs(jpg_folder)
-		
 	else:
 		if os.listdir(jpg_folder) != []:
 			print('{} is not an empty directory, may accidentally overwrite images'.format(jpg_folder))
@@ -46,9 +33,8 @@ def copy_png_files_and_convert_to_jpg(png_folder, jpg_folder, gps_lats, gps_long
 	#first copy files from png_folder to jpg_folder if they are .png format
 	
 	for png_file in os.listdir(png_folder):
-		#if int(png_file.split('_')[1].replace('.png','')) %2:
 		try:
-			copy_file("D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages/ImagesRAV1/Camera3/"+png_file, jpg_folder)
+			copy_file(png_folder + png_file, jpg_folder)
 		except Exception as e:
 		#don't try and deal with exception (may change this)
 			raise e
@@ -69,56 +55,19 @@ def copy_png_files_and_convert_to_jpg(png_folder, jpg_folder, gps_lats, gps_long
 		write_exif_gps_data(jpg_folder + jpg_file, gps_lats[counter], gps_longs[counter], gps_alts[counter])
 		counter += 1
 	
-def get_gps_coords_default(rav_number):
+def parse_gps_coords_default(gps_coords_string: str, rav_number: int, altitude: int):
 	'''Gets lats, longs from default location in ROCSAFE project'''
-	#config = getConfig()
-	#curdir = os.path.realpath(__file__)
-	#os.chdir(curdir)
-	#os.chdir("../../..")
-	#base_dir = os.getcwd()
-	#gps_coords = open(base_dir + config['DEFAULT']['gpslocations'] + str(rav_number) + ".txt", 'r' ).readlines()
-	gps_coords = open("D:\TempFiles\CBRNeVirtualEnvironment\RAVCollectedData\GPSCoords\AirSimRelativeGPSCoords1.txt","r").read() 
-	print(gps_coords.split('/n'))
-	lats = [float(coord.split(',')[0]) for coord in gps_coords.split('/n')]
-	#lats = [lats[i] if i%2 for i in range(len(lats))]
-	longs = [float(coord.split(',')[1]) for coord in gps_coords.split('/n')]
-	#longs = [lats[i] if i%2 for i in range(len(longs))]
-	#alts = [float(coord.split(',')[2]) for coord in gps_coords.split('/n')]
-	alts = [55 for i in range(len(lats))]
-	#alts = [alts[i] if i%2 for i in range(len(alts))]
+	lats = [float(coord.split(',')[0]) for coord in gps_coords.split('\n')]
+	longs = [float(coord.split(',')[1]) for coord in gps_coords.split('\n')]
+	try:
+		alts = [float(coord.split(',')[2]) for coord in gps_coords.split('\n')]
+	except IndexError:
+		alts = [altitude for i in range(len(lats))]
+	alts = [altitude for i in range(len(lats))]
 	return lats, longs, alts
 	
-def get_RAV_image_dir(rav_number):
-	'''Returns 
-	#config = getConfig()
-	#curdir = os.path.realpath(__file__)
-	#os.chdir(curdir)
-	#os.chdir("../../..")
-	#base_dir = os.getcwd()
-	#rav_png_images_loc = base_dir + config['DEFAULT']['RAVImages_location']
-	#return rav_png_images_loc + 'Drone{}Camera3'.format(rav_number)
-	'''
-	return "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/PNGImages/ImagesRAV1/Camera3"
-	
-def get_RAV_JPG_image_dir(rav_number):
-	'''
-	config = getConfig()
-	curdir = os.path.realpath(__file__)
-	os.chdir(curdir)
-	os.chdir("../..")
-	base_dir = os.getcwd()
-	rav_jpg_dir = base_dir + config['DEFAULT']['jpg_images_location']
-	return rav_jpg_dir
-	'''
-	return "D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/JPGImagesWithExif/Drone1Camera3JPG/"
 	
 	
-	
-def get_gps_locations():
-	gpslocations1 = open(base_dir + config['DEFAULT']['gpslocations1'], 'r' ).readlines()
-	os.chdir("../..")
-
-	base_dir = os.getcwd()
 #print("Working from directory: " + base_dir)
 #files containing GPS locations
 #print('reading: ', base_dir + config['DEFAULT']['gpslocations1'])

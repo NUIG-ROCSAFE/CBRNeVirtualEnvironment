@@ -4,7 +4,7 @@ import os
 import sys
 #append folder level up to import AirSimClient
 sys.path.append('..')
-sys.path.append('../GPSMappings')
+
 from PIL import Image
 from AirSimClient import *
 gpsCoordsFile = open('D:/TempFiles/CBRNeVirtualEnvironment/RAVCollectedData/GPSCoords/GPSCoords1.txt', 'w')
