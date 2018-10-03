@@ -25,21 +25,20 @@ library(shinycssloaders)
 library(shinydashboard)
 library(shinyWidgets)
 library(leaflet)
-library(shinyalert)
 library(ggmap)
 
 
-SOPRetrievalTerms = c("ammonia", "eye irritation", "pulmonary agent", "coughing", "dead insects", 
-                      "americium", "headache", "Cs137", "cobalt", "plume", "fever", "breathing problems",
-                      "nose irritation", "phosgene", "dead birds", "Co60", "chlorine", "yellow cloud",
-                      "dead insects", "gamma", "green cloud", "throat irritation",
-                      "Am241", "cesium", "nausea", "apnea")# Define UI for application that draws a histogram
+SOPRetrievalTerms = c('ammonia', 'eye irritation', 'pulmonary agent', 'coughing', 'dead insects', 
+                      'americium', 'headache', 'Cs137', 'cobalt', 'plume', 'fever', 'breathing problems',
+                      'nose irritation', 'phosgene', 'dead birds', 'Co60', 'chlorine', 'yellow cloud',
+                      'dead insects', 'gamma', 'green cloud', 'throat irritation',
+                      'Am241', 'cesium', 'nausea', 'apnea')# Define UI for application that draws a histogram
 
 header <- dashboardHeader(tags$li(class = "dropdown",
                                           tags$style(".main-header {max-height: 100px}"),
                                           tags$style(".main-header .logo {height: 100px}")),
-                          title =  tags$a(href="http://rocsafe.eu",
-                          tags$img(src="ROCSAFE-Logo.png")), titleWidth = 450)
+                          title =  tags$a(href='http://rocsafe.eu',
+                          tags$img(src='ROCSAFE-Logo.png')), titleWidth = 450)
 
 
 sidebar <- dashboardSidebar(
@@ -53,12 +52,11 @@ sidebar <- dashboardSidebar(
 )
   
 body <- dashboardBody(
-  useShinyalert(),
-  tags$style("background-image: url('www/ROCSAFE-logo-final.png'"),
+  tags$style('background-image: url("www/ROCSAFE-logo-final.png"'),
   tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}"),
     tabItems(
       tabItem(tabName = "BayesianAnalysis",
-              tags$style("background-image: url('ROCSAFE-logo-final.png')"),
+              tags$style('background-image: url("ROCSAFE-logo-final.png")'),
               sidebarLayout(
                 sidebarPanel(
                   checkboxGroupInput("odors", "Check the following odours if they are suspected/confirmed to be present:",
@@ -93,7 +91,7 @@ body <- dashboardBody(
                                        "Gas"="dispersion_gas",
                                        "Vapours"="dispersion_vapours",
                                        "Aerosol"="dispersion_aerosol")),
-                  actionButton("do_blog_analysis","Show results of analysis")
+                  actionButton('do_blog_analysis','Show results of analysis')
                 ),
       mainPanel(
         setBackgroundImage(src = "www/ROCSAFE-logo-final.png"),
@@ -105,8 +103,8 @@ body <- dashboardBody(
       
       tabItem(tabName = "SOPRetrieval", 
               fluidRow(column(width = 3,
-              selectizeInput("SOPRetrievalInput",width = "1000px", label = "Choose search terms", choices = SOPRetrievalTerms, multiple = TRUE), offset = 4),
-              column(width = 2, actionButton("RankTerms", label = "Rank terms", style="padding-top:5px; padding-bottom: 5px; margin-top: 26px"), offset = 0)),
+              selectizeInput("SOPRetrievalInput",width = '1000px', label = "Choose search terms", choices = SOPRetrievalTerms, multiple = TRUE), offset = 4),
+              column(width = 2, actionButton("RankTerms", label = "Rank terms", style='padding-top:5px; padding-bottom: 5px; margin-top: 26px'), offset = 0)),
               br(),
               br(),
               column(width = 8,htmlOutput("frame")%>% withSpinner(color="#0dc5c1", size=3), offset = 1)
@@ -118,27 +116,27 @@ body <- dashboardBody(
               
               fluidRow(
               column(width = 2,
-                actionButton("map_region","Show agent routes", width = "175px"),
+                actionButton('map_region','Show agent routes', width = "175px"),
               offset = 3),
               
               column(width = 2,
-                actionButton("plot_grid_points", "Show planned waypoints", width = "175px"),
+                actionButton('plot_grid_points', 'Show planned waypoints', width = "175px"),
               offset = 0),
               
               column(width = 2,
-                actionButton("clear_region", "Clear", width = "175px"),
+                actionButton("clear_region", 'Clear', width = "175px"),
               offset = 0)),
               br(),
               fluidRow(
               column(width = 2,
-                #switchInput(inputId="DataColletionMode", onLabel = "Demo", offStatus = TRUE, offLabel = "Collect Data", value = TRUE, width = "200px",labelWidth = 200, handleWidth = 200, size = "large"),
+                #switchInput(inputId="DataColletionMode", onLabel = "Demo", offStatus = TRUE, offLabel = "Collect Data", value = TRUE, width = "200px",labelWidth = 200, handleWidth = 200, size = 'large'),
                 switchInput(inputId="DataColletionMode", label = "Demo", value = FALSE, width = "200px"),
                 selectInput("no_ravs", label="Choose number of RAVs to be used", choices = c("1", "2", "3")),
                 selectInput("lat_spacing", label = "Choose the latitude spacing (m)", choices = c(20,25,30,40,50,100), selected = 30),
                 selectInput("lng_spacing", label = "Choose the longitude spacing (m)", choices = c(20,25,30,40,50,100), selected = 25),
                 selectInput("num_cameras", label = "Choose the number of cameras to use", choices = c(0,1,2,3,4), selected = 1),
                 selectInput("rav_altitude", label = "Choose the altitude at which RAVs will fly (m)", choices = c(25, 30, 35, 40), selected = 30),
-                selectInput("rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:8), selected = 3),
+                selectInput("rav_veloctiy", label = "Choose the velocity at which RAVs will fly (m/s)", choices = c(1:10), selected = 3),
                 actionButton("show_analysis", label="Show analysis"),
                 actionButton("launch_agents", label = "Execute agent routes"),
               offset = 0),

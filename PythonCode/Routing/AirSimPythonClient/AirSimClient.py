@@ -507,7 +507,7 @@ class MultirotorClient(AirSimClientBase, object):
         # print(self.getGpsLocation())
         print("Configuring GPS mapper using GPS location: {}".format(self.getGpsLocation()))
 		#use default NUIG location
-        self.gps_mapper = GPSToUnreal()
+        self.GPS_to_unreal = GPSToUnreal()
         return self.client.call('takeoff', max_wait_seconds)
 
     def land(self, max_wait_seconds = 60):
@@ -572,14 +572,14 @@ class MultirotorClient(AirSimClientBase, object):
         return self.client.call('moveToPosition', x, y, z, velocity, max_wait_seconds, drivetrain, yaw_mode, lookahead, adaptive_lookahead)
 
     def moveToGPSPosition(self, gpsCoordinate, velocity, max_wait_seconds = 60, drivetrain = DrivetrainType.MaxDegreeOfFreedom, yaw_mode = YawMode(), lookahead = -1, adaptive_lookahead = 1):
-        print('moving to coord: {}'.format(gpsCoordinate))
-        print('Moving to {}'.format(self.gps_mapper.getMoveToPosXYZFromGPSCoord(gpsCoordinate)))
-        return self.client.call('moveToPosition', *self.gps_mapper.getMoveToPosXYZFromGPSCoord(gpsCoordinate), velocity, max_wait_seconds, drivetrain, yaw_mode, lookahead, adaptive_lookahead)
+        print('moving to coord: {} at velocity {}'.format(gpsCoordinate, velocity))
+        print('Moving to {}'.format(self.GPS_to_unreal.getMoveToPosXYZFromGPSCoord(gpsCoordinate)))
+        return self.client.call('moveToPosition', *self.GPS_to_unreal.getMoveToPosXYZFromGPSCoord(gpsCoordinate), velocity, max_wait_seconds, drivetrain, yaw_mode, lookahead, adaptive_lookahead)
 
     def getGPSLocationRelative(self):
         '''Gets the GPS position of the RAV relative to home position'''
-        print('Calculated GPS Location Relative as {}'.format(self.gps_mapper.get_GPS_Pos(self.getGpsLocation())))
-        return self.gps_mapper.get_GPS_Pos(self.getGpsLocation())
+        print('Calculated GPS Location Relative as {}'.format(self.GPS_to_unreal.get_GPS_Pos(GPSCoordinate(self.getGpsLocation().latitude, self.getGpsLocation().longitude, self.getGpsLocation().altitude))))
+        return self.GPS_to_unreal.get_GPS_Pos(GPSCoordinate(self.getGpsLocation().latitude, self.getGpsLocation().longitude, self.getGpsLocation().altitude))
 
     def moveByManual(self, vx_max, vy_max, z_min, duration, drivetrain = DrivetrainType.MaxDegreeOfFreedom, yaw_mode = YawMode()):
         """Read current RC state and use it to control the vehicles.

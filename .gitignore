@@ -146,11 +146,13 @@ venv.bak/
 WindowsNoEditor
 **/GPSCoords
 RCode/ShinyApp/Data/*.csv
-PythonCode/PythonGridMapping/AirSimPythonClient/rav_*_mapper.py
+PythonCode/Routing/AirSimPythonClient/RAVExecuteRoutes/*
 **/GPSMappings/Images/
 
 BlogRuntime/*
 JavaRuntime/*
 *csv
+*png
 elasticsearch-oss-6.3.0/*
 RAVPlannedRoutes/*
+RAVCollectedData/*

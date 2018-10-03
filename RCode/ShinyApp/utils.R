@@ -186,7 +186,7 @@ run_java <- function(java_bin_loc, java_code_loc, java_prog_name, working_dir, w
   print(java_prog_name)
   argsString <- paste(argsString, java_prog_name, sep='')
   argsString <- paste(argsString, working_dir)
-  argsString <- paste(argsString, concat_paths(working_dir, write_dir))
+  argsString <- paste(argsString, write_dir)
   argsString <- paste(argsString, no_ravs)
   
   argsString <- paste(argsString, lat_spacing)
@@ -196,9 +196,7 @@ run_java <- function(java_bin_loc, java_code_loc, java_prog_name, working_dir, w
   #dat$long <- c(-9.062691,-9.055781,-9.057240,-9.065051,-9.067411)
   
   argsString = paste(argsString, paste(locs$lat, locs$long, sep = ' ', collapse = ' '))
-  print("argsString: ")
-  print(argsString)
-  print("calling")
+  print(paste("Calling java", argsString))
   agent_route_analysis <<- system2("java", args = c(argsString), stdout = TRUE, wait = TRUE)
   
   print(agent_route_analysis)
