@@ -13,7 +13,7 @@ class SopTests(unittest.TestCase):
         self.app = app.test_client()
         self.app.testing = True
         self.es = Elasticsearch()
-        self.db_conn, self.sop_location, self.pdf_loc, self.index_name = utils.get_config('./main.ini')
+        self.db_conn, self.sop_location, self.pdf_loc, self.index_name = utils.get_config('main.ini')
         self.search_terms = 'headache'
 
     def test_ini(self):

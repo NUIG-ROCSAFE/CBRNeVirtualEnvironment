@@ -1,14 +1,16 @@
 import utils
 import elastic_utils
 import sys
+import os
 import insert_records
 
 from elasticsearch import Elasticsearch
 
 
 def main():
+    working_dir = os.path.dirname(os.path.realpath(__file__))
     es = Elasticsearch()
-    db_conn, _, _, index_name = utils.get_config('./main.ini')
+    db_conn, _, _, index_name = utils.get_config('main.ini')
 
     search_terms = sys.argv[1:]
     if len(search_terms) == 0:
