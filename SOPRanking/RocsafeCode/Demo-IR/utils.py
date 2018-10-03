@@ -17,6 +17,10 @@ def config_selection_map(section, config):
     return config_dict
 
 
+def get_abs_path(file):
+    return os.path.dirname(os.path.realpath(__file__)) + '/' + file
+
+
 def get_config(ini_loc):
     """
     Reads config file 'main.ini' and returns config values
@@ -27,9 +31,8 @@ def get_config(ini_loc):
         sopPDFlocation: ./pdf/
         indexname: sops
     """
-
     config = configparser.ConfigParser()
-    config.read(ini_loc)
+    config.read(os.path.dirname(os.path.realpath(__file__)) + '/' + ini_loc)
 
     section = "sqlite"
     config_dict = None
@@ -41,8 +44,14 @@ def get_config(ini_loc):
         exit(-1)
 
     db_conn = config_dict["dblocation"]
+    if db_conn.startswith('.'):
+        db_conn = get_abs_path(db_conn)
     sop_location = config_dict["soplocation"]
+    if sop_location.startswith('.'):
+        sop_location = get_abs_path(sop_location)
     pdf_loc = config_dict["soppdflocation"]
+    if pdf_loc.startswith('.'):
+        pdf_loc = get_abs_path(pdf_loc)
     index_name = config_dict["indexname"]
 
     if not os.path.isfile(db_conn):

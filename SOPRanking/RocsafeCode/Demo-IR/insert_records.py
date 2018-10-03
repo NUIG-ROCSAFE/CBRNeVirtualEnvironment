@@ -14,7 +14,7 @@ def insert_sop(es, index_name, title, text, idno):
 
 def insert(es, index_name):
     # insert SOP into
-    location = "./text/"
+    location = os.path.dirname(os.path.realpath(__file__)) + "/text/"
     try:
         es.indices.create(index=index_name)
     except RequestError:

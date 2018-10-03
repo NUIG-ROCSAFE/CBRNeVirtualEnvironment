@@ -72,7 +72,7 @@ def return_rank(db_loc, pdf_loc):
 
 @app.route('/')
 def return_sops():
-    db_conn, _, pdf_loc, _ = utils.get_config('./main.ini')
+    db_conn, _, pdf_loc, _ = utils.get_config('main.ini')
     return return_rank(db_conn, pdf_loc)
 
 
