@@ -26,16 +26,47 @@ class GPSCoordinate:
     Ellipsoid = WGS84Ellipsoid(6378137.0, 6356752.314245, 1 / 298.257223563)
     WebMercatorProjection = WebMercator(111132.92, -559.82, 1.175, -0.0023, 111412.84, -93.5, 0.118)
     
-    def __init__(self, lat, long, alt = 0):
+    def __init__(self, lat: float, long: float, alt = 0):
         '''by default set the altitude to 0 (i.e. the point is on the earths surface'''
+        
         self._lat = lat
         self._long = long
         self._alt = alt
         
+        if not isinstance(lat, float):
+            try:
+                self._lat = float(self._lat)
+            except Exception as e:
+                raise e
+
+        if not isinstance(long, float):
+            try:
+                self._long = float(self._long)
+            except Exception as e:
+                raise e
+
+        if not isinstance(alt, float):
+            try:
+                self._alt = float(self._alt)
+            except Exception as e:
+                raise e
+        
+    def __str__(self):
+        return '{lat}, {lng}, {alt}'.format(lat = self._lat, lng = self._long, alt = self._alt)
+        
+    def __repr__(self):
+        return '{lat}, {lng}, {alt}'.format(lat = self._lat, lng = self._long, alt = self._alt)
     @staticmethod
-    def _vincentyGeodesicDirect(coord, distance, initialBearing):
+    def _vincentyGeodesicDirect(coord, distance: float, initialBearing: float):
         '''Given a gps coordinate, a desired distance(m) and an initial bearing, returns 
         the GPS coordinate that is the desired distance and bearing away from coord'''
+        if not isinstance(coord, self):
+            raise Exception("{} is not a GPS coordinate".format(coord))
+        if not isinstance(distance, float):
+            raise Exception("{} is not a float".format(distance))
+        if not isinstance(initialBearing, float):
+            raise Exception("{} is not a float".format(initialBearing))
+
         Phi1 = math.radians(coord.lat)
         Lambda1 = math.radians(coord.long);
         Alpha1 = math.radians(initialBearing);
