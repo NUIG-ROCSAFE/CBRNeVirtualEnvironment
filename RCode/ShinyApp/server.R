@@ -49,7 +49,7 @@ get_lats = function(str){
 }
 
 data_collection_rect <<- data.frame("lat" = c(53.2786520051, 53.2810475529, 53.2811390512, 53.2787435086), 
-                                   "long" = c(-9.0647555694,-9.0649387627,-9.0615917771,-9.0614085838))
+                                    "long" = c(-9.0647555694,-9.0649387627,-9.0615917771,-9.0614085838))
 
 agent_route_analysis <<- ""
 f_snapshot_old <<- fileSnapshot(concat_paths(working_dir, config$DATA$UIImagesDir), md5sum = TRUE)
@@ -117,7 +117,7 @@ shinyServer(function(input, output, session) {
       clickedLocs <<- data_collection_rect
     }
     
-    run_java(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$DATA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
+    run_java(config$JAVA$JavaBinLoc, concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$DATA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
     print("found analysis")
     #notify app that analysis can be displayed
     agent_route_analysis_flag(agent_route_analysis_flag() + 1) 
@@ -138,14 +138,14 @@ shinyServer(function(input, output, session) {
       setView(lng = -9.0615, lat = 53.2770, zoom = 15) %>%
       addTiles(options = providerTileOptions(noWrap = TRUE)) %>%
       addMarkers(lng = rav_positions$long, lat = rav_positions$lat, icon = RAVIcon) #%>%
-      #addPolygons(lng = bounding_rect$long, lat = bounding_rect$lat, opacity = 0.2, color = '#ff0000')
+    #addPolygons(lng = bounding_rect$long, lat = bounding_rect$lat, opacity = 0.2, color = '#ff0000')
   })
   
   observeEvent(input$clear_region, {
     clickedLocs<<-clickedLocs[0,]
     leafletProxy('map') %>% clearShapes() %>% clearMarkers() %>% 
       addMarkers(lng = rav_positions$long, lat = rav_positions$lat, icon = RAVIcon) #%>%
-      #addPolygons(lng = bounding_rect$long, lat = bounding_rect$lat, opacity = 0.2, color = '#ff0000')
+    #addPolygons(lng = bounding_rect$long, lat = bounding_rect$lat, opacity = 0.2, color = '#ff0000')
   })
   
   observeEvent(input$map_region, {
@@ -172,7 +172,7 @@ shinyServer(function(input, output, session) {
     #java_bin_loc, java_code_loc, java_prog_name, working_dir, no_ravs, locs, lat_spacing, lng_spacing
     #cat(paste0(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing)))
     
-    agent_routes <- run_java(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$DATA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
+    agent_routes <- run_java(config$JAVA$JavaBinLoc, concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$DATA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
     
     # 
     # #read the csvs that contain the routes for each agent
@@ -191,7 +191,7 @@ shinyServer(function(input, output, session) {
       leafletProxy('map') %>% addCircles(lng = points3$long, lat = points3$lat, weight=1, radius=7, color='black', fillColor='red', popup = paste("RAV3",paste(points3$lat, points3$long))) %>% addPolylines(lng = points3$long, lat = points3$lat, weight=1,color='red', fillColor='red')
     }
   })
-
+  
   observeEvent(input$launch_agents,{
     # input = list()
     # input$no_ravs = 4
@@ -205,7 +205,7 @@ shinyServer(function(input, output, session) {
     #setwd(paste(working_dir,"/PythonCode/PythonGridMapping/RoutePlotting", sep='', collapse=''))
     #generateUnrealPlotRoutes  -   no_ravs, no_cameras, rav_route_write_dir, saved_images_dir, gps_coords_write_dir
     gen_route_command <- paste(concat_paths(working_dir, config$PYTHON$PythonGenerateRouteDir, config$PYTHON$PythonGenerateRoutesFileLoc), isolate(input$no_ravs), isolate(input$num_cameras), isolate(input$rav_veloctiy), isolate(input$rav_altitude), collapse='')
-  
+    
     print(paste("running python command", gen_route_command))
     system2("python", args = c(gen_route_command))
     ###################### Put all of this into utils.py ######################
@@ -219,8 +219,8 @@ shinyServer(function(input, output, session) {
   })
   
   ## Observe mouse clicks and add circles
- 
-   observeEvent(input$map_click, {
+  
+  observeEvent(input$map_click, {
     ## Get the click info like had been doing
     click <- input$map_click
     clat <- click$lat

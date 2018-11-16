@@ -2,6 +2,8 @@ import os
 import sys
 import shutil
 
+
+#This only works for linux
 if not os.path.isdir(os.path.expanduser("~/AirSim/")):
     os.makedirs(os.path.expanduser("~/AirSim/"))
 

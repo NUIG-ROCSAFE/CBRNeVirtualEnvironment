@@ -118,7 +118,7 @@ check_config <- function(working_dir, config) {
   check_dir_exists(concat_paths(working_dir, config$DATA$CollectedPNGImagesDir), err_type, sprintf("%s doesn't exist, please fix [DATA] CollectedPNGImagesDir in Config/config.ini.", concat_paths(working_dir, config$DATA$CollectedPNGImagesDir)))
   check_dir_exists(concat_paths(working_dir, config$DATA$RAVRecordedGPSWaypoints), err_type, sprintf("%s doesn't exist, please fix [DATA] RAVRecordedGPSWaypoints in Config/config.ini.", concat_paths(working_dir, config$DATA$RAVRecordedGPSWaypoints )))
   check_dir_exists(concat_paths(working_dir, config$DATA$UIImagesDir), err_type, sprintf("%s doesn't exist, please fix [DATA] UIImagesDir  in Config/config.ini.", concat_paths(working_dir, config$DATA$UIImagesDir  )))
-  check_dir_exists(concat_paths(working_dir, config$DATA$PlannedAgentRoutesDir), err_type, sprintf("%s doesn't exist, please fix [DATA] PlannedAgentRoutesDir  in Config/config.ini.", concat_paths(working_dir, config$DATA$PlannedAgentRoutesDir  )))
+  check_dir_exists(concat_paths(working_dir, config$DATA$GPSPlannedAgentRoutesDir), err_type, sprintf("%s doesn't exist, please fix [DATA] GPSPlannedAgentRoutesDir  in Config/config.ini.", concat_paths(working_dir, config$DATA$GPSPlannedAgentRoutesDir  )))
   
 }
 
