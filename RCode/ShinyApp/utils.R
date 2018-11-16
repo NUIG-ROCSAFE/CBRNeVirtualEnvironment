@@ -31,7 +31,7 @@ dispersion_methods <- c("dispersion_liquid",
                         "dispersion_aerosol")
 
 working_dir <<- paste(getwd(), '/../..', sep = '')
-blog_code_loc <<- paste(working_dir, "/BlogScripts/", sep ='')
+blog_code_loc <<- paste(working_dir, "/BlogCode", sep ='')
 end_of_file <- readtext(paste(blog_code_loc, "/ChemProbReasoningSecondHalf.txt", sep = ''))$text 
 
 ################### Put this in config ###################

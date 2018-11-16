@@ -1,4 +1,4 @@
-flask = "*"
-pillow = "*"
-configparser = "*"
-msgpack-rpc-python = "*"
+flask
+pillow
+configparser
+msgpack-rpc-python

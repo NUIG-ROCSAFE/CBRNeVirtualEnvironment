@@ -1,6 +1,6 @@
-obs smell_fruity=true;
+obs smell_fruity=false;
 obs smell_odourless=false;
-obs smell_camphor=false;
+obs smell_camphor=true;
 obs smell_wood=false;
 obs smell_chlorine=false;
 obs smell_mustard_radish_garlic=false;
@@ -19,7 +19,7 @@ obs agent_nerve=false;
 obs agent_choking=false;
 obs agent_blister=false;
 obs agent_blood=false;
-obs agent_vomiting=false;
+obs agent_vomiting=true;
 obs agent_tear=false;
 obs agent_incapacitating_depressant_hallucinogen=false;
 
