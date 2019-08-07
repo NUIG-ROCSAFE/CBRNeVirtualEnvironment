@@ -33,9 +33,15 @@ config <<- read.ini("Config/config.ini")
 
 clickedLocs <<- data.frame(lat=numeric(),lng=numeric())
 names(clickedLocs) <- c("lat", "long")
-rav_positions <- data.frame("lat" = c(53.28, 53.286, 53.2798, 53.2793), 
+
+#rav_positions <- data.frame("lat" = c(53.28, 53.286, 53.2798, 53.2793), 
+#                            "long" = c(-9.07, -9.0588, -9.0565, -9.0638),
+#                            "text" = c("RAV1", "RAV2", "RAV3", "HOME POSITION"))
+
+rav_positions <- data.frame("lat" = c(53.28, 53.283, 53.279, 53.275), 
                             "long" = c(-9.07, -9.0588, -9.0565, -9.0638),
                             "text" = c("RAV1", "RAV2", "RAV3", "HOME POSITION"))
+
 
 #bottom right, top right,  top left, bottom left
 bounding_rect <- data.frame("lat" =c(53.27959959,53.2805257315, 53.2801009832, 53.2791748417),
@@ -59,8 +65,8 @@ f_snapshot_old <<- fileSnapshot(concat_paths(working_dir, config$DATA$UIImagesDi
 #routes <<- ""
 
 #Here's one we prepared earlier :P!
-# dat$lat <- c(53.28323, 53.28215, 53.27884, 53.27887, 53.28164)
-# dat$long <- c(-9.062691,-9.055781,-9.057240,-9.065051,-9.067411)
+#dat$lat <- c(53.28323, 53.28215, 53.27884, 53.27887, 53.28164)
+#dat$long <- c(-9.062691,-9.055781,-9.057240,-9.065051,-9.067411)
 
 shinyServer(function(input, output, session) {
   
@@ -118,18 +124,19 @@ shinyServer(function(input, output, session) {
       clickedLocs <<- data_collection_rect
     }
     
-    run_java(config$JAVA$JavaBinLoc, concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$DATA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
+    agent_route_analysis<<-run_java(config$JAVA$JavaBinLoc, concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$DATA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
     print("found analysis")
     #notify app that analysis can be displayed
     agent_route_analysis_flag(agent_route_analysis_flag() + 1) 
     print(agent_route_analysis)
     #grid_points <- read.csv("./RCode/ShinyApp/Data/gridPoints.csv", header = TRUE)
-    grid_points <- read.csv(concat_paths(working_dir, config$DATA$PlannedAgentRoutesDir, config$DATA$RAVPlannedWaypointsFile), header = TRUE)
+    grid_points <- read.csv(concat_paths(working_dir, config$DATA$GPSPlannedAgentRoutesDir, config$DATA$RAVPlannedWaypointsFile), header = TRUE)
     leafletProxy('map') %>% addPolygons(lng = clickedLocs$long, lat = clickedLocs$lat) %>% addCircles(lng = grid_points$long, lat = grid_points$lat, weight=1, radius=7, color='black', fillColor='orange', popup = paste(grid_points$lat, grid_points$long))
   })
   
   output$mission_report <- renderText({
     input$show_analysis
+    print("Displaying analysis")
     paste(agent_route_analysis, sep = '', collapse = '\n')
   })
   
@@ -165,17 +172,22 @@ shinyServer(function(input, output, session) {
       clickedLocs <<- data_collection_rect
     }
     
-    if(is.null(config$JAVA$JavaBinLoc)){
+    #if(is.null(config$JAVA$JavaBinLoc)){
       #assume that correct java version is installed
-      config$JAVA$JavaBinLoc = "java"
-    }
+    #  config$JAVA$JavaBinLoc = "java"
+    #}
     #get the java script to generate the routes for each rav
     #java_bin_loc, java_code_loc, java_prog_name, working_dir, no_ravs, locs, lat_spacing, lng_spacing
     #cat(paste0(concat_paths(working_dir, config$JAVA$JavaBinLoc), concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing)))
     
     agent_routes <- run_java(config$JAVA$JavaBinLoc, concat_paths(working_dir, config$JAVA$JavaCodeLoc), config$JAVA$JavaMissionDesignerJar, working_dir, config$DATA$PlannedAgentRoutesDir, isolate(input$no_ravs), clickedLocs, isolate(input$lat_spacing), isolate(input$lng_spacing))
     
-    # 
+    color_map <- c("blue","green","red")
+    names(color_map) <- c(1,2,3)
+    
+    #check that agent routes exist
+    #then loop over number of agents and display planned routes on map
+    
     # #read the csvs that contain the routes for each agent
     #points1 <-read.csv("./RCode/ShinyApp/Data/Agent1.csv", header = TRUE)
     points1 <- read.csv(concat_paths(working_dir, config$DATA$RAVGPSRoutesDir, "/Agent1.csv"))

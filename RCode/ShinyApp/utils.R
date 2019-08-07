@@ -159,7 +159,7 @@ run_blog <- function(blog_code_loc, blog_prog_name, blog_bin_loc, working_dir, o
   write_string <- paste(write_string, end_of_file, collapse = '\n')
   writeLines(write_string, file(paste(blog_code_loc,"/ChemicalProbablisticReasoning.blog", sep='')))
   
-  print('blog_bin_log')
+  print('blog_bin_loc')
   print(blog_bin_loc)
   if(blog_bin_loc != ""){
     setwd(blog_bin_loc)
@@ -173,8 +173,10 @@ run_blog <- function(blog_code_loc, blog_prog_name, blog_bin_loc, working_dir, o
 run_java <- function(java_bin_loc, java_code_loc, java_prog_name, working_dir, write_dir, no_ravs, locs, lat_spacing, lng_spacing){
   print("java_bin_loc: ")
   print(java_bin_loc)
-  if(java_bin_loc != ""){
-    setwd(java_bin_loc)
+  if(!is.null(java_bin_loc)){
+    if(java_bin_loc != ""){
+      setwd(java_bin_loc)
+    }
   }
   
   #add jar and code location
@@ -197,14 +199,14 @@ run_java <- function(java_bin_loc, java_code_loc, java_prog_name, working_dir, w
   
   argsString = paste(argsString, paste(locs$lat, locs$long, sep = ' ', collapse = ' '))
   print(paste("Calling java", argsString))
-  agent_route_analysis <<- system2("java", args = c(argsString), stdout = TRUE, wait = TRUE)
+  result <<- system2("java", args = c(argsString), stdout = TRUE, wait = TRUE)
   
-  print(agent_route_analysis)
-  if(length(agent_route_analysis) == 4) {
+  print(result)
+  if(length(result) == 4) {
     display_err("Java Error", "Cannot create a polygon with less than 3 vertices.")
   }
   setwd(working_dir)
-  return(agent_route_analysis)
+  return(result)
 }
 
 gen_airsim <- function(python_exe, python_code_loc) {
